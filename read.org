@@ -1,4 +1,4 @@
-#+TODO: READING | READED ABANDON
+#+TODO: READING | READED ABANDON WAITING
 * READED github入门与实践
   :PROPERTIES:
   :COLUMNS:   %25ITEM %55CLOCK %30INTRODUCE %50TOPIC
@@ -6301,7 +6301,141 @@
        [me@linuxbox ~]$ passwd
        (current) UNIX password:
        New UNIX password:
+**** processe
+     : In this chapter, we will look at some of the tools available at the command line that let us examine what programs are doing,
+     :   and how to terminate processes that are misbehaving
+
+     : ps
+     : Report a snapshot of current processes
+     [me@linuxbox ~]$ ps
+     PID TTY           TIME CMD        =# TTY is short for “Teletype,” and refers to the controlling terminal for the process=
+     5198 pts/1    00:00:00 bash
+     10129 pts/1   00:00:00 ps
+
+     [me@linuxbox ~]$ ps x             =# Adding the “x” option tells ps to show all of our processes regardless of what terminal (if any) they are controlled by=
+     PID TTY   STAT   TIME COMMAND     =# The presence of a “? ” in the TTY column indicates no controlling terminal=
+     2799 ?    Ssl    0:00 /usr/libexec/bonobo-activation-server –ac
+     2820 ?    Sl     0:01 /usr/libexec/evolution-data-server-1.10 --
+
+     : STAT
+     - Process States
+       R   running
+       S   sleep
+       T   stop
+       Z   zombie process
+       <   high priority
+       N   low priority
+
+     : BSD style
+     [me@linuxbox ~]$ ps aux
+     =# user ID : cpu usage : memory usage : virtual memory : resident set size : time when the process started=
+     USER   PID  %CPU  %MEM     VSZ    RSS  TTY   STAT   START   TIME  COMMAND
+     root     1   0.0   0.0    2136    644  ?     Ss     Mar05   0:31  init
+     root     2   0.0   0.0       0      0  ?     S&lt;     Mar05   0:00  [kt]
+
+     : top
+     : Display tasks
+
+     : C-c
+     : aske the program to terminate
+
+     : &
+     : To launch a program so that it is immediately placed in the background
+     [me@linuxbox ~]$ xlogo &
+     [1] 28236
+     : jos
+     : see the background program list
+     [me@linuxbox ~]$ jobs
+     [1]+ Running            xlogo &
+     : NOTE
+     : A process in the background is immune from keyboard input, including any attempt interrupt it with a Ctrl-c
+
+     : fg
+     : To return a process to the foreground
+     [me@linuxbox ~]$ jobs
+     [1]+ Running        xlogo &
+     [me@linuxbox ~]$ fg %1
+     xlogo
+
+     : kill
+     : to “kill” programs
+     [me@linuxbox ~]$ xlogo &
+     [1] 13546
+     [me@linuxbox ~]$ kill -1 13546  =# kill [-signal] PID...=
+     [1]+ Hangup         xlogo
+     - common signals
+       1  HUP  Hangup
+       2  INT  interrupt
+       9  KILL kill
+       15 TERM terminate
+       18 CONT continue
+       19 STOP stop
+*** configuration file and shell environment
+**** shell environment
+     : printenv
+     : Print part or all of the environment
+     - see a list of environment variables
+       [me@linuxbox ~]$ printenv | less
+       KDE_MULTIHEAD=false
+       SSH_AGENT_PID=6666
+       HOSTNAME=linuxbox
+       GPG_AGENT_INFO=/tmp/gpg-PdOt7g/S.gpg-agent:6689:1
+       SHELL=/bin/bash
+       ...
+     - specify environment variables
+       [me@linuxbox ~]$ printenv USER
+       me
+     : set
+     : Set shell options
+     [me@linuxbox ~]$ set | less  =# display both the shell and environment variables, as well as any defined shell functions=
+     : export
+     : Export environment to subsequently executed programs
+     : alias
+     : Create an alias for a command
+     - One element of the environment that neither set nor printenv displays is aliases
+       [me@linuxbox ~]$ alias
+       alias l.='ls -d .* --color=tty'
+       alias ll='ls -l --color=tty'
+       alias ls='ls --color=tty'
+       alias vi='vim'
+       alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+     : how to create shell environment
+     - Startup Files For Login Shell Session
+       /etc/profile                             A global configuration script that applies to all users
+       ~/.bash_profile                          A user's personal startup file. Can be used to extend or override settings in the global configuration script.
+       ~/.bash_login                           If ~/.bash_profile is not found, bash attempts to read this script.
+       ~/.profile                              If neither ~/.bash_profile nor ~/.bash_login is found, bash attempts to read this file. This is the default in Debian-based
+                                               distributions, such as Ubuntu.
+     - Startup Files For Non-Login Shell Sessions
+       /etc/bash.bashrc                      A global configuration script that applies to all users.
+       ~/.bashrc                             A user's personal startup file. Can be used to extend or override settings in the global configuration script.
+     - PATH variable
+       PATH=$PATH:$HOME/bin  =# PATH is modified to add the directory $HOME/bin to the end of the list=
+       export PATH  =# The export command tells the shell to make the contents of PATH available to child processes of this shell=
+**** vi
+     : common operator
+     [me@linuxbox ~]$ vi  =# start=
+     :q   =# exit=
+     :q!  =# force exit=
+     :w   =# written to hard drave=
+     : cursor movement
+     C-f  =# down one page=
+     C-b  =# up one page=
+     : text deletion
+     3x   =# current charaacter and the next two characters=
+     : join line together
+     J
+     : search
+     f    =# search within a line=
+     /    =# search entire file, type n and the cursor will move to match=
+     : replace
+     :%s/Line/line/g
+      %   =# specifies the range of lines=
+                   g   =# global=
 * READING unix环境高级编程 advanced programming in the unix environment
+** question record
+*** include apue.h header
+    cp ./apue.3e/include/apue.h /usr/local/include =# NOTE: not directory copy to /usr/include=
 ** unix基础知识 unix system overview
 *** 引言 introduction
     本书集中阐述不同unix操作系统所提供的服务
@@ -6364,7 +6498,11 @@
        The only two characters that *cannot appear in a filename* are the slash character (/) and the null character
        The slash separates the filenames that form a pathname
        and the null character terminates a pathname
-**** 路径名 pathname                                                            :[C]ls:
+**** 路径名 pathname                                                            :ATTACH:
+     :PROPERTIES:
+     :Attachments: ls.c
+     :ID:       6D8E6404-F5DF-470A-ACAC-3410675D63FF
+     :END:
      - 路径名 pathname
        A sequence of one or more filenames, separated by slashes and optionally starting with a slash, forms a pathname
      - 绝对路径 absolute pathname
@@ -6372,7 +6510,7 @@
      - 相对路径 relative pathname
        Relative pathnames refer to files *relative to the current directory*
 
-     - ls command
+     - ls command [C]
        - 联机手册 manuals online
          man l ls
          man -sl ls
@@ -6381,25 +6519,6 @@
          $ ./a.out /dev
          : NOTE
          the C compiler is gcc. Here, cc is usually linked to gcc
-       - 源码
-         #include "apue.h"        =// This header includes some standard system headers and defines numerous constants and function prototypes=
-         #include <dirent.h>      =// to pick up the function prototypes for opendir and readdir=
-
-         =/* ISO C */=
-         int
-         main(int argc, char *argv[])
-         {
-             DIR             *dp;
-             struct dirent   *dirp;
-             if (argc != 2)
-                 err_quit("usage: ls directory_name");
-             if ((dp = opendir(argv[1])) == NULL)
-                 err_sys("can’t open %s", argv[1]);
-             while ((dirp = readdir(dp)) != NULL)
-                 printf("%s\n", dirp->d_name);
-             closedir(dp);
-             exit(0);
-         }
 **** 工作目录 working directory
      当前目录
 **** 起始目录 home directory
@@ -6418,31 +6537,15 @@
      - 能重定向到某个文件
        executes the ls command with its standard output redirected to the file named file.list.
          ls > file.list
-**** 不带缓冲的I/O unbuffered I/O                                                :[C]stdin_stdout:
+**** 不带缓冲的I/O unbuffered I/O                                               :ATTACH:
+     :PROPERTIES:
+     :Attachments: stdin_stdout.c
+     :ID:       8FD4B5A3-5CCF-4FA3-8FFE-36FEED41CFB7
+     :END:
      : Unbuffered I/O is provided by the functions *open, read, write, lseek, and close*
      : These functions all work with file descriptors
      - copies any regular file on a UNIX system
        - Copy standard input to standard output [C]
-         =/* The apue.h include header <unistd.h> */=
-         =/* the header <unistd.h> cocntains many function prototypes such as read and write */=
-         =/* the header <unistd.h> defined constants /STDIN_FILENO/ and /STDOUT_FILENO/ */=
-         =/* STDIN_FILENO and STDOUT_FILENO specify the /file descriptors/ for standard input and sttandard output */=
-         #include "apue.h"
-         #define BUFFSIZE 4096  =// the various values of BUFFSIZE will affect the efficiency of the program=
-         int
-         main(void)
-         {
-             int     n;
-             char    buf[BUFFSIZE];
-
-             =/* read function returns the number of bytes that are read, and this value is used as the number of bytes to write */=
-             while ((n = read(STDIN_FILENO, buf, BUFFSIZE)) > 0)  =// encounter the end of the input file, read returns 0 and the program stops If a read error occurs, read return -1=
-                 if (write(STDOUT_FILENO, buf, n) != n)
-                     err_sys("write error");
-             if (n < 0)
-                 err_sys("read error");
-             exit(0);
-         }
        - compile the program into the standard name (a.out) and execute it to the file data
          : standard input is the terminal, standard output is redirected to the file data, and standard error is also the terminal
          : If this output file doesn’t exist, the shell creates it by default
@@ -6477,7 +6580,11 @@
        A program is an executable file residing on disk in a directory
      - 通过exec函数将程序读入内存 并执行程序
        A program is read into memory and is executed by the kernel as a result of one of the seven exec functions
-**** 进程和进程ID processes and process ID                                      :[C]getpid:
+**** 进程和进程ID processes and process ID                                      :ATTACH:
+     :PROPERTIES:
+     :Attachments: getpid.c
+     :ID:       59C71267-CEE7-4929-8063-59E1164445B1
+     :END:
      - 进程  程序的执行实例
        An executing instance of a program is called a process
        Some operating systems use the term task to refer to a program that is being executed
@@ -6485,51 +6592,18 @@
        The UNIX System guarantees that every process has a unique numeric identifier called the process ID.
        The process ID is always a non-negative integer
        - Print the process ID [C]
-         #include "apue.h"
-         int
-         main(void)
-         {
-             printf("hello world from process ID %ld\n", (long)getpid());  =// getpid returns a pid_t data type, We don’t know its size=
-                                                                           =// so have to cast the value to the largest data type and guarantee a long promotes portability=
-             exit(0);
-         }
        - compile this program into the file a.out and execute it
          $ ./a.out
          hello world from process ID 851
          $ ./a.out
          hello world from process ID 854
-**** 进程控制 process control                                                   :[C]execute_cmd:
+**** 进程控制 process control                                                   :ATTACH:
+     :PROPERTIES:
+     :Attachments: execute_cmd.c
+     :ID:       45DA3B6C-8423-4038-AC69-F4866B56ED83
+     :END:
      : There are three primary functions for process control: fork, exec, and waitpid
      - Read commands from standard input and execute them [C]
-       : the limitation of this program is that we can't pass arguments to the command we execute
-       #include "apue.h"
-       #include <sys/wait.h>
-
-       int
-       main(void)
-       {
-           char    buf[MAXLINE];  =// from apue.h=
-           pid_t   pid;
-           int     status;
-
-           printf("%% ");  =// print prompt (printf requires %% to print %)=
-           while (fgets(buf, MAXLINE, stdin) != NULL) { =// use fgets to read one line at a time, we can use ctrl+D to return a null pointer, the process terminates=
-               if (buf[strlen(buf) - 1] == ’\n’)
-                   buf[strlen(buf) - 1] = 0;  =// replace newline with null, because execlp function wants a null terminated argument=
-               if ((pid = fork()) < 0) {  =// We call fork to create a new process, which is a copy of the caller=
-                    err_sys("fork error");
-               } else if (pid == 0) {  =// fork returns the non-negative process ID of new child process to the parent, and returns 0 to the *child*=
-                   execlp(buf, buf, (char *)0);  =// this replaces the child process with the new program file, we call it spawning a new process=
-                   err_ret("couldn’t execute: %s", buf);
-                   exit(127);
-               }
-               =/* parent */=
-               if ((pid = waitpid(pid, &status, 0)) < 0)  =// calling waitpid for parent to wait for the child to terminatethe pid argument is the process ID of the child=
-                   err_sys("waitpid error");
-               printf("%% ");
-           }
-           exit(0);
-       }
      - run the program, use % refer to execute line
        $ ./a.out
        % date
@@ -6594,7 +6668,110 @@
       The typical recovery action for a resource-related nonfatal error is to delay and retry later
 
 [fn:pipeline] prog1 < inputfile | prog2 | prog3 > outputfile  =//we are able to tell which of the three programs generated a particular error message=
-* READING c程序设计语言 The C Programming Language
+*** 用户标识 user identification
+    - 用户ID
+      识别不同用户
+      不能更改
+      - 超级用户
+        We call the user whose user ID is 0 either root or the superuser.
+        The entry in the password file normally has a login name of root, and we refer to the special privileges of this user as superuser privileges
+    - 组ID
+      系统分配
+      - 共享资源
+        Groups are normally used to collect users together into projects or departments.
+        This allows the sharing of resources, such as files, among members of the same group.
+        we can set the permissions on a file so that all members of a group can access the file, whereas others outside the group cannot.
+    - [C]打印用户ID和组ID
+      #include "apue.h"
+      int
+      main(void)
+      {
+           printf("uid = %d, gid = %d\n", getuid(), getgid());
+           exit(0);
+      }
+
+      $ ./a.out
+      uid = 205, gid = 105
+*** 信号 singnals
+    - 发送信号处理进程
+      Many conditions generate signals. Two terminal keys,
+        called the interrupt key— often the DELETE key or Control-C—and the quit key—often Control-backslash—are used to interrupt the currently running process.
+        Another way to generate a signal is by calling the kill function
+    - singnal函数
+      - [C]read commands from standard input and execute them [En 53]
+*** 时间值 time values
+    - 进程时间 process time
+      - clock time
+        The clock time, sometimes called wall clock time, is the amount of time the process takes to run,
+          and its value depends on the number of other processes being run on the system
+      - user cpu time
+        The user CPU time is the CPU time attributed to user instructions
+      - system cpu time
+        - measure
+          $ cd /usr/include
+          $ time -p grep _POSIX_SOURCE */*.h > /dev/null
+*** 系统调用和库函数 system calls and library functions
+    - 系统调用
+      - c语言最小接口 内核入口
+        All operating systems provide service points through which programs request services from the kernel.
+        All implementations of the UNIX System provide a well-defined, limited number of entry points directly into the kernel called /system calls/
+    - 库函数
+      - c语言复杂接口 调用1或多个内核调用
+        Section 3 of the UNIX Programmer’s Manual defines the general-purpose library functions available to programmers.
+        These functions aren’t entry points into the kernel, although they may invoke one or more of the kernel’s system calls
+** unix标准及实现 UNIX Standardization and Implementations
+*** unix标准化 unix standardization
+**** ISO C
+     - 跨平台C标准
+       the ISO C standard is to provide portability of conforming C programs to a wide variety of operating systems, not only the UNIX System
+     [T] Headers defined by the ISO C standard En 61
+**** IEEE POSIX
+     - 可移植操作系统借口
+       POSIX standard specifies an interface and not an implementation
+       no distinction is made between system calls and library functions.
+       All the routines in the standard are called functions
+       Standards are continually evolving
+     [T] Required headers defined by the POSIX standard (En 63)
+     [T] XSI option headers defined by the POSIX standard (En 64)
+**** Single UNIX Specification
+** 文件I/O file I/O
+   - 不带缓冲的I/O
+     The term unbuffered I/O means that each read or write invokes a system call in the kernel
+*** 文件描述符 file descriptors
+    - 引用文件
+      A file descriptor is a non-negative integer
+      When we open an existing file or create a new file, the kernel returns a file descriptor to the process
+      When we want to read or write a file, we identify the file with the file descriptor that was returned by open or creat as an argument to either read or write
+    - 幻数
+      the magic numbers 0, 1, and 2
+        should be replaced in POSIX-compliant applications with the symbolic constants STDIN_FILENO, STDOUT_FILENO, and STDERR_FILENO to improve readability.
+      These constants are defined in the <unistd.h> header
+    - 允许每个进程打开文件数
+      the limit is essentially infinite,
+        bounded by the amount of memory on the system, the size of an integer, and any hard and soft limits configured by the system administrator
+** 文件和目录 files and directories
+*** 函数stat、fstat、fstatat和lstat  stat, fstat, fstatat, and lstat Functions  :ATTACH:
+    :PROPERTIES:
+    :Attachments: stat_fstat_fstatat_lstat.c
+    :ID:       D2719384-B3C3-4F31-BADD-D4BCFC84EEA4
+    :END:
+    - 提供路径 显示文件信息
+      that most members of the stat structure are specified by a primitive system data type
+      The biggest user of the stat functions is probably the ls -l command, to learn all the information about a file
+** 标准I/O库 standard I/O library
+   标准I/O库处理细节
+*** 流和file对象 streams and file objects
+    - file对象指针引用流
+      When a file is opened, a file descriptor is returned, and that descriptor is then used for all subsequent I/O operations
+      With the standard I/O library, the discussion centers on streams
+      When we open or create a file with the standard I/O library, we say that we have associated a stream with the file
+
+      With the ASCII character set, a single character is represented by a single byte. With international character sets, a character can be represented by more than one byte
+      Standard I/O file streams can be used with both single-byte and multibyte (‘‘wide’’) character sets
+
+      fwide function can be used to set a stream's orientation [C]
+* WAITING c程序设计语言 The C Programming Language
+  CLOSED: [2017-04-16 日 14:10]
 ** 基础 basic
 *** 编译 加载 运行 compile load run
     *.c
@@ -6923,7 +7100,8 @@
       : TIP
       an alternative to #define with the advantage that *the values can be generated* for you
       enumeration variables *offer the chance of checking* and so are often better than #defines
-* READING go语言圣经 the go programming language
+* WAITING go语言圣经 the go programming language
+  CLOSED: [2017-04-16 日 14:10]
 ** 入门 tutorial
 *** hello world
     go run helloworld.go
@@ -7094,7 +7272,8 @@
       %v              any value in a natural format
       %T              type of any value
       %%              literal percent sign (no operand)
-* READING ruby编程语言 ruby programming language
+* WAITING ruby编程语言 ruby programming language
+  CLOSED: [2017-03-30 四 17:22]
 ** 导言 introduction
 *** 漫游ruby a tour of ruby
 **** ruby是完全的面向对象的 ruby is completely object-oriented
@@ -7779,6 +7958,199 @@
         ISO-8859-1 to ISO-8859-15    =# the European encodings=
         UTF-16                       =# big-endian UTF-8=
         UTF-32                       =# little-endian UFT-8=
+* READING ruby on rails
+** create a new rails project
+*** create a template project
+    $ rails new blog
+    $ cd blog
+    - the blog directory
+      app/       controller model view helper mailer application
+      bin/       rails script startup update deploy application
+      config/    routes database and more
+      config.ru  rack configuration
+      db/        database schema migrations
+      Gemfile    gem dependencies used by bundler gem
+      Gemfile.lock
+      lib/       extended moduel
+      log/       log file
+      public/    world can see static files compile assert
+      Rakefile   locate and load tasks
+      README.md
+      test/      unit test fixture and other test apparatus
+      tmp/       cache and pid files
+      vendor/    third-party code
+*** network
+    $ bin/rails server
+    http://localhost:3000
+*** controllers and views
+    =# create a controller with an action called index= =and create a [[route file]] [1]=
+    $ bin/rails generate controller Welcome index
+    =# Open the app/views/welcome/index.html.erb file, replace below code=
+    <h1>Hello, Rails!</h1>
+*** routes
+    - edit config/routes.rb [2]
+      Rails.application.routes.draw do
+        get 'welcome/index'        =# get welcome/index to http://localhost:3000/welcome/index    <<route file>> [1]=
+        root 'welcome#index'       =# map your request to root of welcome#index [2]=
+      end
+    stop and launch web server again (bin/rails server)
+*** the REST CRUD operations
+    : add a restfull resource
+    =# You can create, read, update and destroy items for a resource and these operations are referred to as CRUD operations=
+    =# Rails provides a resources method which can be used to declare a standard REST resource=
+    - add the article resource to the config/routes.rb
+      Rails.application.routes.draw do
+        resources :articles
+        root 'welcome#index'
+      end
+    - if you run bin/rails routes, you'll see that it has defined routes for all the standard RESTful actions
+      $ bin/rails routes
+            Prefix Verb   URI Pattern                  Controller#Action
+          articles GET    /articles(.:format)          articles#index
+                   POST   /articles(.:format)          articles#create
+       new_article GET    /articles/new(.:format)      articles#new
+      edit_article GET    /articles/:id/edit(.:format) articles#edit
+           article GET    /articles/:id(.:format)      articles#show
+                   PATCH  /articles/:id(.:format)      articles#update
+                   PUT    /articles/:id(.:format)      articles#update
+                   DELETE /articles/:id(.:format)      articles#destroy
+              root GET    /                            welcome#index
+    : error: Routing Error
+    : create controller and method for the resource
+    =# the route needs to have a controller defined in order to serve the request=
+    - create a controller called ArticlesController
+      $ bin/rails generate controller Articles
+    : error: Unknown action
+    =# when controllers are generated in Rails they are empty by default, unless you tell it your desired actions=
+    - To manually define an action inside a controller
+      class ArticlesController < ApplicationController
+        def new
+        end
+      end
+    : error: ActionController::UnknownFormat in ArticlesController#new
+    =# The first part identifies which template is missing. In this case, it's the articles/new template=
+    =# The next part of the message contains request.formats which specifies the format of template to be served in response (it is set html template)=
+    =# The simplest template that would work in this case would be one located at app/views/articles/new.html.erb=
+    =#   The extension of this file name is important:
+          the first extension is the format of the template, and the second extension is the handler that will be used to render the template=
+    - create a new file at app/views/articles/new.html.erb and write this content in it
+      <h1>New Article</h1>
+    =# then refresh http://localhost:3000/articles/new, you'll see it in the page=
+*** workflow
+    : 1. view
+    : create form use form builder
+    <%= form_for :article, url: articles_path do |f| %>  =# the articles_path helper is passed to the :url option=
+      <p>
+        <%= f.label :title %><br>
+        <%= f.text_field :title %>
+      </p>
+      <p>
+        <%= f.label :text %><br>
+        <%= f.text_area :text %>
+      </p>
+      <p>
+        <%= f.submit %>
+      </p>
+    <% end %>
+    : error Unknown action
+    The action 'create' could not be found for ArticlesController  =# need to create the create action within the ArticlesController for this to work=
+
+    : 2. contriller
+    : create action
+    =# define a action in app/controllers/articles_controller.rb=
+    class ArticlesController < ApplicationController
+      def new
+      end
+      def create
+      end
+    end
+    =# if you re-submit now, you may not see any change=
+    =# because rails by default return s 204 No Content response for an action if you don't specify what the response should be=
+    : add response by using params method
+    def create
+      render plain: params[:article].inspect =// [[params method]]=
+    end
+    =# This action is now displaying the parameters for the article that are coming in from the form=
+    <ActionController::Parameters {"title"=>"First Article!", "text"=>"This is my first article."} permitted: false>
+    - a example of <<params method>>
+      http://www.example.com/?username=dhh&email=dhh@email.com
+                                   v
+                     params[:username] equal "dhh"
+                                                    v
+                                    params[:email] equal "dhh@email.com"
+
+    : 3. model
+    : To create the new model
+    $ bin/rails generate model Article title:string text:text
+    =# With that command we told Rails that we want an Article model, together with a title attribute of type string, and a text attribute of type text=
+
+* READING programming ruby
+** running ruby
+*** interactive ruby
+    % ruby
+    puts "Hello, world!"
+    ^D  =# an end of file character=
+    Hello, world!
+
+    irb
+*** ruby programs
+    % ruby myprog.rb
+
+    #!/usr/local/bin/ruby -w  =# Unix shebang notation=
+    puts "Hello, World!"
+    % ./myprog.rb
+    Hello, World!
+*** ruby.new
+    : Ruby Is an Object-Oriented Language
+    song1 = Song.new("Ruby Tuesday")
+    song2 = Song.new("Enveloped in Python")
+    # and so on
+    : Ruby is a genuine OO language
+    "gin joint".length      » 9
+    "Rick".index("c")       » 2
+    -1942.abs               » 1942
+    sam.play(aSong)         » "duh dum, da dum de dum ..."
+    number = Math.abs(number)     // Java code
+    number = number.abs           // ruby code
+    strlen(name)                  // C code
+    : a simple ruby function
+    def sayGoodnight(name)
+      result = "Goodnight, " + name  =// You don't need semicolons at the ends of statements as long as you put each statement on a separate line=
+      return result
+    end  =// finish the body with the keyword end=
+    # Time for bed...      Ruby comments start with a # character and run to the end of the line
+    puts sayGoodnight("John-Boy")
+    puts sayGoodnight("Mary-Ellen")
+    : specify precedence rules
+    =// precedence rules can make it difficult to know which argument goes with which method invocation, so we recommend using parentheses in all but the simplest cases=
+    puts sayGoodnight "John-Boy"
+    puts sayGoodnight("John-Boy")
+    puts(sayGoodnight "John-Boy")
+    puts(sayGoodnight("John-Boy"))
+    : escape
+    puts "And Goodnight,\nGrandma"  =// When a string containing a newline is output, the ``\n'' forces a line break=
+    produces:
+    And Goodnight,
+    Grandma
+    : expression interpolation
+    def sayGoodnight(name)
+      result = "Goodnight, #{name}"  =// the sequence #{ expression } is replaced by the value of expression=
+      return result
+    end
+    : the last expression evaluated
+    def sayGoodnight(name)
+      "Goodnight, #{name}"  =// The value returned by a Ruby method is the value of the last expression evaluated, so we can get rid of the return statement altogether=
+    end
+    : identifier
+    local variables           start with lowerccase letter or with an underscore
+    method parameters
+    method names
+    global variables          prefixed wirh $
+    instance variables        begin with @
+    class variables           start with @@
+    class names               start with an uppercase letter
+    module names
+    constants
 * READING java编程思想 thinking in java
 ** 对象入门 introduction to object
 *** 抽象的进步 the progress of abstraction
@@ -7824,7 +8196,7 @@
     : or the new class made up of any number and type of other objects
     : 新建类的时候 首先应考虑‘组织’对象 一辆车包含乐一个变速箱
     : you should first look to composition when creating new classes
-*** 继承 inheritance
+*** 继承: 重新使用接口 inheritance
 **** 重新使用接口 reuse base-class method
      - 使用继承时 相当于创建了一个新类 包含了类的所有成员(private成员被隐藏) 复制了基础类的接口
        when you inherit from an existing type, you create a new type.
@@ -7870,7 +8242,68 @@
        继承一个抽象类后抽象方法必须实现 否则继承的类也会变成抽象类
        this [[abstract object]], generally called a container, will expand itself whenever necessary to accommodate everything you place inside it.
        So you don’t need to know how many objects you’re going to hold in a container. Just create a container object and let it take care of the details.
-* READING javascript高级程序设计 javascript for web developers
+*** 对象的创建和存在时间 object creation & lifetime
+*** 违例控制: 解决错误 exception handling: dealing with errors
+    - 违例控制模块是封装好的 只需编写代码调用
+      Java’s exception handling stands out among programming languages, because in Java, exception handling was wired in from the beginning and you’re forced to use it
+      single acceptable way to report errors. If you don’t write your code to properly handle exceptions, you’ll get a compile-time error message.
+*** 多线程 concurrent programming
+    java多线程机制已内建到语言中
+    - 资源锁定方案
+      使用synchronized 同一时间只能有一个线程使用特定的内存空间
+*** java和因特网 java and the internet
+    - 服务器
+      Taken together, the information repository, the software that distributes the information,
+        and the machine(s) where the information and software reside are called *“the server”*
+    - 客户端
+      The software that resides on the consumer machine, communicates with the server,
+        fetches the information, processes it, and then displays it on the consumer machine is called *the client*
+    - 中间件
+      To minimize latency, programmers work hard to offload processing tasks,
+        often to the client machine, but sometimes to other machines at the server site,
+        using so-called middleware. (Middleware is also used to improve maintainability.)
+    - 通用网关接口 CGI
+      This submission passes through the Common Gateway Interface (CGI) provided on all Web servers
+      a cgi programs can be written in most languages.
+      Perl has been a common choice because it is designed for text manipulation and is interpreted.
+      However, Python (www.Python.org) has been making inroads because of its greater power and simplicity.
+    - 插件 plug-ins
+      This is a way for a programmer to add new functionality to the browser by downloading a piece of code that plugs itself into the appropriate spot in the browser.
+    - 脚本编制语言
+      Plug-ins resulted in the development of browser scripting languages
+      With a scripting language, you embed the source code for your client-side program directly into the HTML page,
+        and the plug-in that interprets that language is automatically activated while the HTML page is being displayed
+      One scripting language that you can expect a Web browser to support without a plug-in is *JavaScript*
+      - 创建更丰富 更具有互动能力的图形界面
+      - 能快速的解决80%的问题
+        However, a scripting language might solve 80 percent of the problems encountered in client-side programming.
+        Your problems might very well fit completely within that 80 percent, and since scripting languages can allow easier and faster development,
+          you should probably consider a scripting language before looking at a more involved solution such as Java programming
+    - java
+      - 解决剩下的20%的问题
+        Java is a popular solution for this.
+        Not only is it a powerful programming language built to be secure, cross-platform, and international,
+          but Java is being continually extended to provide language features and libraries that elegantly handle problems that are difficult in traditional programming languages,
+          such as concurrency, database access, network programming, and distributed computing. Java allows client-side programming via the *applet* and with Java Web Start
+      - 程序片 applet
+        - 客户端程序管理
+          An applet is a mini-program that will run only under a Web browser.
+          When the applet is activated, it executes a program.
+          This is part of its beauty—it provides you with a way to automatically distribute the client software from the server at the time the user needs the client software, and no sooner.
+        - 编译形式
+          Since Java is a full-fledged programming language, you can do as much work as possible on the client before and after making requests of the server
+            For example, you won’t need to send a request form across the Internet to discover that you’ve gotten a date or some other parameter wrong,
+            and your client computer can quickly do the work of plotting data instead of waiting for the server to make a plot and ship a graphic image back to you
+          Not only do you get the immediate win of speed and responsiveness,
+            but the general network traffic and load on servers can be reduced, preventing the entire Internet from slowing down
+    - 服务器端编程
+      - 数据库编程
+        事务处理
+      - 小服务程序 servlet
+    - 应用程序
+    - 因特网和内联网
+* WAITING javascript高级程序设计 javascript for web developers
+  CLOSED: [2017-04-11 二 20:49]
 ** javascript简介 20 what is javascript 44
 *** javasctipt简史 a short history
 *** javascript实现 javascript implementations
@@ -8067,14 +8500,14 @@
     looking to these books to help get you started along a path to understanding programming through the lens of JavaScript
 **** code
      A program, often referred to as source code or just code, is a set of special instructions to tell the computer what tasks to perform
-**** statements
-     - a = b * 2;
-      : expressions
-      2 =is a literal value expression=
-      b =is a variable expression, which means to retrieve its current value=
-      b * 2 =is an arithmetic expression, which means to do the multiplication=
-      a = b * 2 =is an assignment expression, which means to assign the result of the b * 2 expression to the variable a (more on assignments later)=
-      alert( a ); =expression statement, as the entire statement is the function call expression itself=
+***** statements
+      - a = b * 2;
+       : expressions
+       2 =is a literal value expression=
+       b =is a variable expression, which means to retrieve its current value=
+       b * 2 =is an arithmetic expression, which means to do the multiplication=
+       a = b * 2 =is an assignment expression, which means to assign the result of the b * 2 expression to the variable a (more on assignments later)=
+       alert( a ); =expression statement, as the entire statement is the function call expression itself=
 **** console
      - output
       console.log( b );
@@ -8505,7 +8938,7 @@
        : TODO
        Scope & Closures title
 **** Immediately Invoked Function Expressions (IIFEs)
-     - a way to execute a funtion expression immediately, which is typically referred to as an immediately invoked function expression (IIFE)
+     - a way to execute a funtion expression immediately, which is typically referred to as an immediately invoked function expression (<<IIFE>>)
        : listing the (function IIFE(){ .. }) before its executing ()
        // `IIFE` function expression,
        // then `()` executes it
@@ -8557,6 +8990,1095 @@
 
        // When we call plusTen(13), it adds 13 (its inner y) to the 10 (remembered by x), and we get 23 as the result
        plusTen( 13 );          // 23 <-- 10 + 13
+**** modules
+     : Modules let you define private implementation details (variables, functions) that are hidden from the outside world, as well as a public API that is accessible from the outside
+     - The User() function holds the variables username and password, as well as the inner doLogin() function; these are all private that cannot be accessed from the outside world
+       function User(){
+               var username, password;
+               =// doLogin()=
+               =// 1. The inner doLogin() function has a closure over username and password, meaning it will retain them even after the User() function finishes running=
+               function doLogin(user,pw) {
+                       username = user;
+                       password = pw;
+
+                       // do the rest of the login work
+               }
+               =// publicAPI=
+               =// 1. publicAPI is an object with one property/method on it=
+               =// 2. When we return publicAPI from User(), it becomes the instance we call fred=
+               var publicAPI = {
+                       =// login=
+                       =// login which is a reference to the inner doLogin() function    <<why>>=
+                       login: doLogin
+               };
+
+               return publicAPI;
+       }
+
+       // create a `User` module instance
+       =// User()=
+       =// 1. NOTE: We are not calling new User() here, User() is just a function, not a class to be instantiated=
+       =// 2. Executing User() creates an instance of the User module--a whole new scope instance is created we assign to fred=
+       =//    If we run User() again, we'd get a new instance entirely separate from fred=
+       var fred = User();
+
+       =// fred.login=
+       =// That's [[why]] we can call fred.login(..) -- the same as calling the inner doLogin(..)=
+       fred.login( "fred", "12Battery34!" );
+       =// At this point, you'd think the inner variables like username and password have gone away=
+       =// But here they have not, because there's a closure in the login() function keeping them alive=
+     : TODO
+     the Scope & Closures title of this serie
+**** this identiier
+     - If a function has a *this* reference inside it, that this reference usually points to an object
+       function foo() {
+               console.log( this.bar );
+       }
+       var bar = "global";
+
+       var obj1 = {
+               bar: "obj1",  =// <<obj1.bar>>=
+               foo: foo
+       };
+
+       var obj2 = {
+               bar: "obj2"   =// <<obj2.bar>>=
+       };
+
+       // --------
+       =// to understand what this points to=
+
+       =// 1. *this* will get the global object in non-strict mode=
+       =//    in strict mode, this would be undefined and you'd get an error=
+       =// 2. set *this* to reference obj1 object's bar([[obj1.bar]])=
+       =// 3. set *this* to reference obj2 object's bar([[obj2.bar]])=
+       =// 4. set *this* to a brand new empty object=
+       foo();                          // 1. "global"
+       obj1.foo();                     // 2. "obj1"
+       foo.call( obj2 );               // 3. "obj2"
+       new foo();                      // 4. undefined
+     : TODO
+     in the this & Object Prototypes title
+**** Prototypes
+     : The most common way this feature is used to try to emulate/fake a "class" mechanism with "inheritance"
+     : But a more natural way of applying prototypes is a pattern called "behavior delegation", where you intentionally design your linked objects delegate from one to the other
+     - When you reference a property on an object, if that property doesn't exist, JavaScript will automatically use that object's internal prototype reference to find another object to look for the property on
+       var foo = {
+               a: 42
+       };
+
+       // create `bar` and link it to `foo` =use build-in utility called Object.create(..)=
+       var bar = Object.create( foo );
+
+       bar.b = "hello world";
+
+       =// The a property doesn't actually exist on the bar object, but because bar is prototype-linked to foo, JavaScript automatically falls back to looking for a on the foo object, where it's found=
+       bar.b;          // "hello world"
+       bar.a;          // 42 <-- delegated to `foo`
+     : TODO
+     see Chapters 4-6 of the this & Object Prototypes title
+**** Old & New
+     In fact, some of the newest features in the specification aren't even implemented in any stable browsers yet
+     : There are two main techniques you can use to "bring" the newer JavaScript stuff to the older browsers: polyfilling and transpiling
+**** Polyfilling
+     The word "polyfill" is an invented term used to refer to taking the new feature and producing a piece of code that's equivalent to the behavior is able to run in older JS environments
+**** Transpiling
+     the better option is to use a tool that converts your newer code into older code equivalents
+     This process is commonly called "transpiling," a term for transforming + compiling
+     - There are quite a few great transpilers for you to choose from
+       * Babel (https://babeljs.io) (formerly 6to5): Transpiles ES6+ into ES5
+       * Traceur (https://github.com/google/traceur-compiler): Transpiles ES6, ES7, and beyond into ES5
+**** Non-JavaScript
+     : The reality is that most JS is written to run in and interact with environments like browsers
+     A good chunk of the stuff that you write in your code is, strictly speaking, not directly controlled by JavaScript
+     - The most common non-JavaScript JavaScript you'll encounter is the DOM API
+       =// Moreover, the getElementById(..) method on document looks like a normal JS function,
+          but it's just a thinly exposed interface to a built-in method provided by the DOM from your browser=
+       var el = document.getElementById( "foo" );
+     - Another example is with input/output (I/O)
+       alert(..) is provided to your JS program by the browser, not by the JS engine itself
+       The call you make sends the message to the browser internals and it handles drawing and displaying the message box
+*** into YDKJS
+    : I'm going to use this final chapter to briefly summarize what to expect from the rest of the books in the series
+    : and how to most effectively go about building a foundation of JS learning on top of YDKJS
+**** Scope & Closures
+     : The JS engine compiles your code right before (and sometimes during!) execution. So we use some deeper understanding of the compiler's approach to our code
+     :   to understand how it finds and deals with variable and function declarations
+
+     : This critical understanding of "lexical scope" is what we then base our exploration of closure on for the last chapter of the book
+
+     : The module pattern is perhaps the most prevalent code organization pattern in all of JavaScript
+     : deep understanding of it should be one of your highest priorities
+**** this & Object Prototypes
+     : The this keyword is dynamically bound based on how the function in question is executed
+
+     : it's more appropriate to learn prototype system, which is more appropriately named "behavior delegation"
+     : Delegation is an entirely different, and more powerful, design pattern, one that replaces the need to design with classes and inheritance
+**** Types & Grammar
+     : this series primarily focuses on tackling yet another highly controversial topic: type coercion
+
+     : By far, the conventional wisdom is that implicit coercion is a "bad part" of the language and should be avoided at all costs
+     : I say no. After having built up an understanding of how types and values really work,
+     :   I'm asserting that coercion is an incredibly useful and totally underestimated tool that you should be using in your code
+**** Async & Performance
+     : the title branches out slightly to cover patterns on top of the language mechanics for managing asynchronous programming
+
+     : we move into examining callbacks as the primary method of enabling asynchrony
+     : But we quickly see that the callback alone is insufficient for the modern demands of asynchronous programming with two reason:
+     :    3. Inversion of Control (IoC) trust loss and 4. lack of linear reason-ability
+     : To address these, ES6 introduces two new mechanisms: 1. promises and 2. generators
+     : 1. Promises are a time-independent wrapper around a "future value,"
+     :    which lets you reason about and compose them regardless of if the value is ready or not yet. Moreover,
+     :    they effectively solve the 3. IoC trust issues by routing callbacks through a trustable and composable promise mechanism
+     : 2. Generators introduce a new mode of execution for JS functions, whereby the generator can be paused at yield points and be resumed asynchronously later.
+     :    The pause-and-resume capability enables synchronous, sequential looking code in the generator to be processed asynchronously behind the scenes.
+     :    By doing so, we address the 4. non-linear, non-local-jump confusions of callbacks and thereby make our asynchronous code sync-looking so as to be more reason-able.
+
+     : the combination of 1. promises and 2. generators that "yields" our most effective asynchronous coding pattern to date in JavaScript
+     : much of the future sophistication of asynchrony coming in ES7 and later will certainly be built on this foundation.
+
+     : Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js
+
+     : Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques,
+     :    including what kinds of performance to worry about and what to ignore.
+**** ES6 & Beyond
+     : This title is dedicated to both the short- and mid-term visions of where the language is headed, not just the known stuff like ES6 but the likely stuff beyond.
+
+     : we'll never fully know every part of JS, because as soon as you master it all, there's going to be new stuff coming down the line that you'll need to learn
+** Types & Grammar
+*** foreword
+    Types and Grammar, the third installment of the series, is an excellent look at the core JavaScript fundamentals
+     Coercion and its pitfalls, natives as constructors, and the whole gamut of JavaScript basics
+*** Types
+    - what the ES5.1 specificatio the type
+       Types are further sub classified into ECMAScript language types and specification types
+       The ECMAScript language types are Undefined, Null, Boolean, String, Number, and Object
+    - what the author specification the type
+      : a type is an intrinsic, built-in set of characteristics that uniquely identifies the behavior of a particular value
+      : and distinguishes it from other values,
+      : both to the engine and to the developer
+**** A Type By Any Other Name...
+     there are many different ways that such coercion can happen
+     Some of these ways are explicit, easy to reason about, and reliable
+     But if you're not careful, coercion can happen in very strange and surprising ways
+**** Built-in Types
+     - JavaScript defines seven built-in types
+       - object
+         typeof { life: 42 }  === "object";    // true
+         - null
+           : null is the only primitive value that is "falsy" (aka false-like; see Chapter 4) but that also returns "object" from the typeof check
+           typeof null === "object"; // true
+         - function
+           : a function is referred to an object type that has an internal property that allows it to be invoked
+           typeof function a(){ /* .. */ } === "function"; // true
+           function a(b,c) {
+                   /* .. */
+           }
+           a.length; // 2
+         - array
+           : It's a "subtype" of objectand maintaining an automatically updated .length property
+           typeof [1,2,3] === "object"; // true
+       - undefined
+         typeof undefined     === "undefined"; // true
+       - boolean
+         typeof true          === "boolean";   // true
+       - number
+         typeof 42            === "number";    // true
+       - string
+         typeof "42"          === "string";    // true
+       - symbol -- added in ES6!
+         // added in ES6!
+         typeof Symbol()      === "symbol";    // true
+**** Values as Types
+     : JS doesn't have "type enforcement"
+     Variables don't have types, but the values in them do
+     These types define intrinsic behavior of the values
+
+     : engine doesn't insist that a variable always holds values of the same initial type
+     : A variable can, in one assignment statement, hold a string, and in the next hold a number, and so on
+     - "42" with the string type, can be created from the number value 42 through a process called coercion
+       var a = 42;
+       typeof a;            // "number"
+       a = true;
+       typeof a;            // "boolean"
+       typeof typeof 42;    // "string"    =(The first typeof 42 returns "number", and typeof "number" is "string")=
+**** undefined vs "undeclared"
+     : Many developers will assume 1. "undefined" and 2. "undeclared" are roughly the same thing, but in JavaScript, they're quite different
+     - 1. undefined is a value that a declared variable can hold
+       : An "undefined" variable is one that has been declared in the accessible scope but at the moment has no other value in it
+       typeof a;    // "undefined"
+       var b = 42;
+       var c;
+       b = c;
+       typeof b;    // "undefined"
+       typeof c;    // "undefined"
+     - 2. undeclared means a variable has never been declared
+       : an "undeclared" variable is one that has not been formally declared in the accessible scope
+       var a;
+       a; // undefined
+       b; // undeciared  =ReferenceError: b is not defined=
+       typeof b; // "undefined"  =This is a special [[safety guard]] in the behavior of typeof=
+**** typeof Undeclared
+     - the <<safety guard>> (preventing an error) on typeof when used against an undeclared variable can be helpful in certain cases
+       - it is useful if you're not dealing with user-defined variables (like debug)
+         : imagine having a "debug mode" in your program that is controlled by a global variable (flag) called 1. DEBUG
+         : the declaration of global var 1. DEBUG would only be included in a "debug.js" file,
+         :   which you only load into the browser when you're in development/testing, but not in production
+         // oops, this would throw an error!
+         if (DEBUG) {
+                 console.log( "Debugging is starting" );
+         }
+
+         // this is a safe existence check   =<<debug-enable>>=
+         if (typeof DEBUG !== "undefined") {
+                 console.log( "Debugging is starting" );
+         }
+       - doing a feature check
+         : Imagine a utility function that you want others to copy-and-paste into their programs or modules
+         :   in which you want to check to see if the including program has defined a certain variable (so that you can use it) or not:
+         if (typeof atob === "undefined") {  =<<feature-check>>=
+                 atob = function() { /*..*/ };
+         }
+
+         =// global function variable=
+         =// doSomethingCool() tests for a variable called FeatureXYZ, and if found, uses it, but if not, uses its own.=
+         =// if someone includes this utility in their module/program, it safely checks if they've defined FeatureXYZ or not=
+         function doSomethingCool() {
+                 var helper =
+                         (typeof FeatureXYZ !== "undefined") ?
+                         FeatureXYZ :
+                         function() { /*.. default feature ..*/ };
+                 var val = helper();
+                 // ..
+         }
+
+         =// an [[IIFE]] ("Immediately Invoked Function Expressions")=
+         =// Here, FeatureXYZ is not at all a global variable, but we're still using the safety guard of typeof to make it safe to check for=
+         =// And importantly, here we can't use the object (like we did for global variables with window.___) to make the check, so typeof is quite helpful=
+         (function(){
+                 function FeatureXYZ() { /*.. my XYZ feature ..*/ }
+                 // include `doSomethingCool(..)`
+                 function doSomethingCool() {
+                         var helper =
+                                 (typeof FeatureXYZ !== "undefined") ?
+                                 FeatureXYZ :
+                                 function() { /*.. default feature ..*/ };
+                         var val = helper();
+                         // ..
+                 }
+                 doSomethingCool();
+         })();
+
+         =// dependency injection=
+         =// doSomethingCool() inspecting implicitly for FeatureXYZ is to be defined outside/around it, it would need to have the dependency explicitly passed in=
+         function doSomethingCool(FeatureXYZ) {
+                 var helper = FeatureXYZ ||
+                         function() { /*.. default feature ..*/ };
+                 var val = helper();
+                 // ..
+         }
+     - Another way of using global variable instead the safety guard
+       : observe that all global variables are also properties of the global object, which in the browser is basically the window object
+       : NOTE
+       : manually referencing the global variable with a window reference is something some developers prefer to avoid
+       :   especially if your code needs to run in multiple JS environments (not just browsers, but server-side node.js) where the global variable may not always be called window
+       if (window.DEBUG) {  =// [[debug-enable]]=
+               // ..
+       }
+
+       if (!window.atob) {  =// [[feature-check]]=
+               // ..
+       }
+*** values
+    : Let's look at several of the built-in value types in JS, and explore how we can more fully understand and correctly leverage their behaviors
+**** Arrays
+     : As compared to other type-enforced languages, JavaScript arrays are just containers for any type of value,
+     :   from string to number to object to even another array (which is how you get multidimensional arrays)
+     var a = [ 1, "2", [3] ];
+     a.length;               // 3
+     a[0] === 1;             // true
+     a[2][0] === 3;  // true
+     : You don't need to presize your arrays (see "Arrays" in Chapter 3), you can just declare them and add values as you see fit
+     var a = [ ];
+     a.length;       // 0
+     a[0] = 1;
+     a[1] = "2";
+     a[2] = [ 3 ];
+     a.length;       // 3
+     : NOTE
+     : Using delete on an array value will remove that slot from the array,
+     :   but even if you remove the final element, it does not update the length property, so be careful
+     : Be careful about creating "sparse" arrays (leaving or creating empty/missing slots)
+     a[0] = 1;
+     // no `a[1]` slot set here
+     a[2] = [ 3 ];
+     a[1];           // undefined  =TODO  it will not behave the same as if the slot is explicitly set (a[1] = undefined). See "Arrays" in Chapter 3 for more information=
+     a.length;       // 3
+
+     : you can have string keys/properties added to array (but which don't count toward the length of the array)
+     var a = [ ];
+     a[0] = 1;
+     a["foobar"] = 2;
+     a.length;               // 1
+     a["foobar"];    // 2
+     a.foobar;               // 2
+     : if a string value intended as a key can be coerced to a standard base-10 number, then it is assumed that you wanted to use it as a number index rather than as a string key
+     var a = [ ];
+     a["13"] = 42;
+     a.length; // 14
+     : NOTE
+     : Generally, it's not a great idea to add string keys/properties to arrays
+     :   Use objects for holding values in keys/properties, and save arrays for strictly numerically indexed values
+**** Array-Like
+     : There will be occasions where you need to convert an array-like value (a numerically indexed collection of values) into a true array,
+     :   usually so you can call array utilities (like indexOf(..), concat(..), forEach(..), etc.) against the collection of values
+     function foo() {
+             var arr = Array.prototype.slice.call( arguments );  =// If slice() is called without any other parameters, the default values is duplicating the array (or, in this case, array-like)=
+          =// var arr = Array.from( arguments );  As of ES6, there's also a built-in utility called Array.from(..) that can do the same task  TODO: in detail in the ES6 & Beyond title of this series=
+             arr.push( "bam" );
+             console.log( arr );
+     }
+     foo( "bar", "baz" ); // ["bar","baz","bam"]
+**** Strings
+     : strings are somewhat "array-like"
+     var a = "foo";           // string
+     var b = ["f","o","o"];   // array
+     : both they having a length property, an indexOf() method and a concat() method
+     a.length;                // 3
+     b.length;                // 3
+     a.indexOf( "o" );        // 1
+     b.indexOf( "o" );        // 1
+     var c = a.concat( "bar" );              // "foobar"
+     var d = b.concat( ["b","a","r"] );      // ["f","o","o","b","a","r"]
+     a === c;                 // false
+     b === d;                 // false
+     a;                       // "foo"
+     b;                       // ["f","o","o"]
+     a[1] = "O";    =// NOTE: the string a[1] character position access form was not always widely valid JavaScript, Instead, the correct approach has been a.charAt(1)=
+     b[1] = "O";
+     a; // "foo"
+     b; // ["f","O","o"]
+
+     : JavaScript strings are immutable, while arrays are quite mutable
+     : A further consequence of immutable strings is that none of the string methods that alter its contents can modify in-place, but rather must create and return new strings
+     c = a.toUpperCase();
+     a === c;        // false
+     a;                      // "foo"
+     c;                      // "FOO"
+     b.push( "!" );
+     b;                      // ["f","O","o","!"]
+     : many of the array methods that could be helpful when dealing with strings are not actually available for them
+     a.join;                 // undefined
+     a.map;                  // undefined
+     var c = Array.prototype.join.call( a, "-" );
+     var d = Array.prototype.map.call( a, function(v){
+             return v.toUpperCase() + ".";
+     } ).join( "" );
+     c;                              // "f-o-o"
+     d;                              // "F.O.O."
+
+     : arrays have a reverse() in-place mutator method, but strings do not
+     a.reverse;      // undefined
+     b.reverse();    // ["!","o","O","f"]
+     b;              // ["!","o","O","f"]
+     Array.prototype.reverse.call( a );
+     // still returns a String object wrapper (see Chapter 3)
+     // for "foo" :(
+     : TIP
+     : another workaround is to convert the string into an array, perform the desired operation, then convert it back to a string
+     =// Warning: This approach doesn't work for strings with complex (unicode) characters in them (astral symbols, multibyte characters, etc.)=
+     var c = a
+             // split `a` into an array of characters
+             .split( "" )
+             // reverse the array of characters
+             .reverse()
+             // join the array of characters back to a string
+             .join( "" );
+     c; // "oof"
+
+     : TIP
+     : if you are more commonly doing tasks on your "strings" that treat them as basically arrays of characters,
+     :   perhaps it's better to just actually store them as arrays rather than as strings
+     : You can always call join("") on the array of characters whenever you actually need the string representation
+**** Numbers
+     JavaScript has just one numeric type: number. This type includes both "integer" values and fractional decimal numbers
+     : NOTE
+     in JS, an "integer" is just a value that has no fractional decimal value. That is, 42.0 is as much an "integer" as 42
+**** Numeric Syntax
+     : Number literals are expressed in JavaScript generally as base-10 decimal literals
+     var a = 42;
+     var b = 42.3;
+     : The leading decimal value of 0 is optional
+     var a = 0.42;
+     var b = .42;
+     : most numbers will be output as base-10 decimals
+     var a = 42.300;
+     var b = 42.0;
+     a; // 42.3
+     b; // 42
+     : output in exponent form
+     var a = 5E10;
+     a;                                      // 50000000000
+     a.toExponential();      // "5e+10"
+     var b = a * a;
+     b;                                      // 2.5e+21
+     var c = 1 / a;
+     c;                                      // 2e-11
+     : use build-in Number.prototype
+     : toFIxed()
+     =// the toFixed(..) method allows you to specify how many fractional decimal places you'd like the value to be represented with=
+     a.toFixed( 0 ); // "43"  =NOTE: output is a string=
+     a.toFixed( 1 ); // "42.6"
+     a.toFixed( 2 ); // "42.59"
+     a.toFixed( 3 ); // "42.590"
+     : toPrecision()
+     =// specifies how many significant digits should be used to represent the value=
+     a.toPrecision( 1 ); // "4e+1"  =NOTE: output is a string=
+     a.toPrecision( 2 ); // "43"
+     a.toPrecision( 3 ); // "42.6"
+     a.toPrecision( 4 ); // "42.59"
+     a.toPrecision( 5 ); // "42.590"
+     a.toPrecision( 6 ); // "42.5900"
+     : NOTE
+     42.toFixed( 3 );        // SyntaxError
+     (42).toFixed( 3 );      // "42.000"
+     42..toFixed( 3 );       // "42.000"
+     42 .toFixed(3); // "42.000"
+     : exponent form
+     var onethousand = 1E3;                                          // means 1 * 10^3
+     var onemilliononehundredthousand = 1.1E6;       // means 1.1 * 10^6
+     : hexadecimal
+     0xf3; // hexadecimal for: 243
+     0Xf3; // ditto
+     : octal
+     0363; // octal for: 243
+     0o363;          // octal for: 243
+     0O363;          // ditto
+     : binary
+     0b11110011;     // binary for: 243
+     0B11110011; // ditto
+     : the representations in binary floating-point
+     =// the representations for 0.1 and 0.2 in binary floating-point are not exact, so when they are added, the result is not exactly 0.3=
+     0.1 + 0.2 === 0.3; // false
+     : Number.EPSILON
+     =// As of ES6, Number.EPSILON is predefined with this tolerance value=
+     =// Number.EPSILON = Math.pow(2,-52);=
+     function numbersCloseEnoughToEqual(n1,n2) {
+             return Math.abs( n1 - n2 ) < Number.EPSILON;
+     }
+     var a = 0.1 + 0.2;
+     var b = 0.3;
+     numbersCloseEnoughToEqual( a, b );                                      // true
+     numbersCloseEnoughToEqual( 0.0000001, 0.0000002 );      // false
+**** Safe Integer Ranges
+     : Number.MAX_VALUE
+     2^53 - 1
+     9007199254740991
+     : in ES6
+     : Number.MAX_SAFE_INTEGER
+     : Number.MIN_SAFE_INTEGER
+     -9007199254740991
+**** Testing for Integers
+     : Number.isInteger(..)
+     Number.isInteger( 42 );         // true
+     Number.isInteger( 42.000 );     // true
+     Number.isInteger( 42.3 );       // false
+     if (!Number.isInteger) {        =// polyfill Number.isInteger(..) for pre-ES6=
+             Number.isInteger = function(num) {
+                     return typeof num == "number" && num % 1 == 0;
+             };
+     }
+     : Number.isSafeInteger(..)
+     Number.isSafeInteger( Number.MAX_SAFE_INTEGER );      // true
+     Number.isSafeInteger( Math.pow( 2, 53 ) );            // false =[[32-bit safe range]]=
+     Number.isSafeInteger( Math.pow( 2, 53 ) - 1 );        // true
+     if (!Number.isSafeInteger) {                          =// polyfill Number.isSafeInteger(..) in pre-ES6 browsers=
+             Number.isSafeInteger = function(num) {
+                     return Number.isInteger( num ) &&
+                             Math.abs( num ) <= Number.MAX_SAFE_INTEGER;
+             };
+     }
+**** 32-bit (Signed) Integers
+     : While integers can range up to roughly 9 quadrillion safely (53 bits),
+     :   that are only defined for 32-bit numbers, so the "safe range" for numbers used in that way must be much smaller`
+     : The range then is Math.pow(-2,31) (-2147483648, about -2.1 billion) up to Math.pow(2,31)-1 (2147483647, about +2.1 billion) <<32-bit safe range>>
+**** Special Values
+**** The Non-value Values
+     : For the undefined type, there is one and only one value: undefined    (undefined hasn't had a value yet)
+     : For the null type, there is one and only one value: null              (null had a value and doesn't anymore)
+**** undefined
+     : In non-strict mode, it's actually possible (though incredibly ill-advised!) to assign a value to the globally provided undefined identifier
+     function foo() {
+             undefined = 2; // really bad idea!
+     }
+     foo();
+
+     function foo() {
+             "use strict";
+             undefined = 2; // TypeError!
+     }
+     foo();
+     : however, you can create a local variable of the name undefined. But again, this is a terrible idea!
+     function foo() {
+             "use strict";
+             var undefined = 2;
+             console.log( undefined ); // 2
+     }
+     foo();
+     : TIP
+     Friends don't let friends override undefined. Ever
+**** void Operator
+     : void operator is another way to hold the undefined value
+     var a = 42;
+     console.log( void a, a );  =// There's no practical difference between void 0, void 1, and undefined=
+     -> undefined 42
+     : void operator can be useful if you need to ensure that an expression has no result value
+     function doSomething() {
+             // note: `APP.ready` is provided by our application
+             if (!APP.ready) {
+                     // try again later
+                     return void setTimeout( doSomething, 100 );
+                     =// which works the same as above but doesn't use the void operator=
+                     =setTimeout( doSomething, 100 );=
+                     =return;=
+             }
+             var result;
+             // do some other stuff
+             return result;
+     }
+     // were we able to do it right away?
+     if (doSomething()) {
+             // handle next tasks right away
+     }
+**** Special Numbers
+     : The Not Number, Number
+     var a = 2 / "foo";      // NaN
+     typeof a === "number";  // true
+     var b = "foo";
+     window.isNaN( b ); // true -- bug
+     : this is a bug has been in JS, as of ES6, you can use Number.isNaN instead
+     if (!Number.isNaN) {
+             Number.isNaN = function(n) {
+                     return (
+                             typeof n === "number" &&
+                             window.isNaN( n )
+                     );
+             };
+     }
+     var a = 2 / "foo";
+     var b = "foo";
+     Number.isNaN( a ); // true
+     Number.isNaN( b ); // false -- phew!
+**** Infinities
+     : this operation is well-defined and results in the value Infinity
+     var a = 1 / 0;  // Infinity
+     var b = -1 / 0; // -Infinity
+     : it is possible to overflow even with an operation like addition or subtraction, in which case you'd get Infinity or -Infinity
+     var a = Number.MAX_VALUE;       // 1.7976931348623157e+308
+     a + a;                          // Infinity
+     a + Math.pow( 2, 970 );         // Infinity
+     a + Math.pow( 2, 969 );         // 1.7976931348623157e+308
+     : Infinity / Infinity is results in NaN
+**** Zeros
+     : negative zero also results from certain mathematic operations
+     var a = 0 / -3; // -0
+     var b = 0 * -3; // -0
+     : if a negative zero value is stringify, sometimes it will be as "0"
+     var a = 0 / -3;
+     a;                      // -0
+     a.toString();           // "0"
+     a + "";                 // "0"
+     String( a );            // "0"
+     // strangely, even JSON gets in on the deception
+     JSON.stringify( a );            // "0"
+     : Another possibility
+     +"-0";                  // -0
+     Number( "-0" );         // -0
+     JSON.parse( "-0" );     // -0
+     : the comparison operators are also strange
+     var a = 0;
+     var b = 0 / -3;
+     a == b;         // true
+     -0 == 0;        // true
+     a === b;        // true
+     -0 === 0;       // true
+     0 > -0;         // false
+     a > b;          // false
+     : a clever way to distinguish 0 and -0
+     function isNegZero(n) {
+             n = Number( n );
+             return (n === 0) && (1 / n === -Infinity);
+     }
+     isNegZero( -0 );                // true
+     isNegZero( 0 / -3 );    // true
+     isNegZero( 0 );                 // false
+     : TIP
+     : why do we need a negative zero
+     : There are certain applications where developers use the magnitude of a value to represent one piece of information (like speed of movement per animation frame)
+     :   and the sign of that number to represent another piece of information (like the direction of that movement)
+**** Special Equality
+     : test two values for special types
+     var a = 2 / "foo";
+     var b = -3 * 0;
+     Object.is( a, NaN );    // true
+     Object.is( b, -0 );     // true
+     Object.is( b, 0 );      // false
+     : the function's core
+     if (!Object.is) {
+             Object.is = function(v1, v2) {
+                     // test for `-0`
+                     if (v1 === 0 && v2 === 0) {
+                             return 1 / v1 === 1 / v2;
+                     }
+                     // test for `NaN`
+                     if (v1 !== v1) {
+                             return v2 !== v2;
+                     }
+                     // everything else
+                     return v1 === v2;
+             };
+     }
+**** Value vs. Reference
+     : value-copy
+     =// Simple values (aka scalar primitives) are always assigned/passed by value-copy=
+     var a = 2;
+     var b = a; // `b` is always a copy of the value in `a`
+     b++;
+     a; // 2
+     b; // 3
+     : reference-copy
+     =// Compound values -- objects (including arrays, and all boxed object wrappers) and functions -- always create a copy of the reference on assignment or passing=
+     var c = [1,2,3];
+     var d = c; // `d` is a reference to the shared `[1,2,3]` value
+     d.push( 4 );
+     c; // [1,2,3,4]
+     d; // [1,2,3,4]
+     =// Since references point to the values themselves and not to the variables, you cannot use one reference to change where another reference is pointed=
+     var a = [1,2,3];
+     var b = a;      =// b is not a pointer to a=
+     a; // [1,2,3]
+     b; // [1,2,3]
+     // later
+     b = [4,5,6];    =// a is still referencing [1,2,3]=
+     a; // [1,2,3]
+     b; // [4,5,6]
+     : function
+     =// separate references=
+     function foo(x) {     =// argument pass: x -> a=
+             x.push( 4 );  =// reference change: x  -> [1,2,3,4] <- a=
+             x; // [1,2,3,4]
+             // later
+             x = [4,5,6];  =// assignment: x -> [4,5,6]  a-> [1,2,3,4]=
+             x.push( 7 );
+             x; // [4,5,6,7]
+     }
+     var a = [1,2,3];
+     foo( a );
+     a; // [1,2,3,4]  not  [4,5,6,7]
+     =// shared reference=
+     function foo(x) {     =// argument pass: x -> a=
+             x.push( 4 );  =// reference change: x -> [1,2,3,4] <- a=
+             x; // [1,2,3,4]
+             // later
+             x.length = 0; // empty existing array in-place
+             x.push( 4, 5, 6, 7 );  =// reference change: x -> [4,5,6,7] <- a=
+             x; // [4,5,6,7]
+     }
+     var a = [1,2,3];
+     foo( a );
+     a; // [4,5,6,7]  not  [1,2,3,4]
+     =// NOTE: slice(..) with no parameters by default makes an entirely new (shallow) copy of the array=
+        =foo( a.slice() ); // foo(..) cannot affect the contents of a=
+        =a; // [1,2,3]=
+     : wrapper reference
+     function foo(wrapper) {
+             wrapper.a = 42;
+     }
+     var obj = {
+             a: 2
+     };
+     foo( obj );  =// access the shared object, and update it property=
+     obj.a; // 42
+     : mutable scalar primitive
+     function foo(x) {
+             x = x + 1;
+             x; // 3
+     }
+     var a = 2;
+     var b = new Number( a ); // or equivalently `Object(a)`
+     foo( b ); =// If a Number object holds the scalar primitive value 2, that exact Number object can never be changed to hold another value=
+     console.log( b ); // 2, not 3
+*** Natives
+    - object wrapper
+      var a = new String( "abc" ); =// The result of the constructor form of value creation (new String("abc")) is an object wrapper around the primitive ("abc") value=
+      typeof a; // "object" ... not "String"
+**** Internal [class]
+     - build-in native constructor
+       Object.prototype.toString.call( [1,2,3] );                      // "[object Array]"
+       Object.prototype.toString.call( /regex-literal/i );     // "[object RegExp]"
+       Object.prototype.toString.call( null );                 // "[object Null]"
+       Object.prototype.toString.call( undefined );    // "[object Undefined]"
+       Object.prototype.toString.call( "abc" );        // "[object String]"
+       Object.prototype.toString.call( 42 );           // "[object Number]"
+       Object.prototype.toString.call( true );         // "[object Boolean]"
+     : TODO
+     those details in the ES6 & Beyond title of this series
+**** Boxing Wrappers
+     - automatically box the primitive value with object wrapper
+       var a = "abc";  =// Primitive values don't have properties or methods=
+       =// so to access .length or .toString() you need an object wrapper around the value=
+       a.length; // 3
+       a.toUpperCase(); // "ABC"
+       : NOTE
+       String("abc")   =// there's basically no reason to use the object form directly, it will slower you program=
+       new Number(42)
+       abc  =// It's better to just let the boxing happen implicitly where necessary=
+       42
+**** Object Wrapper Gotchas
+     - manually box a primitive value may cause some problems
+       =// using the boxed object wrapper directly (like b and c above) is usually discouraged, but there may be some rare occasions you'll run into where they may be useful=
+       var a = "abc";
+       var b = new String( a );
+       var c = Object( a );
+       typeof a; // "string"
+       typeof b; // "object"
+       typeof c; // "object"
+       b instanceof String; // true
+       c instanceof String; // true
+       Object.prototype.toString.call( b ); // "[object String]"
+       Object.prototype.toString.call( c ); // "[object String]"
+**** Unboxing
+     - object wrapper change automatically
+       var a = new String( "abc" );
+       var b = a + ""; // `b` has the unboxed primitive value "abc"
+       typeof a; // "object"
+       typeof b; // "string"
+     - use the valueOf() method get the underlying primitive value
+       var a = new String( "abc" );
+       var b = new Number( 42 );
+       var c = new Boolean( true );
+       a.valueOf(); // "abc"
+       b.valueOf(); // 42
+       c.valueOf(); // true
+**** Natives as Constructors
+     constructor forms should generally be avoided, unless you really know you need them, mostly because they introduce exceptions and gotchas
+**** Array
+     - the notice of array
+       var a = new Array( 1, 2, 3 ); =// Array(1,2,3) is the same outcome as new Array(1,2,3)=
+       a; // [1, 2, 3]
+       var b = [1, 2, 3];
+       b; // [1, 2, 3]
+       =// if only one number argument pass to the array constructor, it will as a length to presize the array=
+       var a = new Array( 3 );
+       a.length; // 3
+       a; =// but more importantly, there is no such thing to presizing=
+          =// chrome report [undefined, undefined,undefined]=
+          =// firefox report [, , ,]=
+**** Object(..), Function(..), and RegExp(..)
+     - The Object(..)/Function(..)/RegExp(..) constructors
+       var c = new Object();
+       c.foo = "bar";
+       c; // { foo: "bar" }
+       var d = { foo: "bar" };
+       d; // { foo: "bar" }
+       var e = new Function( "a", "return a * 2;" );
+       var f = function(a) { return a * 2; };
+       function g(a) { return a * 2; }
+       var h = new RegExp( "^a*b+", "g" );
+       var i = /^a*b+/g;
+       
+**** Date(..) and Error(..)
+     - The Date(..) and Error(..) native constructors are much more useful than the other natives, because there is no literal form for either
+       if (!Date.now) {
+               Date.now = function(){
+                       return (new Date()).getTime();
+               };
+       }
+       // call Date() without new, you'll get back a string representation of the date/time at that moment
+
+       function foo(x) {
+               if (!x) {
+                       throw new Error( "x wasn't provided" );
+               }
+               // ..
+       }
+       // there are several other specific-error-type natives: EvalError(..), RangeError(..), ReferenceError(..), SyntaxError (..), TypeError(..), and URIError(..)
+       // But it's very rare to manually use these specific error natives
+       // they are automatically used if your program actually suffers from a real exception (such as referencing an undeclared variable and getting a ReferenceError error)
+**** Symbol
+     - custom property names on object
+       =// There are several predefined symbols in ES6, like Symbol.create, Symbol.iterator, etc=
+       obj[Symbol.iterator] = function(){ /*..*/ }; =// To use predefined symbols=
+
+       =// To define your own custom symbols, use the Symbol(..) native=
+       var mysym = Symbol( "my own symbol" );
+       mysym;                          // Symbol(my own symbol)
+       mysym.toString();       // "Symbol(my own symbol)"
+       typeof mysym;           // "symbol"
+       var a = { };
+       a[mysym] = "foobar";
+       Object.getOwnPropertySymbols( a );
+       // [ Symbol(my own symbol) ]
+       : TIP
+       symbols are not actually private on object
+       using them for private or special properties is likely their primary use-case
+       most developers take the place of property names with _ underscore prefixes, show this is a private/special/internal property
+**** Native Prototypes
+     - build-in .prototype object
+       - convention
+         String.prototype.XYZ is shortened to String#XYZ
+         - example
+           String#indexOf(..)     find the position in the string of another substring
+           String#charAt(..)      access the character at a position in the string
+           String#substr(..)      String#substring(..), and String#slice(..): extract a portion of the string as a new string
+           String#toUpperCase()   and String#toLowerCase(): create a new string that's converted to either uppercase or lowercase
+           String#trim()          create a new string that's stripped of any trailing or leading whitespace
+         : any string value can access these methods
+         - example
+           var a = " abc ";
+           a.indexOf( "c" ); // 3
+           a.toUpperCase(); // " ABC "
+           a.trim(); // "abc"
+       : Function.prototype being an empty function
+       typeof Function.prototype;                      // "function"
+       Function.prototype();                           // it's an empty function!
+       : RegExp.prototype is a regular expression
+       RegExp.prototype.toString();            // "/(?:)/" -- empty regex
+       "abc".match( RegExp.prototype );        // [""]
+       : Array.prototype is an array
+       Array.isArray( Array.prototype );       // true
+       Array.prototype.push( 1, 2, 3 );        // 3
+       Array.prototype;                                        // [1,2,3]
+**** Prototypes As Defaults
+     - make .prototypes as a "default" variable type
+       function isThisCool(vals,fn,rx) {
+               vals = vals || Array.prototype;  =// if you make in-place changes to vals, you would actually be modifying Array.prototype itself.  [[notice of Array.prototypes]]=
+               fn = fn || Function.prototype;   =// TODO: we don't need to use the vals = vals || .. default value syntax trick (see Chapter 4) anymore=
+               rx = rx || RegExp.prototype;     =//       because default values can be set for parameters via native syntax in the function declaration (see Chapter 5)=
+               return rx.test(
+                       vals.map( fn ).join( "" )
+               );
+       }
+       isThisCool();           // true
+       isThisCool(
+               ["a","b","c"],
+               function(v){ return v.toUpperCase(); },
+               /D/
+       );                                      // false
+       : NOTE
+       be very careful not to use Array.prototype as a default value that will subsequently be modified  <<notice of Array.prototypes>>
+       : TODO
+       be cautious of relying on them and even more wary of modifying them in any way. See Appendix A "Native Prototypes" for more discussion
+*** Coercion
+    Our goal is to fully explore the pros and cons
+**** Converting Values
+     - implicit coercion and explicit coerction
+       var a = 42;
+       var b = a + "";         // implicit coercion
+       var c = String( a );    // explicit coercion
+       : TIP
+       "explicit" vs. "implicit" based on the likely opinions of an average, reasonably informed, but not expert or JS specification devotee develope
+     : NOTE
+     There is no coercion that results in a complex value like object or function
+**** Abstract Value Operations
+     learn how values become either a string, number, or boolean
+**** ToString
+     : toString() can either be called explicitly, or it will automatically be called if a non-string is used in a string context
+     // multiplying `1.07` by `1000`, seven times over
+     var a = 1.07 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000;
+     // seven times three digits => 21 digits
+     a.toString(); // "1.07e21"
+     var a = [1,2,3];
+     a.toString(); // "1,2,3"
+**** JSON Stringification
+     : JSON.stringify() utility is the same as toString() to serialize a value to a JSON-compatible string value
+     JSON.stringify( 42 );   // "42"
+     JSON.stringify( "42" ); // ""42"" (a string with a quoted string value in it)
+     JSON.stringify( null ); // "null"
+     JSON.stringify( true ); // "true"
+     : except it will automatically omit JSON-unsafe object
+     JSON.stringify( undefined );                                    // undefined
+     JSON.stringify( function(){} );                                 // undefined
+     JSON.stringify( [1,undefined,function(){},4] ); // "[1,null,null,4]"
+     JSON.stringify( { a:2, b:function(){} } );              // "{"a":2}"
+
+     : define a toJSON() method for a JSON-safe value suitable for stringification
+     var o = { };
+     var a = {
+             b: 42,
+             c: o,
+             d: function(){}
+     };
+     // create a circular reference inside `a`
+     o.e = a;
+     // would throw an error on the circular reference
+     // JSON.stringify( a );
+     // define a custom JSON value serialization
+     a.toJSON = function() {
+             // only include the `b` property for serialization
+             return { b: this.b };
+     };
+     JSON.stringify( a ); // "{"b":42}"
+
+     =// stringified the returned string=
+     var b = {
+             val: [1,2,3],
+             // probably incorrect!
+             toJSON: function(){
+                     return "[" +
+                             this.val.slice( 1 ).join() +
+                     "]";
+             }
+     };
+     JSON.stringify( b ); // ""[2,3]""
+
+     =// stringified the array itself=
+     var b = {
+             val: [1,2,3],
+             // probably incorrect!
+             toJSON: function(){
+                     return "[" +
+                             this.val.slice( 1 ).join() +
+                     "]";
+             }
+     };
+     JSON.stringify( a ); // "[2,3]"
+
+     =// An optional second argument can be passed to JSON.stringify(..) that is called replacer=
+     var a = {
+             b: 42,
+             c: "42",
+             d: [1,2,3]
+     };
+     JSON.stringify( a, ["b","c"] ); // "{"b":42,"c":"42"}"  =if /replacer/ is an array, the string of array should be included in serialization of the object and omit otherwise=
+     JSON.stringify( a, function(k,v){
+             if (k !== "c") return v;
+     } );
+     // "{"b":42,"d":[1,2,3]}"  =if /replacer/ is a funtion, it will call once for property in the object=
+
+     =// A third optional argument can also be passed to JSON.stringify(..), called space=
+     var a = {
+             b: 42,
+             c: "42",
+             d: [1,2,3]
+     };
+     JSON.stringify( a, null, 3 );  =// three space indentation=
+     // "{
+     //    "b": 42,
+     //    "c": "42",
+     //    "d": [
+     //       1,
+     //       2,
+     //       3
+     //    ]
+     // }"
+     JSON.stringify( a, null, "-----" );  =// four '-' indentation=
+     // "{
+     // -----"b": 42,
+     // -----"c": "42",
+     // -----"d": [
+     // ----------1,
+     // ----------2,
+     // ----------3
+     // -----]
+     // }"
+**** ToNumber
+
+** This & Object Prototypes
+*** this or that?
+*** Why this?
+    : the this mechanism provides a more elegant way of implicitly "passing along" an object reference, leading to cleaner API design and easier re-use
+    =// This allows the identify() and speak() functions to be re-used by passing multiple context (me and you) objects implicitly=
+    function identify() {
+            return this.name.toUpperCase();
+    }
+    function speak() {
+            var greeting = "Hello, I'm " + identify.call( this );
+            console.log( greeting );
+    }
+    =// the ugly version by passing multiple context objects=
+    =// function identify(context) {=
+            =// return context.name.toUpperCase();=
+    =// }=
+    =// function speak(context) {=
+            =// var greeting = "Hello, I'm " + identify( context );=
+            =// console.log( greeting );=
+    =// }=
+    var me = {
+            name: "Kyle"
+    };
+    var you = {
+            name: "Reader"
+    };
+    identify.call( me ); // KYLE
+    identify.call( you ); // READER
+    speak.call( me ); // Hello, I'm KYLE
+    speak.call( you ); // Hello, I'm READER
+*** Confusions
+** Scope & Closures
+*** What is Scope?
+    we call the set of rules for storing variables in some location, and for finding those variables at a later time, which is: Scope
+*** Compiler Theory
+    In traditional compiled-language process, a chunk of source code, your program, will undergo typically three steps before it is executed, roughly called "compilation"
+    1. Tokens
+       the program: var a = 2;
+       broken up into the following tokens: var, a, =, 2, and ;. Whitespace may or may not be persisted as a token
+    2. Parsing
+       var a = 2;
+         might start with a top-level node called VariableDeclaration, with a child node called Identifier (whose value is a),
+         and another child called AssignmentExpression which itself has a child called NumericLiteral (whose value is 2).
+    3. Code-Generation
+       the process of taking an AST((Abstract Syntax Tree) and turning it into executable code. (depending on platform)
+*** Understanding Scope
+*** The Cast
+    for fully understand how javascript works, let's make a conversations
+    1. Engine    responsible for start-to-finish compilation and execution of our JavaScript program.
+    2. Compiler  one of Engine's friends; handles all the dirty work of parsing and code-generation
+    3. Scope     another friend of Engine; collects and maintains a look-up list of all the declared identifiers (variables), and enforces a strict set of rules as to how these are
+                 accessible to currently executing code.
+*** Back & Forth
+** Async & Performance
+*** Asynchrony: Now & Later
+    we're going to have to understand much more deeply what asynchrony is and how it operates in JS
+**** A Program in Chunks                                                        :ATTACH:
+     :PROPERTIES:
+     :Attachments: asynchrony_ajax.js
+     :ID:       67C1C145-DCFC-4561-8B91-45B0B56D92A8
+     :END:
+     your program is almost certainly comprised of several chunks, only one of which is going to execute now, and the rest of which will execute later
+
+     later doesn't happen strictly and immediately after now
+
+     Any time you wrap a portion of code into a function and specify that it should be executed in response to some event (timer, mouse click, Ajax response, etc.)
+     you are creating a later chunk of your code, and thus introducing asynchrony to your program
+
+     : NOTE
+     it's possible to make synchronous Ajax requests, but it locks the browser UI and prevents any user interaction.
+     so you should never, ever do it
+**** Async Console                                                              :ATTACH:
+     :PROPERTIES:
+     :Attachments: async_console.js
+     :ID:       57985140-C76B-4339-9038-A6EAECDCD36B
+     :END:
+     sometimes the js console environment work in a strange asynchronous scenario
+**** Event Loop                                                                 :ATTACH:
+     :PROPERTIES:
+     :Attachments: event_loop.js
+     :ID:       91005263-7E9F-420C-B389-7A419C9916E2
+     :END:
+     - JS engine itself has no asynchrony recently
+       up until recently (ES6) <1>, JavaScript itself has actually never had any direct notion of asynchrony built into it
+       The JS engine doesn't run in isolation. It runs inside a hosting environment, which is for most developers the typical web browser
+       Over the last several years, JS has expanded beyond the browser into other environments, such as servers, via things like Node.js.
+       In fact, JavaScript gets embedded into all kinds of devices these days, from robots to lightbulbs
+     : NOTE
+     We mentioned "up until recently" <1> in relation to ES6 changing the nature of where the event loop queue is managed.
+     but ES6 now specifies how the event loop works, which means technically it's within the purview of the JS engine, rather than just the hosting environment
+
+     the JS engine has a mechanism that *handles executing multiple chunks* of your program over time, at each moment invoking the JS engine, called the "event loop."
+     the "event" has had no innate sense of time, but has instead been an *on-demand execution environment* for any arbitrary snippet of JS.
+** ES6 & Beyond
+*** ES? Now & Future
 * READING php官网文档 php document
 ** what is php
    超文本预处理 Hypertext Preprocessor
@@ -9357,7 +10879,7 @@
    : Avoid interrupting your work until you have completed a full session
 ** *[sessions 1-3]* how to talk about personality types 59 64 71
 ** *[sessions 4-6]* how to talk about doctors 86 92 98
-** *[sessions 7-10]* how to talk about various practitioners 114 
+** *[sessions 7-10]* how to talk about various practitioners 114
 * READED 如何高效使用搜索引擎
 ** google 资料查找
 *** site  某个特定网站下的所有信息
@@ -9932,7 +11454,7 @@
       After we introduce subroutines to you in Chapter 4, we’ll show you a better way to handle that
 **** perl最喜欢的默认变量:$_  perl's favorite default:$_
      - 缺省控制变量
-       : If you omit the control variable from the beginning of the foreach loop, Perl uses its favorite default variable, $_
+       : If you omit the control variable from the beginning of the foreach loop, Perl uses its <<favorite default variable>>, $_
        foreach (1..10) {  # Uses $_ by default
          print "I can count to $_!\n";
        }
@@ -10067,6 +11589,438 @@
         chomp(@lines = <STDIN>); =# Read the lines, not the newlines=
       : NOTE
       If the input data is large, you should generally find a way to deal with it without reading it all into memory at once
+** 子程序 subroutines
+*** 定义子程序 defining a subroutine
+    - 子程序主体
+      =// NOTE=
+      =// You may put your subroutine definitions anywhere in your program text, you don’t normally need any kind of forward declaration=
+      =// If you have two subroutine definitions with the same name, the later one overwrites the earlier one=
+      sub marine {
+            $n += 1;  # Global variable $n         <<Global variable>>
+            print "Hello, sailor number $n!\n";
+      }
+    - 全局变量
+      [[Global variable]]
+      In fact, all of the variables you’ve seen so far are global; that is, they are accessible from every part of your program
+      : TODO
+      You’ll see how to make private variables in the section “Private Variables in Subroutines” on page 66
+*** 调用子程序 invoking a subroutines
+    - 使用子程序名
+      : calling the subroutine by using the subroutine name (with the ampersand)
+      &marine;  # says Hello, sailor number 1!
+      &marine;  # says Hello, sailor number 2!
+*** 返回值 return value
+    - 处理子程序的返回值
+      : Many times, you call a subroutine and actually do something with the result
+      : NOTE: All Perl subroutines have a return value
+      sub sum_of_fred_and_barney {
+            print "Hey, you called the sum_of_fred_and_barney subroutine!\n";
+            $fred + $barney;  # That's the return value    [[return value]]
+      }
+
+      $fred   = 3;
+      $barney = 4;
+      $wilma  = &sum_of_fred_and_barney;      # $wilma gets 7
+      print "\$wilma is $wilma.\n";
+      =# ouput=
+        =Hey, you called the sum_of_fred_and_barney subroutine!=
+        =$wilma is 7.=
+
+      $betty  = 3 * &sum_of_fred_and_barney;  # $betty gets 21
+      print "\$betty is $betty.\n";
+      =# output=
+        =Hey, you called the sum_of_fred_and_barney subroutine!=
+        =$betty is 21.=
+    - 最后执行的语句被当成返回值
+      <<return value>>
+      : Whatever calculation is last performed in a subroutine is automatically also the return value
+
+      : the last expression now the print statement, whose return value is normally 1, meaning “printing was successful"
+      sub sum_of_fred_and_barney {
+            print "Hey, you called the sum_of_fred_and_barney subroutine!\n";
+            $fred + $barney;  # That's not really the return value!
+            print "Hey, I'm returning a value now!\n";      # Oops!
+      }
+
+      : “The last evaluated expression” really means the last expression that Perl evaluates, rather than the last statement in the subroutine
+      sub larger_of_fred_or_barney {
+        if ($fred > $barney) {
+          $fred;
+        } else {
+          $barney;
+        }
+      }
+*** 参数 arguments
+    - 带参数调用子程序
+      : To pass an argument list to the subroutine, simply place the list expression, in parentheses, after the subroutine invocation
+      $n = &max(10, 15);  # This sub call has two parameters
+
+      : Perl automatically stores the parameter list in the special array variable named @_, this is valid during program execution
+      sub max {
+            =# This means that the first subroutine parameter is in $_[0], the second one is stored in $_[1], and so on=
+            if ($_[0] > $_[1]) {
+              $_[0];
+            } else {
+              $_[1];
+      } }
+      : a better way:  [[private variables]]
+
+      : Perl doesn’t care about insufficient parameters either
+      $n = &max(10, 15, 27);  =# extra parameters 27 will be omit=
+      $n = &max(10);          =# the default second argument will return undef=
+*** 子程序中的私有变量 private variables in subroutines
+    - 封闭语句块私有变量
+      : you can create private variables called lexical variables at any time with the my operator
+      sub max {
+            my($m, $n);       # new, private variables for this block
+            ($m, $n) = @_;    # give names to the parameters
+          =# my($m, $n) = @_;  # make the subroutine in the previous two lines even simpler=
+                              =# When you see that line, you’ll know that the subroutine expects two scalar parameters, which you’ll call $m and $n inside the subroutine=
+            if ($m > $n) { $m } else { $n }
+      }
+*** 变长参数列表 cariable-length patameter lists
+    - 检查参数列表
+      sub max {
+        if (@_ != 2) {  =# uses the “name” of the array in a scalar context to find out the number of array elements, as you saw in Chapter 3=
+           print "WARNING! &max should get exactly two arguments!\n";
+        }
+        # continue as before...
+      }
+      : But in real-world Perl programming, virtually no one really uses this sort of check; it’s better to make your subroutines adapt to the parameters
+**** 改进的&max子程序 a better &max routine
+     : Rewrite &max to allow for any number of arguments
+     $maximum = &max(3, 5, 10, 4, 6);
+
+     sub max {
+       my($max_so_far) = shift @_;  =# the first one is the largest yet seen    NOTE: if the &max is a <<empty list>>, shift @_ will return undef=
+       foreach (@_) {               =# look at the remaining arguments          NOTE: if @_ is undef, the loop body execute zero times=
+         if ($_ > $max_so_far) {    =# could this one be bigger yet?=
+           $max_so_far = $_;
+         }
+       }
+       $max_so_far;
+     }
+**** 空参数列表 empty parameter lists
+     : if the array @numbers might sometimes be an [[empty list]]
+     : the return value may be undef
+     $maximum = &max(@numbers);
+*** 关于词法(my)变量 notes on lexical(my) variables
+    - 将变量圈定在指定代码内
+      - Those lexical variables can actually be used in any block, not merely in a subroutine’s block
+        =# The variable $square is private to the enclosing block; in this case, that’s the block of the foreach loop=
+        foreach (1..10) {
+              my($square) = $_ * $_;  # private variable in this loop
+              print "$_ squared is $square.\n";
+        }
+        : TIP
+        : the scope of a lexical variable’s name is limi‐ ted to the smallest enclosing block or file
+      - Note also that the my operator *doesn’t change the context* of an assignment
+        my($num) = @_;  =# list context, same as ($num) = @_;=
+        my $num  = @_;  =# scalar context, same as $num = @_;=
+      - Remember that *without the parentheses*, my only declares a single lexical variable
+        my $fred, $barney;      # WRONG! Fails to declare $barney
+        my($fred, $barney);     # declares both
+      - use my to create new, private *arrays*
+        my @phone_number;
+      - in perl, you may use my to introduce a new perivate variable in your own structure
+        foreach my $rock (qw/ bedrock slate lava /) {
+              print "One rock is $rock.\n";  # Prints names of three rocks
+        }
+*** use strict编译指令 the use strict progma
+    - 遵循优良编程风格
+      : Perl tends to be a pretty permissive language.
+      : the use strict pragma tells Perl’s internal compiler that it should enforce some good programming rules for the rest of this block or source file
+
+      : without use strict progma
+      =# imagine that you’re composing your program and you type a line like this one=
+      $bamm_bamm = 3;  =# Perl creates that variable automatically=
+      =# Now, you keep typing for a while. After that line has scrolled off the top of the screen, you type this line to increment the variable=
+      $bammbamm += 1;  =# Oops! perl create a new variable=
+      : with use strict progma
+      use strict;  =# Enforce some good programming rules=
+      my $bamm_bamm = 3;  =# New lexical variable=
+      $bammbamm += 1;  =# No such variable: Compile time fatal error=
+*** return操作符 the return operator
+    - 程序执行停止 返回值
+      my @names = qw/ fred barney betty dino wilma pebbles bamm-bamm /;
+      my $result = &which_element_is("dino", @names);
+      sub which_element_is {
+          my($what, @array) = @_;
+          foreach (0..$#array) {  # indices of @array's elements
+              if ($what eq $array[$_]) {  =# element not found (return is optional here)=
+                  return $_;
+              }
+          }
+          -1;  =# return early once found=
+      }
+*** 省略与号 omitting the ampersand
+    - 省略子程序识别符&
+      : if it is a function call, it may should not add &
+      my @cards = shuffle(@deck_of_cards); =# No & necessary on &shuffle=
+      : or if the subroutine is appeared earlier
+      sub division {
+            $_[0] / $_[1];                   # Divide first param by second
+          }
+      my $quotient = division 355, 113;  # Uses &division
+      : NOTE
+      : if the subroutines has the same name as a perl's build-in, you must use & to call your version
+      sub chomp {
+            print "Munch, munch!\n";
+          }
+      &chomp;  =# That ampersand is not optional!=
+*** 非标量返回值 nonscalar return values
+    - 子程序返回列表值
+      sub list_from_fred_to_barney {
+            if ($fred < $barney) {
+              # Count upwards from $fred to $barney
+              $fred..$barney;
+            } else {
+              # Count downwards from $fred to $barney
+              reverse $barney..$fred;
+            }
+      }
+      $fred = 11;
+      $barney = 6;
+      @c = &list_from_fred_to_barney; # @c gets (11, 10, 9, 8, 7, 6)
+*** 持久性私有变量 persistent, private variables
+    - state变量
+      - 非state变量无法存续
+        =# add strict to you program and realize that your use of the global variable $n is now a compilation error=
+        =# You can’t make $n a lexical variable with my because it wouldn’t retain its value between calls=
+        use strict
+        sub marine {
+              $n += 1;  # Global variable $n (not declare error)
+              my y += 1; # Subroutine private variable my y (can not retain)
+              print "Hello, sailor number $n!\n";
+        }
+      - 多次调用子程序期间保留state变量的值
+        =# Declaring our variable with state tells Perl to retain the variable’s value between calls to the subroutine and to make the variable private to the subroutine=
+        use v5.10;
+            sub marine {
+              state $n = 0;  # private, persistent variable $n
+              $n += 1;
+              print "Hello, sailor number $n!\n";
+        }
+
+        =# You can make any variable type a state variable, it’s not just for scalars=
+        Here’s a sub‐ routine that remembers its arguments and provides a running sum by using a state array
+        use v5.10;
+        running_sum( 5, 6 );
+        running_sum( 1..3 );
+        running_sum( 4 );
+        sub running_sum {
+          state $sum = 0;
+          state @numbers;
+          foreach my $number ( @_ ) {
+            push @numbers, $number;
+            $sum += $number;
+          }
+          say "The sum of (@numbers) is $sum";
+        }
+        The sum of (5 6) is 11
+        The sum of (5 6 1 2 3) is 17
+        The sum of (5 6 1 2 3 4) is 21
+        : NOTE
+        : You can’t initialize arrays and hashs as state variables in list contexts
+        state @array = qw(a b c); # Error!
+*** subroutine signatures
+    - enable signatures feature
+      use v5.20;
+      use feature qw(signatures);
+      no warnings qw(experimental::signatures);
+    - make subroutine a functin with argument like
+      sub max ( $m, $n ) { =# The variables are still private to the subroutine but you type much less to declare and assign to them=
+          if ($m > $n) { $m } else { $n }
+          =# the same as below without signatures=
+          =# my($m, $n);=
+          =# ($m, $n) = @_;=
+      }
+    - handle too many or too few argument
+      : more argument
+      sub max ( $max_so_far, @ ) {  =# the plain @ is same as @rest=
+        foreach (@_) {              =# the argument list shows up in @_, which replace the @rest=
+          if ($_ > $max_so_far) {
+            $max_so_far = $_;
+          }
+        }
+        $max_so_far;
+      }
+
+      : less argument with default set
+      sub list_from_fred_to_barney ( $fred = 0, $barney = 7 ) { =# Signatures can also specify defaults=
+        if ($fred < $barney) { $fred..$barney }
+        else                 { reverse $barney..$fred }
+      }
+      my @defaults    = list_from_fred_to_barney();
+      my @default_end = list_from_fred_to_barney( 17 );
+      say "defaults: @defaults";
+      say "default_end: @default_end";
+
+      : less argument with default set
+      : use the $= placeholder to denote an optional argument
+      sub one_or_two_args ( $first, $= ) { ... }
+** 输入与输出 input and output
+*** 读取标准输入 input from standard input
+    - 读取用户输入的各种方式
+      : scalar context
+      $line = <STDIN>;         =# read the next line=
+      chomp($line);            =# and chomp it=
+      chomp($line = <STDIN>);  =# same thing, more idiomatically=
+
+      : loop
+      =# Since the line-input operator will return undef when you reach end-of-file, this is handy for dropping out of loops=
+      : output complete
+      while (defined($line = <STDIN>)) {  =# reading input into $line variable=
+            print "I saw $line";
+      }
+      while (defined($_ = <STDIN>)) {     =# reading input into default variable $_  NOTE: the line-input operator($_) is not [[favorite default variable]]=
+            print "I saw $_";
+      }
+      while (<STDIN>) {                   =# omit the default varuable $_, the same as above=
+            print "I saw $_";
+      }
+      : output one line per list element
+      foreach (<STDIN>) {
+            print "I saw $_";
+      }
+*** 来自钻石操作符的输入 input from the diamond operator
+    - 读入文件内容
+      : This is useful for making programs that work like standard Unix utilities, with respect to the invocation arguments
+      =# That command means to run the command my_program (which will be found in the current directory), and process file fred followed by barney, followed by betty=
+      $ ./my_program fred barney betty
+
+      : The diamond operator is actually a special kind of line-input operator. But instead of getting the input from the keyboard, it comes from the user’s choice of input
+      while (defined($line = <>)) {
+            chomp($line);
+            print "It was $line that I saw!\n";
+      }
+      =# without an argument, chomp works on $_=
+      while (<>) {
+            chomp;
+            print "It was $_ that I saw!\n";
+      }
+*** the double diamond
+    - prevent diamond operator command line having a special characher
+      : Suppose that the filename from the command line has a special character in such, such as |.
+      : This might cause perl to perform a “pipe open”, which runs an external program and reads that program’s output as if it were a file.
+      : The “double diamond” operator, <<>>, prevents this
+      use v5.22;
+          while (<<>>) {
+            chomp;
+            print "It was $_ that I saw!\n";
+      }
+*** 调用参数 the invocation arguments
+    - 预填充命令行参数数组
+      : @ARGV array is a special array that is preset by the Perl interpreter as the list of the invocation arguments.
+      : but when your program starts, @ARGV is already stuffed full of the list of invocation arguments
+
+      : The diamond operator looks in @ARGV to determine what filenames it should use
+      @ARGV = qw# larry moe curly #;  # force these three files to be read  =If it finds an empty list, it uses the standard input stream=
+      while (<>) {
+            chomp;
+            print "It was $_ that I saw in some stooge-like file!\n";
+      }
+*** 输出到标准输出 output to standard output
+    
+** 哈希 hashes
+*** 什么是哈希 what is hash
+    - 键值对
+      A hash is a data structure
+      the indices, called keys are always unique
+      each keys has a tag attached, called values may be all numbers, all strings, undef values, or a mixture, and you may use same value more than once
+      the keys and values are both arbitrary scalars, but the keys are always converted to string
+      : TIP
+      the large size of hash will not slow down the speed
+** 正则表达式 regular expressions
+*** 使用简单模式 sequences                                                       :ATTACH:
+    :PROPERTIES:
+    :Attachments: sequence_pattern.pl
+    :ID:       D4F7B55C-347F-4A08-B20C-FC31ED0385B3
+    :END:
+    - 字符串精确匹配
+      Perl’s regular expressions either match a string or they don’t. There is no such thing as a partial match.
+      It matches the leftmost, longest substring that satisfies the pattern
+
+      The simplest sort of pattern is sequence.
+      You put literal characters next to each other to assert that you want to match a substring with those characters in that order
+*** practice some patterns                                                      :ATTACH:
+    :PROPERTIES:
+    :Attachments: practice_patterns.pl
+    :ID:       9A046A5F-6797-4004-8794-BAD19716C059
+    :END:
+    - 正则匹配交互模式
+      pattern with <STDIN>
+*** Unicode属性 Unicode Properties                                              :ATTACH:
+    :PROPERTIES:
+    :Attachments: unicode_properties.pl
+    :ID:       B82CF6C4-FC67-408D-AD1D-85EDC5478A33
+    :END:
+    - 根据字符的属性来达成匹配
+      Unicode characters know something about themselves, they aren’t just sequences of bits
+      Every character not only knows what it is, but it also knows what properties it has
+      Instead of matching on a particular character, you can match a type of character
+** 用正则表达式进行匹配 matching with regular expressions
+   how the world of regular expressions fits into the world of perl
+*** 用m//进行匹配 matches with m//                                              :ATTACH:
+    :PROPERTIES:
+    :Attachments: pattern_match_operator.pl
+    :ID:       5FF13B00-6FF2-4816-A89A-7293F92D1872
+    :END:
+    - 模式匹配擦作符 pattern match operator
+*** 模式匹配修饰符 match modifiers
+    
+** 用正则表达式处理文本 processing text with regular expressions
+   use regular expressions to change text
+*** 用s///进行替换 substitutions with s///                                      :ATTACH:
+    :PROPERTIES:
+    :Attachments: pattern_match_operator.pl
+    :ID:       208FE17D-9DE8-43FF-9CE7-225CF45B673F
+    :END:
+    - 查找并替换
+      If you think of the m// pattern match as being like your word processor’s “search” feature
+      the “search and replace” feature would be Perl’s s/// substitution operator
+** 其他控制结构 more control structures
+   alternative ways to write perl code
+*** unless控制结构 the unless control structure                                 :ATTACH:
+    :PROPERTIES:
+    :Attachments: unless.pl
+    :ID:       B5BFBD27-1F35-41B7-AAE0-5583A7710FFC
+    :END:
+    unless = if no
+** perl模块 perl modules
+   if there is a problem to solve, somebody has probably already solved it and made their solution available on the comprehensive perl archive network (CPAN)
+*** 寻找模块 finding modules
+    to find modules that don't come with perl, start at either [[http://search.cpan.org][CPAN Search]] or [[https://metacpan.org][Meta-CPAN]]
+    - before you go lokking for a modules, you should check if it is already installed
+      one way is to try to read the documentation with *perldoc*
+      - the Digest::SHA modules comes with Perl, so you should be able to *read its document*
+        $ perldoc Digest::SHA
+      - try it with a modules that *does not exist* and you'll get an error message
+        $ perldoc Llamas
+        No documentation found for "Llamas"
+      - The cpan command that comes with Perl can give you details on a module
+        $ cpan -D Digest::SHA
+** 文件测试 file tests
+   perl has a complete set of tests you can use to find out information about files
+*** 文件测试操作符 file test operators                                          :ATTACH:
+    :PROPERTIES:
+    :Attachments: test_operators.pl
+    :ID:       D28C7069-BACE-4D6A-B1FA-A9E4B66C9499
+    :END:
+    - perl has a set of test operatorss that let you get particular information about files
+      they all take the form of -X, where the X represents the particular test
+      - to get the argument list of -X, use
+        $ perldoc -f -X  =# you'll find documentation in perlfunc=
+    - file tests and their meanings [T] (En 232-233)
+      -r -w -x -o       tell whether the given attribute is true for the effective user or group ID,
+                        which essentially refers to the person who is “in charge of ” running the program
+      -R -W -X -O       tests use the real user or group ID,
+                        which becomes important if your program may be running set-ID
+      -s                test does return true if the file is nonempty
+      -f -d -l -S -p -b -c         test seven types of items on a unix filesystem
+      -M -A -C          return the number of days since the file was last modified, accessed or had its innode changed
+      -T -B             take a try at telling whether a file is text or binary
+      -t                test returns true if the given filehandle is a TTY--if it's interactive
 * READING swift官方文档 swift document
 ** 3.0.1
 *** 关于Swift about Swift
@@ -10326,3 +12280,74 @@
          : this is for building the final program you’ll give to a user that won't be rebuilt
          : If you're benchmarking the running time of your code, be sure to run cargo build --release and benchmark with the executable in target/release
        - 把cargo当作习惯 cargo as convention
+*** 猜猜看 Guessing Game
+**** 准备一个新项目 Setting Up a New Project
+     - 创建项目目录
+       $ cargo new guessing_game --bin  =# The --bin flag tells Cargo to make a binary project=
+       $ cd guessing_game
+     - Cargo.toml
+       [package]
+       name = "guessing_game"
+       version = "0.1.0"
+       authors = ["Your Name <you@example.com>"]
+
+       [dependencies]
+     - src/main.rs
+       Filename: src/main.rs
+
+       fn main() {
+           println!("Hello, world!");
+       }
+     - cargo run
+       $ cargo run
+          Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+            Running `target/debug/guessing_game`
+       Hello, world!
+**** 处理一次猜测 Processing a Guess
+     - 第一部分要求用户输入，处理输入，并检查输入是否为期望的形式
+       - To start, we’ll allow the player to input a guess
+         - Code to get a guess from the user and print it out
+           Filename: src/main.rs
+           use std::io;                               =// Using the std::io library provides you with a number of useful io-related features, including the functionality to accept user input=
+           fn main() {                                =// The fn syntax declares a new function, the () indicate there are no parameters, and { starts the body of the function=
+               println!("Guess the number!");         =// println! is a macro that prints a string to the screen=
+               println!("Please input your guess.");  =// [[storing values with variables]]=
+               let mut guess = String::new();
+               io::stdin().read_line(&mut guess)
+                   .expect("Failed to read line");
+               println!("You guessed: {}", guess);
+           }
+
+         - <<storing values with variables>>
+           : create a place to store the user input
+           let mut guess = String::new();
+           : let statement, which is used to create variables
+           let foo = bar;
+           : In Rust, variables are immutable by default. The following example shows how to use mut before the variable name to make a variable mutable
+           let foo = 5; =// immutable=
+           let mut bar = 5; =// mutable=
+           : created a mutable variable that is currently bound to a new, empty instance of a String
+           =// String  a string type provided by the standard library that is a growable, UTF-8 encoded bit of text=
+           =// The :: syntax in the ::new line indicates that new is an associated function of the String type. Some languages call this a static method=
+           =// This new function creates a new, empty String=
+           String::new
+           : call an associated function, stdin, on io
+           io::stdin().read_line(&mut guess)
+               .expect("Failed to read line");
+           =// NOTE: If we didn’t have the use std::io line at the beginning of the program, we could have written this function call as std::io::stdin=
+                    =The stdin function returns an instance of std::io::Stdin, which is a type that represents a handle to the standard input for your terminal=
+           io::stdin()
+           =// calls the read_line method on the standard input handle to get input from the user. We’re also passing one argument to read_line: &mut guess=
+           .read_line(&mut guess)
+           =// The & indicates that this argument is a reference=
+                =which gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times=
+           =// references are immutable by default. Hence, we need to write &mut guess rather than &guess to make it mutable=
+           &mut guess
+**** 使用Result来处理潜在的错误 handling potemtial failure with the result type
+* READING An Introduction to Programming in Emacs Lisp
+** How To Write Function Definitions                                            :[[info:eintr#Writing%20Defuns][info:eintr#Writing Defuns]]:
+*** defun
+*** interactive
+*** interactive "p"
+*** interactive "p\ncZap to char: "
+*** let
