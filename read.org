@@ -8302,6 +8302,91 @@
       - 小服务程序 servlet
     - 应用程序
     - 因特网和内联网
+** 一切都是对象 everything is an object
+   - Although it is based on C++, Java is more of a “pure” object-oriented language
+     Both C++ and Java are hybrid languages, but java is easier by shift your mindset into an object-oriented world
+*** 用句柄操纵对象 you manipulate objets with references
+    - 对象引用
+      You treat everything as an object, using a single consistent syntax.
+      Although you treat everything as an object, the identifier you manipulate is actually a “reference” to an object
+      You might imagine a television (the object) and a remote control (the reference)
+      - a example of String obejct reference [C]
+        =// So if you want to hold a word or sentence, create a String reference=
+        String s;
+        =// But here you’ve created only the reference, not an object, a safer practice is always to initialize a reference when you create it=
+        String s = "asdf";
+*** 所有对象都必须创建 you must create all the objects
+    - 创建句柄 同新对象连接
+      When you create a reference, you want to connect it with a new object
+      =// The keyword new says, “Make me a new one of these objects.”=
+      String s = new String("asdf");
+      : TIP
+      What’s more important is that you can create your own types
+** 操作符 operators
+   at the lowest level, data in java is manipulated using operators
+*** simpler print statements                                                    :ATTACH:
+    :PROPERTIES:
+    :Attachments: Print.java
+    :ID:       7021B646-1487-4415-B4B2-975DEC1AA0AA
+    :END:
+    static import new library, simplify writing print statements
+*** 使用Java运算符 using Java operators
+**** 优先级 precedence
+     
+** 执行控制 controlling execution
+   like a sentient creature, a program must manipulate its world and make choices during execution
+*** true and false
+** 初始化和清除 initialization & cleanup
+   - as the computer revolution progresses, "unsafe" programming has become one of the major culprits that makes programming expensive
+     two of these safety issures are initialization and cleanup
+*** 用构建起自动初始化 guaranteed initialization with the constructor           :ATTACH:
+    :PROPERTIES:
+    :Attachments: SimpleConstructor.java SimpleConstructor2.java
+    :ID:       3A94608B-89F0-4223-89CA-6C9505B84B40
+    :END:
+    - 创建对象时 自动调用的方法
+      - simple constructor [C]
+        SimpleConstructor.java
+      - simple constructor with argument [C]
+        SimpleConstructor2.java
+      : NOTE
+      - the constructor has no return value
+        but you still have theoption to make it return something else
+      the name of the constructor must math the name of the class exactly
+*** 方法过载 method overloading                                                 :ATTACH:
+    :PROPERTIES:
+    :Attachments: Overloading.java
+    :ID:       7121ABC5-24AF-43D3-B279-A095A25C1CCD
+    :END:
+    - 同名方法 不同参数
+      - here's an example that shows both overloaded constructors and overloaded methods [C]
+        Overloading.java
+**** 区分过载方法 distinguishing overloaded methods
+** 隐藏实施过程 access control
+   access control (or implementation hiding) is about "not getting it right the first time"
+*** 包: 库单元 package: the library unit
+** 类再生 reusing classes
+   one of the most compelling features about java is code reuse
+*** 合成的语法 composition syntax
+** 多形性 polymorphism
+   polymorphism is the essential feature of an object-oriented after data abstraction and inheritance
+*** 上溯造型 upcasting revisited
+** 接口 interfaces
+   interface and abstract classes provide more structured way to separate interface from implementation
+*** 抽象类和方法 abstract classes and methods
+**  内部类 inner classes
+    it's possible to place a class definition within another class definition. This is called an inner class
+*** creating inner classes
+** 对象的容纳 holding your objects
+   - it's a fairly simple program that only has a fixed quantity of objects with known lifetimes
+     because your programs will always be ccreating new objects based on some criteria that will be known only at run time
+     to solve the general programming problem, you need to create any number of objects, anytime, anywhere
+     : TIP
+     the java.util library has a reasonably complete set of container classes to solve this problem
+     the basic types of which are *List, Set, Queue, and Map*
+*** generics and type-safe containers
+** 违例差错控制 error handling with exceptions
+   the basic philosophy of java is that "badly formed code will not be run"
 * WAITING javascript高级程序设计 javascript for web developers
   CLOSED: [2017-04-11 二 20:49]
 ** javascript简介 20 what is javascript 44
@@ -10066,6 +10151,9 @@
      :Attachments: event_loop.js
      :ID:       91005263-7E9F-420C-B389-7A419C9916E2
      :END:
+     - serialize
+       breaks its work into tasks and executes them in serial
+       disallowing parallel access and changes to shared memory
      - JS engine itself has no asynchrony recently
        up until recently (ES6) <1>, JavaScript itself has actually never had any direct notion of asynchrony built into it
        The JS engine doesn't run in isolation. It runs inside a hosting environment, which is for most developers the typical web browser
@@ -10077,6 +10165,22 @@
 
      the JS engine has a mechanism that *handles executing multiple chunks* of your program over time, at each moment invoking the JS engine, called the "event loop."
      the "event" has had no innate sense of time, but has instead been an *on-demand execution environment* for any arbitrary snippet of JS.
+**** Parallel Threading                                                         :ATTACH:
+     :PROPERTIES:
+     :Attachments: parallel_threading.js
+     :ID:       358C6A1E-0841-40C5-985C-DEA76C0F81EA
+     :END:
+     - parallel and async
+       async is about the gap between now and later
+       parallel is about things being able to occur simultaneously
+     - tools for parallel
+       - processes and threads
+         they execute independently and may execute simultaneously: on separate processors,
+                                                                    or even separate computers, but multiple threads can share the memory of a single process
+     - parallel threading and event loop
+       parallel threading      allowing parallel access and change to shared memory
+       event loop              by contrast, is execute tasks in serial
+       Parallelism and "serialism" can coexist in the form of cooperating event loops in separate threads
 ** ES6 & Beyond
 *** ES? Now & Future
 * READING php官网文档 php document
@@ -12351,3 +12455,25 @@
 *** interactive "p"
 *** interactive "p\ncZap to char: "
 *** let
+* READING tools
+** idea
+*** keybinding
+    shift + shift     navigate | all files
+    shift + F6        file | rename
+
+    cmd + N           navigate | class
+    cmd + B           navigate | declaration
+    cmd + J           insert | live template
+
+    ctrl + click      navigate | source code
+    ctrl + E          view | recent file
+    ctrl + J          View | Document
+    ctrl + N          code | generate
+
+    ctrl + shift + F  format | code
+    ctrl + shift + U  uppercase | lowercase
+
+    alt + /           completion
+    alt + F7          find usage | particular class
+    alt + F1          view | project structure or other
+    alt + cmd + t     code | surround with
