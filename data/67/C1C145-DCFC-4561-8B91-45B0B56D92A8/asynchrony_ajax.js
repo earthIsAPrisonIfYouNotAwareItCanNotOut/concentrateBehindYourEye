@@ -3,6 +3,7 @@
 */
 var data = ajax( "http://some.url.1" );
 console.log( data );
+// 345
 // Oops! `data` generally won't have the Ajax results
 
 /*
