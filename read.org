@@ -6501,7 +6501,7 @@
 **** 路径名 pathname                                                            :ATTACH:
      :PROPERTIES:
      :Attachments: ls.c
-     :ID:       6D8E6404-F5DF-470A-ACAC-3410675D63FF
+     :ID:       34688ED3-CE5E-45B1-A2AE-FD4134A5E0E8
      :END:
      - 路径名 pathname
        A sequence of one or more filenames, separated by slashes and optionally starting with a slash, forms a pathname
@@ -6540,7 +6540,7 @@
 **** 不带缓冲的I/O unbuffered I/O                                               :ATTACH:
      :PROPERTIES:
      :Attachments: stdin_stdout.c
-     :ID:       8FD4B5A3-5CCF-4FA3-8FFE-36FEED41CFB7
+     :ID:       A9124B15-00F0-4176-B90C-B89FF3BF74A3
      :END:
      : Unbuffered I/O is provided by the functions *open, read, write, lseek, and close*
      : These functions all work with file descriptors
@@ -6583,7 +6583,7 @@
 **** 进程和进程ID processes and process ID                                      :ATTACH:
      :PROPERTIES:
      :Attachments: getpid.c
-     :ID:       59C71267-CEE7-4929-8063-59E1164445B1
+     :ID:       8D8EA637-AC09-479F-A42F-ADEE04DECB29
      :END:
      - 进程  程序的执行实例
        An executing instance of a program is called a process
@@ -6600,7 +6600,7 @@
 **** 进程控制 process control                                                   :ATTACH:
      :PROPERTIES:
      :Attachments: execute_cmd.c
-     :ID:       45DA3B6C-8423-4038-AC69-F4866B56ED83
+     :ID:       BABB93D5-2F2A-400F-AF0D-129AF5372E25
      :END:
      : There are three primary functions for process control: fork, exec, and waitpid
      - Read commands from standard input and execute them [C]
@@ -6753,7 +6753,7 @@
 *** 函数stat、fstat、fstatat和lstat  stat, fstat, fstatat, and lstat Functions  :ATTACH:
     :PROPERTIES:
     :Attachments: stat_fstat_fstatat_lstat.c
-    :ID:       D2719384-B3C3-4F31-BADD-D4BCFC84EEA4
+    :ID:       6E93C1CB-BF50-4849-BFF4-084E9C51CF95
     :END:
     - 提供路径 显示文件信息
       that most members of the stat structure are specified by a primitive system data type
@@ -8374,7 +8374,7 @@
 ** 接口 interfaces
    interface and abstract classes provide more structured way to separate interface from implementation
 *** 抽象类和方法 abstract classes and methods
-**  内部类 inner classes
+** 内部类 inner classes
     it's possible to place a class definition within another class definition. This is called an inner class
 *** creating inner classes
 ** 对象的容纳 holding your objects
@@ -10128,7 +10128,7 @@
 **** A Program in Chunks                                                        :ATTACH:
      :PROPERTIES:
      :Attachments: asynchrony_ajax.js
-     :ID:       67C1C145-DCFC-4561-8B91-45B0B56D92A8
+     :ID:       F1940D61-5020-476F-9272-74CC626ABA80
      :END:
      your program is almost certainly comprised of several chunks, only one of which is going to execute now, and the rest of which will execute later
 
@@ -10143,13 +10143,13 @@
 **** Async Console                                                              :ATTACH:
      :PROPERTIES:
      :Attachments: async_console.js
-     :ID:       57985140-C76B-4339-9038-A6EAECDCD36B
+     :ID:       74FDD386-A31D-48DE-B116-B158BBDE6FDD
      :END:
      sometimes the js console environment work in a strange asynchronous scenario
 **** Event Loop                                                                 :ATTACH:
      :PROPERTIES:
      :Attachments: event_loop.js
-     :ID:       91005263-7E9F-420C-B389-7A419C9916E2
+     :ID:       CAD5A551-4A59-43F7-9E56-5AA3D43A2119
      :END:
      - serialize
        breaks its work into tasks and executes them in serial
@@ -10168,7 +10168,7 @@
 **** Parallel Threading                                                         :ATTACH:
      :PROPERTIES:
      :Attachments: parallel_threading.js
-     :ID:       358C6A1E-0841-40C5-985C-DEA76C0F81EA
+     :ID:       7EE6DA7A-DE6C-47DF-BD3A-229574A880CE
      :END:
      - parallel and async
        async is about the gap between now and later
@@ -12036,10 +12036,10 @@
       : TIP
       the large size of hash will not slow down the speed
 ** 正则表达式 regular expressions
-*** 使用简单模式 sequences                                                       :ATTACH:
+*** 使用简单模式 sequences                                                      :ATTACH:
     :PROPERTIES:
     :Attachments: sequence_pattern.pl
-    :ID:       D4F7B55C-347F-4A08-B20C-FC31ED0385B3
+    :ID:       A342C5FB-C218-4B95-B425-1EBB96A3A1B6
     :END:
     - 字符串精确匹配
       Perl’s regular expressions either match a string or they don’t. There is no such thing as a partial match.
@@ -12050,14 +12050,14 @@
 *** practice some patterns                                                      :ATTACH:
     :PROPERTIES:
     :Attachments: practice_patterns.pl
-    :ID:       9A046A5F-6797-4004-8794-BAD19716C059
+    :ID:       6A93A8E2-05B8-4C52-9671-C1FFBC980F1D
     :END:
     - 正则匹配交互模式
       pattern with <STDIN>
 *** Unicode属性 Unicode Properties                                              :ATTACH:
     :PROPERTIES:
     :Attachments: unicode_properties.pl
-    :ID:       B82CF6C4-FC67-408D-AD1D-85EDC5478A33
+    :ID:       1C209B23-95FB-4C91-BD81-8551361368C6
     :END:
     - 根据字符的属性来达成匹配
       Unicode characters know something about themselves, they aren’t just sequences of bits
@@ -12068,7 +12068,7 @@
 *** 用m//进行匹配 matches with m//                                              :ATTACH:
     :PROPERTIES:
     :Attachments: pattern_match_operator.pl
-    :ID:       5FF13B00-6FF2-4816-A89A-7293F92D1872
+    :ID:       A2CA00B9-71B6-4AA7-97FC-400F0D4EAE93
     :END:
     - 模式匹配擦作符 pattern match operator
 *** 模式匹配修饰符 match modifiers
@@ -12077,8 +12077,8 @@
    use regular expressions to change text
 *** 用s///进行替换 substitutions with s///                                      :ATTACH:
     :PROPERTIES:
-    :Attachments: pattern_match_operator.pl
-    :ID:       208FE17D-9DE8-43FF-9CE7-225CF45B673F
+    :Attachments: substitutions_s.pl
+    :ID:       E715DB31-6B49-4846-8CA5-7602A8D2170E
     :END:
     - 查找并替换
       If you think of the m// pattern match as being like your word processor’s “search” feature
@@ -12088,7 +12088,7 @@
 *** unless控制结构 the unless control structure                                 :ATTACH:
     :PROPERTIES:
     :Attachments: unless.pl
-    :ID:       B5BFBD27-1F35-41B7-AAE0-5583A7710FFC
+    :ID:       0EFFC6A2-4956-4A2D-A082-2480A3B4DBA4
     :END:
     unless = if no
 ** perl模块 perl modules
@@ -12109,7 +12109,7 @@
 *** 文件测试操作符 file test operators                                          :ATTACH:
     :PROPERTIES:
     :Attachments: test_operators.pl
-    :ID:       D28C7069-BACE-4D6A-B1FA-A9E4B66C9499
+    :ID:       E791E8CA-0BD0-4D3C-B3F0-90CCA35E640C
     :END:
     - perl has a set of test operatorss that let you get particular information about files
       they all take the form of -X, where the X represents the particular test
