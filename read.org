@@ -5788,40 +5788,520 @@
 * lang
 ** cs50
 *** Scratch
-**** binary                                                                     :(P7-24):
-     4 2 1
-     1 0 1 = 5
-**** ASCII                                                                      :(P29-33):
-     A  B  C  ...
-     65 66 67
-**** RGB                                                                        :(P34-35):
-     red green blue    ->    brown
-     72  73    33         (72, 73, 33)
+**** slides                                                                     :week0.pdf:
+***** binary                                                                     :(P7-24):
+      4 2 1
+      1 0 1 = 5
+***** ASCII                                                                      :(P29-33):
+      A  B  C  ...
+      65 66 67
+***** RGB                                                                        :(P34-35):
+      red green blue    ->    brown
+      72  73    33         (72, 73, 33)
 **** scratch
      a component drag programming tool
 *** C
-**** Scratch vs C
-     :PROPERTIES:
-     :ID:       8F41C345-61EE-46D6-9494-9D142580871D
-     :END:
-***** hello, world                                                              :(P5):
-***** function                                                                  :(P6-8):
-***** loop                                                                      :(P9-13):
-***** variables                                                                 :(P14-16):
-***** boolean expressions                                                       :(P17-21):
-***** conditions                                                                :(P22-24):
-***** arrays                                                                    :(P25-27):
-**** compiling                                                                  :(P28-34):
-     :PROPERTIES:
-     :ID:       AEDFE9AD-1428-4FF1-9C99-11067331DD60
-     :END:
-           source code           compiler              machine code
-     printf("hello, world\n");      ->      01111111 010000101 01001100 01000110
-**** CS50 IDE
-     
+**** slides                                                                     :week1.pdf:
+***** Scratch vs C
+****** hello, world                                                             :(P5):
+****** function                                                                 :(P6-8):
+****** loop                                                                     :(P9-13):
+****** variables                                                                :(P14-16):
+****** boolean expressions                                                      :(P17-21):
+****** conditions                                                               :(P22-24):
+****** arrays                                                                   :(P25-27):
+***** compiling                                                                 :(P28-34):
+            source code           compiler              machine code
+      printf("hello, world\n");      ->      01111111 010000101 01001100 01000110
+***** integer overflow                                                          :(P50-52):
+      the overflow of the integer
+      : the test for overflow
+      overflow.c
+***** variable recap                                                            :(P61-62):
+      the real world variable type
+      the printf format type
+***** escape sequence                                                           :(P63):
+      escapes special characters
+***** condition                                                                 :(P64):
+***** compiling in detail
+      : before compiling and during preprocess
+      #include <stdio.h>
+      go to hash table stdio.h and paste it here
+      : compiling
+      $ clang hello.c
+      take source code to assembly
+      : assembling
+      take assembly to zero and one
+      : linking
+      $ make hello
+      make all the program to the system
+**** source code                                                                :cs50/src1:
+***** hello.c
+      : source code for C end in .c by convention
+      : clang (as in C language) is a compiler
+      $ clang hello.c
+      $ ./a.out
+      hello, world
+      : if without \n
+      $ clang hello.c
+      $ ./a.out
+      hello, world$ ./a.out
+      : add \n is still not work, you must compile it again
+      hello, world$ clang hello.c
+      $ ./a.out
+      hello, world
+      : specify output name
+      $ clang -o hello hello.c
+      $ ./hello
+      hello, world
+      : make a source code ending by .c
+      : make is a preconfigured additional feature by IDE
+      $ make hello
+      $ ./hello
+      hello, world
+***** string.c
+      : customized library
+      : customized variable
+      use the library cs50.h predefined variable string
+      : improving UX (user experience)
+      let user know what's your programm to do next
+      : format syntax
+      printf with your string variable
+
+      $ make string
+      $ ./string
+      Name: dcc
+      hello, dcc
+***** int.c
+      : format syntax
+      printf with int variable
+***** addr.c
+      : format syntax
+      printf with the sum of two int vatiable
+***** float.c
+      the float variable
+***** sizeof.c
+      the size of data type (bytes - 8 bits)
+***** overflow.c
+      test for integer overflow
+      : test long varsion
+      test the overflow of long variable
+***** imprecision.c
+      control imprecise of float
+***** condition.c
+      use condition statement (if  else if  else)
+***** logical.c
+      : char
+      one character should be around with single quotes (like 'y')
+      : equal  or
+      the logical symbol (== ||)
+***** switch.c
+      condition statement (switch case)
+***** prototype.c
+      define your first function
+      : predefined
+      Pre-declared method name
+      : header
+      many similar prototype function predefined in one line
+      like stdio.h predefined printf
+***** return.c
+      the return type of funtion
+      : return type
+      the function of square return int type (n * n)
+***** cough0 cough1 cough2 cough3 cough4
+      execute printf 0 per lines
+                     1 in for iterator
+                     2 in for iterator and prototype
+                     3 pass argument in for iterator
+                     4 pass argument in for iterator and create many prototypes
 *** Arrays
+**** slides
+***** airplane software integer overflow and float imprecise                    :(P9-10):
+      integer overflow cause a airplane accident
+      the float imprecise can be 32bit or 64bit
+***** debugg50
+      debugg step by step
+      use tools
+***** duck debugg
+      debugg to use rubber duck
+      walking yourself through your code
+***** cryptography                                                              :(P29-36):
+***** string                                                                    :(P37-38):
+***** typecasting                                                               :(P39-41):
+***** *more on string*                                                            :(P46-51):
+***** *command-line argument*                                                     :(P52-54):
+**** source code
+***** buggy0 buggy1 buggy2 buggy3
+      : buggy0 buggy1
+      #include <stdio.h>
+      import header to use library's method and variable
+      : buggy2
+      : loop times
+      if you want loop 10 times, you should:
+      for (int i = 0; i<10; i++)
+      for (int i = 1; i<=10; i++)
+      : buggy3
+      : function declare
+      the function should be declare before main function
+***** string0 string1
+      : string0
+      : string
+      use %s printf format defined in cs50.h
+      : char
+      use %c printf format defined in string.h
+
+      : string1
+      : welldesign
+      arrange the strlen of s in a variable n
+***** ascii0 ascii1
+      : ascii0 ascii1
+      what's the ascii's character is, what's the corresponding number is
+***** capitalize0 capitalize1 capitalize2
+      : capitalize0
+      lowercase to uppercase
+
+      : capitalize1
+      : toupper function
+      lowercase to uppercase by toupper function
+      : TIP
+      man toupper
+
+      : capitalize2
+      : better design
+      give every logical judgement in toupper function
+***** *strlen*
+      : the end of string
+      in memory, computer use \0 (escape 0) to terminal string between each other
+      : slides - more on string
+***** argv0 argu1 argu2
+      : argv0
+      : command-line argument
+      $ make argv0
+      $ ./argv0 dcc
+      hello, dcc
+      =# argc = 2=
+      =# argv = ./argv0\0 | dcc\0    (a array)=
+
+      $ ./argv0 dai chen chen
+      hello, world
+      =# argc = 4=
+      =# argv = ./argv0\0 | dai\0 | chen\0 | chen\0    (a array)=
+
+      : argv1
+      $ make argv1
+      $ ./argv1 dai
+      ./argv1
+      dai
+      $ ./argv1 dai ch ch
+      ./argv1
+      dai
+      ch
+      ch
+
+      : argv2
+      iterator the string in argv[]
+***** exit
+      : main's output - error
+      A non-zero number, on the other hand, is used to represent an error
+      $ echo $?
+      1
+      : main's output - success
+      When a program exits successfully, it returns a number 0 to indicate as much
+      $ echo $?
+      0
 *** Algorithms
+**** slides                                                                     :week3.pdf:
+***** linear search                                                             :(P13_14):
+      one direction search in sorted array
+***** binary search                                                             :(P15_16):
+      half search in sorted array
+***** bubble sort                                                               :(P23_24):
+***** selection sort                                                            :(P25_26):
+***** insertion sort                                                            :(P27_28):
+***** algorithm running time                                                    :(P29_41):
+      bubble sort
+      _1 1 1 1 1 1 1 1 1_    n-1
+      1 _1 1 1 1 1 1 1 1_    n-2
+      ...
+      1 1 1 1 1 1 1 _1 1_    1
+
+      (n-1) + (n-2) ... + 1 = n (n-1) / 2 = (n^2 - n)/2
+***** big O notation                                                            :(P43_44):
+      : the worst case on how long an algorithm might take
+      O(n^2)    selection bubble inserting sort
+      O(n)      linear search
+      O(log n)  binary search
+      O(1)      every case take one step
+***** omega notation                                                            :(P49_50):
+      : the best case on how long an algorithm might take
+      Ω(n^2)    selection sort
+                even if the list was already sorted
+                we wouldn’t know because we look for the smallest element
+                  in the rest of the list
+      Ω(n^2)    bubble sort
+                since we stop if we made no swaps
+                we can realize that the list was indeed sorted, and stop
+      Ω(log n)
+      Ω(1)      it is impossible to sort a list with n elements in Ω(log n) or Ω(1)
+                since at the least we need to look at all n elements
+                  to make sure it is sorted
+                linear search or binary search, tend to have Ω(1) running time
+                since in the best case we get lucky and find our element on the first try
+***** theta natation
+      : we have theta, Θ
+      : if the worst-case (Ω) the same as the best-case (O)
+***** *visual sorting*                                                            :https://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html:
+      seeing how selection bubble inserting sort work
+***** *merge sort*                                                                :(P59_120):
+      O(n log n)    P60-111
+**** source code                                                                :cs50/src3:
+***** sigma0 sigma1
+      : sigma0
+      iterative sigma function in black box
+      : sigma1
+      recursive sigma function tecnically use many memory and may cause a computer crash
 *** Memory
+**** slides
+***** program memory                                                            :(P10):
+***** *the stack*                                                                 :(P11):
+      1. when main is called, main is given a chunk of memory at the button
+         with any arguments to main (like argc, argv)
+           and any local variables that main has (like x, y)
+      2. meanwhile, if main calls function like swap
+           swap is allocate a chunk of memory above main by design
+             with its local variable (like a, b)
+         when a function call another function, passing in arguments as inputs (like 1, 2)
+           the function is being passed to copies of those inputs
+      3. but the catch is the moment that swap returns
+           everything that was being used above main disappears
+             it's not actually deleted, all of this bits is still there
+               computer just forgets about these values
+         even though it was correct in so far as it swapped a and b
+           it did not actually permanent impact on the variables x and y
+***** *get_string() in detail*                                                    :(P12):
+      1) *a string is technically just the address of a character in memory*
+         : string s = get_string();
+         string s: I need a variable called s that's big enough to fit a string
+         = get_string():
+         4) and suppose that the user typed "Zamyla"
+            if this string happens to exist at address number 123
+            first byte of  Z is 123
+            second byte of a is 124
+                           m is 125 ...
+            end with backslash 0 (\0)
+         3) the s is actually going to get returned is the value begin at 123
+              (with begin 123 and end \0 two marker, we can infer the entity of string)
+         : string t = get_string();
+         6) if user typed "Zamyla" again
+            it is another chunk of memory begin at 234
+         5) t get value 234
+      2) *string type is really just a pointer to a character*
+         : string t = s;
+         string begin at a address with a pointer
+         so it is setting t and s point to the address of 123
+         : t[0] = toupper(t[0]);
+         When we tried to capitalize just one string
+           we were just setting t to the address of the string s was pointing to
+***** *allocate*                                                                  :(P13):
+***** swap                                                                      :(P17_19):
+***** pointer gochas                                                            :(P21_22):
+***** memory leak                                                               :(P29_31):
+      use valgrind to check memory leak
+***** the heap   type of overflow                                               :(P32_37):
+***** enhance                                                                   :(P39_41):
+      zooming in image
+      and make the image more clear
+***** image represent                                                           :(P42):
+      how computer represent a image
+***** JPEG                                                                      :(P43_44):
+      how computer identify the JPEG format
+      255 216 255
+***** Hexadecimal                                                               :(P45_53):
+      JPEG format start at Hexadecimal
+      255 216 255
+      11111111 11011000 11111111
+      1111 1111  1101 1000  1111 1111
+         f    f     d    8     f    f
+         0xff       0xd8       0xff
+***** BMP                                                                       :(P54_57):
+      bit map
+      first few bytes of a bitmap (P57)
+**** source code
+***** compare0 compare1
+      : compare0
+      : compare the pointer of string
+      : slides / get_string() in detail / 1) string is address of character in memory
+      $ make compare0
+      $ ./compare0
+      s: dcc
+      t: dcc
+      different
+      : compare1
+      : compare the pointer to the literal of string
+      : char *
+      a pointer to the address of first character in a string
+      char *s = string s
+      : strcmp
+      string compare
+      s and t should be a pointer a string
+      strcmp will loop each character in two string
+        if they are entirely equal, return 0
+      $ make compare1
+      $ ./compare1
+      s: bar
+      t: bar
+      same
+      $ ./compare1
+      s: Bar
+      t: bar
+      different
+***** copy0 copy1
+      : copy0
+      : change string by using the duplicate of pointer
+      : slides / get_string() in detail / 2) string type is really just a pointer to a character
+      $ make copy0
+      $ ./copy0
+      s: dcc
+      s: Dcc
+      t: Dcc
+      : copy1
+      : use malloc to allocate memory
+      : malloc
+      char *t = malloc((strlen(s) + 1) * sizeof(char));
+      strlen(s) + 1
+        length of string + \0
+      in this case is (5 + 1) * 1 = malloc(6)
+      remember to free the malloc memoery
+      : slides / malloc
+      : 1 -> 2
+      the one david\0 (begin at 123) -> the one david\0 (begin at 234)
+      : 2
+      the one david\0 (begin at 234) -> the one David\0 (begin at 234)
+      $ make copy1
+      $ ./copy1
+      s: david
+      s: david
+      t: David
+***** noswap swap
+      : noswap
+      : pass the copy value of argument to the function
+      : slides/the stack
+      $ make noswap
+      $ ./noswap
+      x is 1
+      y is 2
+      Swapped.
+      x is 1
+      y is 2
+      : swap
+      : pass the pointer of argument to the funtion
+      : slides / swap
+      : 1 -> 2
+      : passing pointer
+      x (91) -> a (91)
+      y (92) -> b (92)
+***** pointer  slides / pointer gochas
+      : pointer
+      : for loop pointer
+      : s[i]
+      *s       is pointer to first character of string
+      *(s+i)   is pointer to ith character of string (like s[i])
+      : slides / pointer gochas
+      : how to use pointer
+      : 1    correct way
+      define *x pointer
+      malloc the x chunk of memory
+      *x point to the x and give the 42 in it
+      : 2    incorrect way
+      define *y pointer
+      *y point to somewhere in memory, so y may be a random value
+        so *y point to 13 is error
+***** pointer fun with Binky                                                    :https://www.youtube.com/watch?v=6pmWojisM_E:
+      three pointer rule
+      1) pointer and pointee are separate - don't forget to set up depointee
+      2) dereference a pointer to access its pointee
+      3) assignment (=) between pointers makes them point to the same pointee
+***** memory
+      : invalud byte size
+      x[10] does not exist
+      : memory leak
+      *x have allocated a chunk of memory, but not hand it back
+        it will cause the system slow down
+      : slides / memory leak
+      $ valgrind ./memory
+***** slides / the heap   type of overflow   hacker inject code
+      : the heap
+      the stack is used when function are being called
+        and they get layered on top of each other
+        and get unlayered only once the function's return
+
+      the heap is a chunk of memory above the stack
+        you have a pool of avaliable memory that you can draw at any point
+
+      when the stack keep going up then as function return it grows back down
+        thereby throwing away, losing track of memory
+      the heap does not disposal of memory
+        when you call malloc, it use memory persists permanently
+        only you call free to give back the memory to system
+        and allow it reuse something else
+
+      : type of overflow
+      : stack overflow
+      keep calling function after function after funtion and never return
+        so much so that run out of stack space
+      : heap overflow
+      call malloc so many times that heap keep growing down hit the stack
+      : hacker inject code
+      : slides (P34)
+      : buffer overflow
+      a chunk of space (like a chunk of array memory)
+        and you can eventually overflow it by trying to use more memory
+      if the length of array bar is large then c
+        bad guy have the ability somehow to inject the adversarial code
+      : slides (P35)
+      what the stack frame for f is actually like
+      : 1) the c[12] in f function
+      : 2) only argument to the f function
+      : 3) Return Address
+      main call f funtion
+      when f is done, return to this address of main
+      : slides (P36)
+      that's fine if user provides a string of length 12 or shorter
+      : slides (P37)
+      if user figure out how to inject a pattern of code
+        type in string more than 12 length
+        overwrite this Return Address
+        not return to main function but adversary's funtion
+***** recover image
+      the first several bits of a file typically follow a pattern
+        you can recover the file by using this serveral pattern of bits
+      : slides / enhance
+      zomming in image and make it more clear
+      get more imformation from this image
+      : slides / JPEG Hexadecimal
+      because JPEG represent start at Hexadecimal in computer
+      you can write software to check memory
+        recover all bits start at Hexadecimal to some.jpg
+      : slides / BMP
+      first few bytes in bitmap
+        is standardized inside of the file (P57)
+***** structs structs0 structs1
+      : structs
+      define struct student with string name and string dorm
+      : structs0
+      printf the array of struct
+      : set a constant
+      : create a array of structs
+      student students[STUDENTS]
+      student     the structs include in "structs.h"
+      students    the name of struct
+      STUDENTS    the constant length of array
+      : structs1
+      using pointer to write array of structs to the csv file
+      : file pointer
+      : file printf
+      pointer to the students.csv file and write it
+      print the struct of student to students.csv
 *** Data Structures
 *** Machine Learning
 *** Python
