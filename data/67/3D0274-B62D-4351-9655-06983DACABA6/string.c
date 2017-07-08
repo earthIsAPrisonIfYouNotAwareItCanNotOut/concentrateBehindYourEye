@@ -1,1 +1,0 @@
-/Users/sb/Github/keepAwakeWhenSleeping/c/cs50/src1/string.c

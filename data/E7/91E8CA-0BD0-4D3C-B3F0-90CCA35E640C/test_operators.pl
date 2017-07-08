@@ -1,1 +1,0 @@
-/Users/sb/Github/keepAwakeWhenSleeping/perl/learning_perl/file tests/test_operators.pl

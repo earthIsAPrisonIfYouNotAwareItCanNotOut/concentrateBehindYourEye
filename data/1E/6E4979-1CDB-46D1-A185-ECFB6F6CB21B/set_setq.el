@@ -1,1 +1,0 @@
-/Users/sb/Github/keepAwakeWhenSleeping/lisp/elisp/an introductiion to programming in emacs lisp/set_setq.el

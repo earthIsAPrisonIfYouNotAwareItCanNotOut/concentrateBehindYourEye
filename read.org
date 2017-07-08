@@ -2139,6 +2139,8 @@
       扫描器的生成器
       语法制导的翻译引擎
       代码生成器的生成器
+** READING 跟我一起写 Makefile
+*** 
 * algorithm
 ** ABANDON 算法导论 introduction to algorithmns
 *** 基础知识 foundations
@@ -6303,9 +6305,473 @@
       pointer to the students.csv file and write it
       print the struct of student to students.csv
 *** Data Structures
-*** Machine Learning
-*** Python
+**** slides
+***** limitations of array                                                      :(P10):
+      - can't change length dynamically
+        in C
+        arrays store the same type of data in a consecutive chunk of memory
+          so we can jump to each location by knowing its index
+          we can’t always add another element to the end of it
+            since the memory right after it might be used to store some other variables
+        We could allocate memory of a bigger size
+          copy what we had before to the new location
+            and add elements there
+          but that requires more and more work as our array grows bigger
+***** list                                                                      :(P11):
+      - a new data type with the ability to dynamically allocate memory
+        Each of these rectangles containing a number and an arrow we’ll call a node
+          and the arrows will just be a pointer to the next node
+        This way, the elements no longer need to be contiguous in memory
+          and we can allocate new elements one at a time
+***** nodes                                                                     :(P12_13):
+      A node will contain the _int n_
+        but also a pointer to the next node, a _struct node *_ named _next_
+***** linked list                                                               :(P14_15):
+      - search running time is O(n)
+        This is because each node could be anywhere in memory
+          so we can’t use strategies like binary search
+        So the running time of this linear search will be O(n)
+          even if our list is sorted
+      - insetion deleting running time is O(n)
+        the same as search running time
+***** list operations                                                           :(P16_23):
+      insert, delete operation in linked list
+***** implementing search                                                       :(P25_26):
+      1) Our function declaration takes in two arguments
+           the _n_ we are looking for
+           and the list, which is a pointer to the first _node_
+      2) We make a temporary _node *ptr_ we can use, and set it to what the list is
+      3) Then, while there is an element in the list
+           we use _ptr->n_ to follow the pointer to a node struct
+           and access the _n_ stored within
+           If it’s what we’re looking for, we _return true_
+           and otherwise, we set our _ptr_ to the next element in the list
+      4) Once we have no more elements in the list to look at
+           we can _return false_, since we would have returned _true_ if we found _n_ already
+***** stacks                                                                    :(P27_28):
+      - stack of trays
+        Imagine a stack of trays
+          where you can easily take the top tray off or put another tray on top
+        A data structure with this metaphor called a stack
+          does exist, with the operations _push_ and _pop_
+            that stores and removes items respectively
+      - fist in, last out
+        The property we now get is that _the last item we pushed_
+          will be _the first one we pop_
+          And there are applications where this property is useful
+            such as our _stack in memory_ where the next function being called
+              is placed on top of the previous function
+***** implementing a stack                                                      :(P29_30):
+      : the array version
+      1) total capacity possible size
+      2) now copacity actually size
+      : the pointer version
+      3) Now we can malloc some chunk of memory to store our numbers
+           and only store a pointer in our struct
+      4) We also have the benefit of being able to choose how big we want each stack to be
+
+      : TIP
+      the pointer version stack that is not fixed from the outset
+        not like the array version stack to some specific capacity
+***** queues                                                                    :(P31_32):
+      - fist in, first out
+        enqueue    which places an element at the end of the list
+        dequeue    which takes the first element from the beginning of the list
+***** implementing a queues                                                     :(P33_35):
+      : the array version (P33_34)
+      if _A B C D E F G H_ in a queue
+      _A B C_ quit the queue
+      _I_ enter in the queue
+      use front to keep track of where the front is (D in 3)
+        and use the size (6) to figure out I
+      : the pointer version (P35)
+      we can similarly dynamically allocate memory
+***** abstract data types
+      a stack and a queue does not have a low level meaning as an array does
+        which is very technical concept:
+          linked list
+            it's a node wiht pointers linking things together
+          a stack
+            is like a stack of cefeteria trays
+          a queue
+            is something like people lining up outside of an apple store
+        which can be implemented a couple of different ways:
+          you can use a array keep things simple
+            but you're going to a corner by a fixing their size
+          but with pointer, and malloc, and dynamic memory allocation
+            the spirit of linked list
+            you only just remember number pointer
+                     just need malloc in order to allocate size
+***** tree                                                                      :(P38_40):
+      With pointers
+        we can also now build data structures that aren’t just one-dimensional
+      We can have one node point to multiple other nodes
+        and in the case of this data structure
+        a tree, we have one root node that points to other children nodes
+          like in a family tree
+        And nodes without children are called leaves
+***** binary search tree                                                        :(P41):
+      binary search with pointer (not array)
+      a balanced linked list
+      the height of tree is log of n (also a running time)
+***** implementing a tree                                                       :(P42_43):
+      : tree node (P42)
+      To implement a binary search tree, we might start with defining a node
+      : recursion tree searching (P43)
+      recursion work beautifully so long as every time to recurse
+        every time funtion calls itself it take a smaller bytes of the problem
+        or you throw away half of the problem
+***** huffman coding                                                            :(P44):
+      : use huffman coding to compression ASCII character (P44)
+      Recall that characters are encoded using ASCII, with a byte per character
+        But if we only use a few characters, and some more frequently than others
+        we can use fewer bits for the most common characters
+      Huffman coding is a system that uses this concept for compression file (like .txt)
+      : compare with morse code, huffman coding have no ambiguous (P45)
+      Morse code, too, uses shorter series of dots and dashes for more common letters
+        But some messages might be ambiguous
+        For example, H is four dots in a row
+                 and I is two dots in a row
+                 and E is one dot, so six dots in a rows could either be HI or EEEEEE
+      : how to compression ASCII character using huffman tree (P46_53)
+      : First, we count the frequency of each character as a fraction of the message (P47)
+      : Then, we use the fewest bits for the most common characters
+      :   and build a tree like this (P52)
+      We build this by starting at the bottom
+        by taking the two smallest nodes and combining them
+        and adding their frequencies together (P48_51)
+      : that E, the most common character
+      :   uses only one bit, 1, to represent
+      :   and the least frequent letters, B and C requires the most
+      :     either 0000 or 0001 (P53)
+      : a leaf represent in a Huffman tree (P54)
+***** hash tables
+      Yet another data structure is a hash table
+        with many operations taking O(1)
+        a constant number of steps
+***** bucket
+      Imagine we have buckets, each labeled with a letter of the alphabet
+        And we have exam booklets from students
+          so we place them into each bucket based on the first letter of their name
+        Our hash function will thus be using the first letter of their name
+        So now we can work with 1/26th as many exam booklets at once
+          if we know which bucket to look in. And if we use the same hash function
+          we can always repeat the process and sort our booklets into the same buckets
+***** linear probing                                                            :(P56_57):
+      : A hash table looks like an array
+      We might store any piece data in each of the location in the hash table
+        but we can get close to a constant time lookup
+      : Since a hash table is an array
+      :   we might have multiple items that want to fit into the same slot
+      :   So we could just move to the next slot in a technique called linear probing (P57)
+      If we are inserting a name like _Alex_ or _Aaron_ but a name in the A slot
+        _Alice_, is already present, then we just move down our hash table to the next slot
+***** separate chaining                                                         :(P58):
+      : We can also contain a pointer to a linked list in each of its locations
+      :   so a particular bucket can expand horizontally
+      This technique is called separate chaining
+        where we have smaller and smaller linked lists as our hash table grows bigger
+      In the worst case, if everyone shares the same first letter of their name
+        we have a running time that’s linear again
+        but in the real world, the actual running time might be closer to 1/26th as before
+***** trie                                                                      :(P59):
+      : Finally, we have another data structure called a trie
+      a dictionary data structure
+        this is esesentially a tree with an array as each of its children
+        Each array contains pointers to the next layer of arrays
+      the running time for looking up words based on the length of letters
+        EANO    4 steps
+        AVLOV   5 steps
+      : source code / speller
+***** implement a hash table                                                    :(P61):
+***** implement a trie                                                          :(P62):
+**** source code                                                                :(cs50/src5):
+***** speller
+      create the fastest (real-time) spell check data structure (hash table version)
+****** dictionary.c
+******* node
+        : how to implement a hash table (P58)
+        a hash table is a array of linked list, each elements of array is a node*
+          1) implement a linked list
+          2) implement a hash table (a array of linked list)
+******* hash_it
+        : Hash function
+        algorithm for caculating the index of hash table
+        - example
+          # if the word is 'BAT'
+          # the 'B' bucket index
+          i = 0
+          hash = 0x00
+          needs_hashing[0] = 'B'
+          hash << 2 =  0000
+          hash = 0x00 ^ 0x42  (0000 ^ 0100 0010)
+          hash = 0x42  (0100 0010)
+          # the 'BA' bucket index
+          i = 1
+          hash = 0x42
+          needs_hashing[1] = 'A'
+          hash << 2 = 0100 0010 << 2 = 0001 0000 1000
+          hash = 0x108 ^ 0x41  (0001 0000 1000 ^ 0100 0001)
+          hash = 0x149  (0001 0100 1001)
+          # the 'BAT' bucket index
+          i = 2
+          hash = 0x149
+          needs_hashing[2] = 'T'
+          hash << 2 = 0001 0100 1001 << 2 =  0000 0101 0010 0100
+          hash = 0x524 ^ 0x54 (0000 0101 0010 0100 ^ 0101 0100)
+          hash = 0x570    (0000 0101 0111 0000)
+          # get 'BAT' bucket index
+          return hash % HASHTABLE_SIZE  = 0x570
+******* check
+        : make a new word
+        get the duplicate of word
+        tolower
+          case insensitive
+        '\0'
+          add the NULL terminal to the end of word
+        : check the word in dictionary
+        check if the word exist in dictionary
+          yes return true
+          no return false
+******* load
+        : load dictionary file, and format it use hash_it function
+        : scan dictionary word by word
+        fscanf(fp, "%s", new_node->word);
+          take dictionary filei          (fp)
+          look for string                ("%s")
+          put the string in a variable   (new_node->word)
+******* size
+******* unload
 *** HTTP
+**** slides
+***** web programming                                                           :(P14):
+      1) Hyper Text Markup Language (HTML)
+      2) Document Object Model (DOM)
+***** home network                                                              :(P16):
+***** DHCP & IP                                                                 :(P19_23):
+      private IP
+***** DNS
+      Domain Name System
+***** routers
+      use IP to decide which to route your imformation
+***** nslookup
+      $ nslookup www.google.com
+      Server:         140.247.233.195
+      Address:        140.247.233.195#53
+
+      Non-authoritative answer:
+      Name:   www.google.com
+      Address: 172.217.4.36       # use DNS to find IP address
+***** traceroute                                                                :(P29):
+***** undersea cabling
+      the internet from country to country use undersea cabling
+***** packets                                                                   :(P32_33):
+      route information based on the destination IP
+      by using packets from router to router (like a envelope)
+***** TCP
+      there exists a technology called TCP (Transmission Control Protocol)
+        that splits data into pieces, and sends multiple packets
+        And those packets are labeled with something like 1 of 4 or 2 of 4
+          so we can order them and know we got them all
+      there is other protocols, one of which is called UDP
+        often used for the streaming and for video and applications like that
+          where you really want the software to forge ahead
+            rather than wait for some new data to get transmitted
+***** Ports                                                                     :(P35):
+      TCP also provides a standardization of services number
+        to distinguish the type of packets
+***** firewall
+      Firewalls keep out packets
+        so they might be used to block certain websites
+        or keep in packets
+          to prevent sensitive information from leaving
+        And this is implemented with a local router looking at all the packets
+          and simply not sending ones with certain addresses
+        And it could also block all traffic on a certain port
+***** VPN
+      There are services called VPNs (Virtual Private Networks)
+        that you can use to connect to your company or school’s network
+        An encrypted tunnel is created to route all your traffic through the VPN first
+          before being sent out to the internet
+        But the cost of this is that it now takes more time to send our packets there first
+***** warrior of the Net
+      how internet work
+      https://www.youtube.com/watch?v=PBWhzz_Gn10
+***** HTTP GET                                                                  :(P41_45):
+      HTTP (HyperText Transfer Protocol) is a protocol
+        like a sort of handshake agreement
+        that governs that when I want to request information of a server
+        I should say GET and then a few other words
+          and then the server should respond with OK and a few other words
+***** status codes  telnet  curl                                                :(P46_48):
+      : status codes
+      the number are actually sent in these packets of information (P46)
+        back and forth from the server
+      : telnet curl
+      what page, what funtion you look up in a URL
+***** quert strings                                                             :(P49_50):
+      If we now visit Google and search for something like "cats"
+        we might end up at some long URL
+        But we can change it to what we understand: http://www.google.com/search?q=cats
+***** HTML                                                                      :(P53_55):
+      HTML is a markup language
+        that really controls formatting and layout
+        there aren't ifs and loops and other control constructs
+***** CSS
+      CSS, Cascading Style Sheets
+        While HTML is used to mark up web pages
+          or indicate their hierachy and content
+        CSS is used to change the look and appearance of web pages
+**** source code                                                                :(src6):
+***** image
+      : />
+      since no other content goes inside an img tag
+        we simply close the start tag with />
+      : alt
+      alternative text the browser describe over image
+***** link
+      : a
+      The a tag is for anchor, with a href, or hyper-reference
+***** paragraph
+      : p
+      Notice that we have Latin paragraphs, each in a separate <p> tag
+***** headings                                                                  :(P56):
+***** list
+      : ul ol
+      <ul>      unordered list
+      <ol>      ordered list
+***** table
+***** css0 css1 css2
+      : slides / CSS
+      : css0
+      mix css into html
+      : css1
+      factor out css
+      : css2
+      reuse css and separate it into a file
+      : &#169
+      html entity, the special symbol ©
+***** search
+      : method
+      GET - Requests data from a specified resource
+      POST - Submits data to be processed to a specified resource
+*** Machine Learning
+**** slides                                                                     :week7:
+***** introduce machine learning
+      sklearn svm AI
+      +search engines+  image recognition  +voice recognition+  natural language processing
+***** image classification                                                      :(P11_17):
+      one-dimension classification    (P14)
+      two-dimensions classification   (P15)
+      image classification            (P17)
+***** Lineland Flatland Spaceland Beyond                                        :(P22):
+      how to draw high-dimention       (P23)
+      map image to high-dimention      (P25)
+      real-world image represent       (P26_27)
+        eight by eight array of pixels
+        the color number between 0 and 16
+      how to test training point       (P28_31)
+        one two three - dimention dist (P29)
+        image is a 64-dimentions dist  (P30-31)
+***** introducing python                                                        :(P33_34):
+      : 1
+      in python, there is no need curly bracket
+        it's simply matter of the indention you use
+***** *Supervised Learning in python*                                             :http://cdn.cs50.net/2016/fall/lectures/7/notes7.html:
+      : Supervised Learning
+      what is supervised learning
+
+
+      : Classifying points
+      how to implement points classification in python
+      : dist(x,y)             (In[9] - P35)
+      calculating the distance from test point to labeled training dataset
+
+
+      : Classifying images
+      how to implement images classification in python
+      : digits                (In[13] - P36)
+      import Labeled training set
+      : digits.image[0]       (In[14_15] - P38)
+      2) the first image of labeled training set
+      : digits.target[0]      (In[16] - P38)
+      1) Labeled Training subset 0
+
+      : test single image         (In[17_21] - P36_37)
+      : X_train Y_train           (In[17] - P37)
+      extract the 10 images of Training set
+        X_train    10 training set
+        Y_train    0_9 training subset
+      : X_test                    (In[18_19] - P36)
+      Test point 3
+      : distance                  (In[20_21] - P37)
+      dist the Test point and the Testing set, get the index with smallest distance
+
+      : test 100 images           (In[22] - P38)
+      test 100 images (4 Testing set) with 10 training set (3 Training set)
+        and print the error results
+
+      : test 100 images with 1000 training set (In[23_24] - P39)
+      : Improving the performance
+      the error results is only 3
+***** *deep learning*                                                             :(P44 47_48):
+      the challenges to image recognition (P44)
+      Image recognition algorithms can be improved
+        by grouping pixels in an image into features
+        in a process called deep learning (P47)
+      A lot of computational power is needed for these algorithms
+        and libraries like _TensorFlow_ help build programs
+          that use machine learning to solve some problem (P48)
+***** *text clustering*                                                           :(P56):
+      : Unsupervised Learning
+
+
+      : Clustering points             (In[25_31] - P59)
+
+      : k-means
+      how many clustering to group
+      : two clustering                (In[28_29])
+      : three clustering              (In[30])
+      : seven clustering              (In[31])
+
+
+      : clustering documents
+
+      : the simple document           (In[32_39] - P62_68)
+      : corpus                        (In[32] - P62)
+      something simple document
+      : count_vect                    (In[33] - P65)
+      the english stop_words
+      : fit_transform                 (In[33] - P64)
+      build the vocabulary, and format it in matrix
+      : vocab                         (In[34] - P65)
+      Bags of words
+      : todense                       (In[35] - P65)
+      generate a matrix from Z
+      : TfidfVectorizer               (In[36] - P66_67)
+      the tf-idf (Term Frequency times Inverse Document Frequency)
+      - example
+        Consider the document a) containing 6 keywords
+          wherein the word _awesome_ appears 3 times
+          The term frequency (i.e., tf) for cat is then (3 / 6) = 0.5
+        we have 4 documents and the word _awesome_ appears in one of these
+          Then, the inverse document frequency (i.e., idf) is calculated
+            as log_10 (4 / 1) = 0.6
+        Thus, the Tf-idf weight is the product of these quantities: 0.5 * 0.6 = 0.3
+      : kmean                         (In[38] - P68)
+      : print the outcome             (In[39])
+
+      : clustering movies based on their IDMB synopses (P57)
+      : import external data          (In[40_41])
+      : corpus                        (In[42])
+      loop each data content and append to a list of string
+      : TfidfVectorizer               (In[43])
+      generate the tf-idf matrix
+      : kmeans                        (In(44))
+      use kmeans algorithm to group cluster
+      : print the outcome             (In[45])
+**** source code
+*** Python
 *** SQL
 *** Javascript
 ** shell
@@ -7973,6 +8439,127 @@
         : TIP
         an alternative to #define with the advantage that *the values can be generated* for you
         enumeration variables *offer the chance of checking* and so are often better than #defines
+** c++
+*** READING C++ Primer
+**** 目录 contents (En 4 | Cn 14)
+**** 开始 getting started
+***** 编写一个简单的c++程序 writing a simple c++ program                        :code:
+      : compiling and executing our program  <prog1>
+      different compilers use different suffix conventions
+        the most common include .cc, .cxx, .cpp, .cp and .C
+      $ CC progn1.cc              # use clang
+      $ g++ -o prog1 prog1.cc     # use GNU
+      $ ./a.out
+      $ echo $?
+      0
+***** 初识输入输出 a first look at input / output                              :code:
+      : using the IO library  <input_output>
+      : <iostream>
+      tell the compiler that we want to use the iostream library
+      the name inside angle brackets refers to a header
+      : #include
+      the name of the header and the #include mustappear on the same line
+      all the #include directives for a program at the beginning of the source file
+      : writing to a stream
+      : <<
+      the << output operator takes two operands
+        the left-hand operand must be an ostream objects
+        the right-hand operand is a value to print
+      - the expression is equivalent to
+           // we can chain together output requests
+           (std::cout << "Enter two numbers:") << std::endl;
+           // each operator in the chain has the same object as its left-hand operand
+           std::cout << "Enter two numbers:";
+           std::cout << std::endl;
+      : endl
+      which is a special value called a manipulator
+      writing endl has the effect of ending the current line
+        and flushing the buffer ensures that
+          all the output the program is actually written to the output stream
+          rather than sitting in memory waiting to be written
+      : using names from the standard library
+      : std::cout  std::endl
+      the prefix std:: indicates that
+        the names cout and endl are defined inside the namespace named std
+      : reading from a stream
+      : >>
+      the input operator >> takes
+        an istream as its left-hand operand
+        and an object as its right-hand operand
+      it reads data from the given istream
+        and stores what was read in the given object
+      our input operation reads two values from std::cin
+        storing the first in v1 and the second in v2
+      - this expression is equivlent to
+        (std::cin >> v1) >> v2;
+        std::cin >> v1;
+        std::cin >> v2;
+      : << v1 + v2
+      some operands of output operator are string literals, such as "the sum of"
+        ohters are int values, such as v1, v2 and
+          the result of evaluating the arithmetic expression v1 + v2
+      : output
+      Enter two number:
+      3 7
+      the sum of 3 and 7 is 10
+***** 注释简介 a word about comments
+      : kinds of comments in c++  <comment>
+      single-line and paired
+      : comment pairs do not nest
+      : comment out a block of code during debugging
+***** 控制流 flow of control
+      statements normally execute sequentially
+        programming languages provide various flow-of-control statements
+          that allow for more complicated execution paths
+****** the while statement                                                   :while.cc:
+      a while statement repeatedly executes a section of code
+        so long as a given condition is ture
+****** the for statement                                                     :for.cc:
+****** 读取数量不定的输入数据 reading an unknown number of input                :reading_unknown_number_of_input.cc:
+       : std:cin >> value
+       the expression reads the next number from the standard input
+         and stores that number in value
+       when we use an istream as a condition
+         the effect is to test the state of the stream
+         if the stream is valid, the stream hasn't encountered an error
+         an istream becomes invalid when we hit end-of-file or encounter an invalid input
+       : entering an end-of-file
+       windows  ctrl-z
+       unix     ctrl-d
+****** if语句 the if statement                                                :if:
+***** 类简介 introducing classes
+      to use a library facility, we must include the associated header
+      header files that we write usually have a suffix .h
+        but someone use .H, .hpp, .hxx
+        the standard library headers typically have no suffix at all
+****** the sales_item class
+       the purpose of the sales_item class is to represent the total revenue
+         number of copies sold, and average sales price for a book
+******* reading and writing sales                                               :code:
+        : header file
+        headers from the standard library are enclosed in angle brackets <>
+        those that are not part of the library are enclosed in double quotes ""
+        : main
+        inside main we define an object, named book
+          that we'll use to hold the data that we read from the standard input
+******* adding sales_items                                                      :code:
+        a example adds two Sales_item objects
+        : item1, item2
+        we read two inputs and write their sum
+        : using file redirection
+        assuming our addition program has been compiled
+          into an executable file named addItems
+          this command will read transactions from a file named infile
+            and write its output to a file named outfile in the current directory
+****** a first look at member funtions                                          :code:
+       our program that adds two Sales_item should check
+         whether the objects have the same ISBN
+       : item1.isbn()
+       a member function is a funtion that is defined as part of a class
+         member function are sometimes referred to as methods
+       this operator . means "the isbn member of the object named item1"
+       the call operator is a pair of parentheses
+         that enclose a (possibly empty) list of arguments
 ** lisp
 *** READING An Introduction to Programming in Emacs Lisp
 **** buffer ralated function
@@ -8643,7 +9230,7 @@
          For -10 % 3, is the remainder 2 because it’s two places above -12 or -1 because it’s one place from -9? It’s best to avoid finding out accidentally.
 ***** 字符串 strings
       - 创建 扫描 操控 二进制数据
-        For example, you could update a graphical image or compiled program by read‐ ing it into a Perl string, making the change, and writing the result back out.
+        For example, you could update a graphical image or compiled program by reading it into a Perl string, making the change, and writing the result back out.
       - 需要手动设置unicode编码文本文件读入
         If you want to use Unicode literally in your program, you need to add the utf8 pragma.
         use utf8;
@@ -8703,7 +9290,6 @@
       - 前置0按十进制数字处理
         0377    # that's octal for 255 decimal
         '0377'  # that's 377 decimal
-
 ***** perl的内置警告信息 perl's build-in warnings
       - 发现程序不对劲时 让perl发出警告
         - turn on warnings with a pragma
@@ -8721,15 +9307,16 @@
           $ perl -Mdiagnostics ./my_program
 ***** perl's build-in warnings
 ****** interpreting nondecimal numerals
-       hex('DEADBEEF') # 3_735_928_559 decimal
-       hex('OxDEADBEEF') # 3_735_928_559 decimal
-       oct('0377') # 255 decimal
-       oct('377') # 255 decimal
-       oct('0xDEADBEEF') # 3_735_928_559 decimal, saw leading 0x
-       oct('0b1101') # 13 decimal, saw leading 0b
-       oct("0b$bits") # convert $bits from binary
-       hex( 10 );   # decimal 10, converted to "10", then decimal 16
-       hex( 0x10 ); # hex 10,     converted to "16", then decimal 22
+       : if you have a string that represents a number as another base
+       hex('DEADBEEF')    # 3_735_928_559 decimal
+       hex('OxDEADBEEF')  # 3_735_928_559 decimal
+       oct('0377')        # 255 decimal
+       oct('377')         # 255 decimal
+       oct('0xDEADBEEF')  # 3_735_928_559 decimal, saw leading 0x
+       oct('0b1101')      # 13 decimal, saw leading 0b
+       oct("0b$bits")     # convert $bits from binary
+       hex( 10 );         # decimal 10, converted to "10", then decimal 16
+       hex( 0x10 );       # hex 10,     converted to "16", then decimal 22
 ***** 标量变量 scalar variables
       - 标量定义
         : not like a variable is a name for a container that holds one or more values
@@ -8764,7 +9351,8 @@
            $str .= " ";        # same thing with assignment operator
 ***** 用print输出结果 output with print
       - print操作符
-        it takes a scalar argument and puts it out without any embellishment onto standard output
+        it takes a scalar argument
+          and puts it out without any embellishment onto standard output
         : NOTE
         - You can give print a series of values separated by commas
           print "The answer is ", 6 * 7, ".\n";
@@ -8789,7 +9377,6 @@
            print "fred ate $n $whats.\n";        # use the value of $whats
            print "fred ate $n ${what}s.\n";      # now use the value of $what
            print "fred ate $n $what" . "s.\n";   # another way to do it
-
 ****** 借助代码点创建字符 creating characters by code point
        - 通过代码点(code point)输入键盘上没有的那些字符
          - it’s easier to create them by their code point with the chr() function
@@ -8821,6 +9408,10 @@
          35 == 35.0          # true
          '35' eq '35.0'      # false (comparing as strings)
          'fred' lt 'barney'  # false
+         'fred' lt 'free'    # true
+         'fred' eq 'fred'    # true
+         'fred' eq 'Fred'    # false
+         ' ' gt ''           # true
 ***** if控制结构 the if control structure
       - example
         if ($name gt 'fred') {
@@ -8857,7 +9448,8 @@
           }
 ***** chomp操作符 the chomp operator
       - 去掉字符串变量末尾换行符
-        : It works on a variable. The variable has to hold a string, and if the string ends in a newline character, chomp() removes that newline
+        : It works on a variable. The variable has to hold a string
+        :   and if the string ends in a newline character, chomp() removes that newline
         - example
           $text = "a line of text\n";    # Or the same thing from <STDIN>
           chomp($text);                  # Gets rid of the newline character
@@ -8865,7 +9457,8 @@
         : If a string ends with two or more newlines, chomp() removes only one
       - 连用
         - 赋值运算表达式 代替变量参数
-          : In fact, there’s an easier way to use chomp() because of a simple rule: any time that you need a variable in Perl, you can use an assignment instead
+          : In fact, there’s an easier way to use chomp() because of a simple rule:
+          : any time that you need a variable in Perl, you can use an assignment instead
           - So the most common use of chomp() looks like this
             =# First, Perl does the assignment. Then it uses the variable in whatever way you requested=
             chomp($text = <STDIN>); =# Read the text, without the newline character=
@@ -8892,7 +9485,9 @@
         : Often, typing Control-C will stop a runaway program
 ***** undef值 the undef value
       - 空无一物
-        : Variables have the special undef value before they are first assigned, which is just Perl’s way of saying, “Nothing here to look at—move along, move along.”
+        : Variables have the special undef value before they are first assigned
+        :   which is just Perl’s way of saying
+        :     “Nothing here to look at—move along, move along.”
         - If you try to use this “nothing” as a “numeric something,” it acts like zero
            =# Add up some odd numbers=
            $n = 1;
@@ -8906,7 +9501,8 @@
         - make your own undef values, you can use the obscurely named undef operator
           $next_line = undef; =# As if it had never been touched=
         : NOTE
-        : undef is neither a number nor a string; it’s an entirely separate kind of scalar value
+        : undef is neither a number nor a string
+        : it’s an entirely separate kind of scalar value
 ***** defined函数 the defined function
       - 判断 undef
         - use the defined function, which returns false for undef, and true for everything else
@@ -8927,10 +9523,12 @@
         $fred[1] = "dabba";
         $fred[2] = "doo";
       - 表达式赋值 change that value by expressions
-        $fred[1] .= "whatsis";
+        $fred[1] .= "whatsis";     # $fred[1] + "whatsis"
       - 舍去小数
+        : if the subscript may be any expression not a numeric value
+        : Perl will automatically truncate it (not round!) to the whole number portion
         $number = 2.71828;
-        print $fred[$number - 1]; # Same as printing $fred[1]
+        print $fred[$number - 1];  # Same as printing $fred[1]
       - 超出下标范围
         $blank = $fred[ 142_857 ]; # unused array element gives undef
         $blanc = $mel;             # unused scalar $mel also gives undef
@@ -8939,14 +9537,19 @@
         $rocks[0]  = 'bedrock';
         $rocks[1]  = 'slate';
         $rocks[2]  = 'lava';
-        $rocks[99] = 'schist';       =# now there are 96 undef elements=
+        $rocks[99] = 'schist';           =# now there are 96 undef elements=
       - 最后一个元素的索引值
-        : NOTE  That’s not the same as the number of elements, because there’s an element number zero
-        $end = $#rocks;                  # 99, which is the last element's index
+        : Sometimes, you need to find out the last element index in an array
+        : For the array of rocks , the last element index is $#rocks
+        $end = $#rocks;                  # $end = 99, which is the last element's index
         $number_of_rocks = $end + 1;     # OK, but you'll see a better way later
-        $rocks[ $#rocks ] = 'hard rock'; # the last rock
+        $rocks[ $#rocks ] = 'hard rock'; # useing the $#name value as an index
       - 负数索引
-        : In the real world, nobody seems to use any of these except -1
+        : If you have three elements in the array
+        : the valid negative indices are -1 (the last element)
+        :                                -2 (the middle element)
+        :                            and -3 (the first element)
+        :                     If you try -4 and beyond, you just get undef
         $rocks[ -1 ]   = 'hard rock';   # easier way to do that last example
         $dead_rock     = $rocks[-100];  # gets 'bedrock'
         $rocks[ -200 ] = 'crystal';     # fatal error!
@@ -8959,12 +9562,14 @@
       - 范围操作符
         (1..100)          # list of 100 integers
         (1..5)            # same as (1, 2, 3, 4, 5)
-        (1.7..5.7)        # same thing; both values are truncated
+        (1.7..5.7)        # same as above; both values are truncated
         (0, 2..6, 10, 12) # same as (0, 2, 3, 4, 5, 6, 10, 12)
         : NOTE
         : The range operator only counts up, so this won’t work and you’ll get the empty list
         (5..1)            # empty list; .. only counts "uphill"
       - 表达式元素
+        : The elements of a list literal are not necessarily constants
+        :   they can be expressions that will be newly evaluated each time the literal is used
         ($m, 17)       # two values: the current value of $m, and 17
         ($m+$o, $p+$q) # two values
         ($m..$n)       # range determined by current values of $m and $n
@@ -9083,7 +9688,6 @@
                                                     =# @removed is qw()=
                                                     =# @array is qw(pebbles wilma dino=
                                                     =#              fred barney betty)=
-
 ***** 字符串中的数组内插 interpolating arrays into strings
       - 双引号字符串 数组内插
         @rocks = qw{ flintstone slate rubble };
@@ -9206,7 +9810,7 @@
          You wouldn’t need to sort a list to count its elements, so until someone implements something else, sort in a scalar context always returns undef
        - reverse标量上下文
          : reverse
-         - In a list context, it gives a reversed list. In a scalar con‐ text, it returns a reversed string
+         - In a list context, it gives a reversed list. In a scalar context, it returns a reversed string
            @backwards = reverse qw/ yabba dabba doo /;
                # gives doo, dabba, yabba
            $backwards = reverse qw/ yabba dabba doo /;
@@ -9391,7 +9995,7 @@
                 print "$_ squared is $square.\n";
           }
           : TIP
-          : the scope of a lexical variable’s name is limi‐ ted to the smallest enclosing block or file
+          : the scope of a lexical variable’s name is limited to the smallest enclosing block or file
         - Note also that the my operator *doesn’t change the context* of an assignment
           my($num) = @_;  =# list context, same as ($num) = @_;=
           my $num  = @_;  =# scalar context, same as $num = @_;=
@@ -9402,7 +10006,7 @@
           my @phone_number;
         - in perl, you may use my to introduce a new perivate variable in your own structure
           foreach my $rock (qw/ bedrock slate lava /) {
-                print "One rock is $rock.\n";  # Prints names of three rocks
+              print "One rock is $rock.\n";  # Prints names of three rocks
           }
 ***** use strict编译指令 the use strict progma
       - 遵循优良编程风格
@@ -9467,8 +10071,8 @@
           =# You can’t make $n a lexical variable with my because it wouldn’t retain its value between calls=
           use strict
           sub marine {
-                $n += 1;  # Global variable $n (not declare error)
-                my y += 1; # Subroutine private variable my y (can not retain)
+                $n += 1;    # Global variable $n (not declare error)
+                my y += 1;  # Subroutine private variable my y (can not retain)
                 print "Hello, sailor number $n!\n";
           }
         - 多次调用子程序期间保留state变量的值
@@ -9481,7 +10085,7 @@
           }
 
           =# You can make any variable type a state variable, it’s not just for scalars=
-          Here’s a sub‐ routine that remembers its arguments and provides a running sum by using a state array
+          : Here’s a subroutine that remembers its arguments and provides a running sum by using a state array
           use v5.10;
           running_sum( 5, 6 );
           running_sum( 1..3 );
@@ -9502,7 +10106,7 @@
           : You can’t initialize arrays and hashs as state variables in list contexts
           state @array = qw(a b c); # Error!
 ***** subroutine signatures
-      - enable signatures feature
+      - enables ignatures feature
         use v5.20;
         use feature qw(signatures);
         no warnings qw(experimental::signatures);
@@ -9567,7 +10171,8 @@
         =# That command means to run the command my_program (which will be found in the current directory), and process file fred followed by barney, followed by betty=
         $ ./my_program fred barney betty
 
-        : The diamond operator is actually a special kind of line-input operator. But instead of getting the input from the keyboard, it comes from the user’s choice of input
+        : The diamond operator is actually a special kind of line-input operator.
+        : But instead of getting the input from the keyboard, it comes from the Unix standard input
         while (defined($line = <>)) {
               chomp($line);
               print "It was $line that I saw!\n";
@@ -9589,17 +10194,74 @@
         }
 ***** 调用参数 the invocation arguments
       - 预填充命令行参数数组
-        : @ARGV array is a special array that is preset by the Perl interpreter as the list of the invocation arguments.
-        : but when your program starts, @ARGV is already stuffed full of the list of invocation arguments
-
-        : The diamond operator looks in @ARGV to determine what filenames it should use
-        @ARGV = qw# larry moe curly #;  # force these three files to be read  =If it finds an empty list, it uses the standard input stream=
-        while (<>) {
-              chomp;
-              print "It was $_ that I saw in some stooge-like file!\n";
-        }
+        : @ARGV
+        @ARGV array is a special array
+          that is preset by the Perl interpreter as the list of the invocation arguments
+          when your program starts
+            @ARGV is already stuffed full of the list of invocation arguments
+        in this case, force these three files to be read
+          If it finds an empty list, it uses the standard input stream
+        : <>
+        The diamond operator looks in @ARGV to determine what filenames it should use
 ***** 输出到标准输出 output to standard output
-      
+      - 使用数组内插打印
+        : scalar interpolation
+        if print a scalar (or a list of values)
+        it doesn't add any extra characters before the items
+        : , $name,
+        add comma delimiter to $name
+
+        : array interpolation
+        the difference between printing an array and interpolating an array
+        : if @array holds qw/ fred barney betty /
+        : 1
+        - print a list of items
+          print fredbarneybetty
+        : 2
+        - *print an interpolated array*
+          print fred barney betty
+      - 换行符数组打印
+        if @array contain newline charater (\n)
+        : 1
+        generally print them all
+        : 2
+        - but if you use /print "#array";/
+          it will print:
+          fred
+           barney    # because of the items are separated by spaces
+           betty
+
+        if @array without newline character
+        : 2
+        print the interpolation array with \n
+      - 打印<>操作符输入的列表
+        : work with <>
+        Since print is looking for a list of strings to print
+        Since the diamond operator returns a list of lines in a list context
+        so they can work well together
+        : TIP
+        the standard Unix commands cat and sort do have some additional
+          functionality that these replacements lack
+        but you can implement it by perl
+      - 省略括号
+        : optianl parentheses
+        Remember the rule that parentheses in Perl may always be omitted
+          except when doing so would change the meaning of a statement
+      - print的函数调用
+        : function call
+        This is the problem with the optional parentheses
+        : without parentheses around
+        When there are no parentheses, that’s generally what you’d expect
+        : with parentheses around
+        But when the first thing after print is a left parenthesis
+          print is a function call
+          and it will print only what’s found inside the parentheses
+        : NOTE
+        the return value of print is a true or false value
+          indicating the state of print
+        : return value
+        in this case, the return value is 1, indicating the success of the print
+***** 用printf格式化输出 formatted output with printf
 **** 哈希 hashes
 ***** 什么是哈希 what is hash
       - 键值对
@@ -9609,6 +10271,20 @@
         the keys and values are both arbitrary scalars, but the keys are always converted to string
         : TIP
         the large size of hash will not slow down the speed
+***** 访问哈希元素 hash element access
+      - 访问的各种形式
+        : key access
+****** 访问整个哈希 the hash as a whole
+       - 展开哈希
+         : unwinding the hash
+****** 哈希赋值 hash assignment
+       - 整个哈希赋值
+         : copy
+         : reverse
+****** 胖箭头 the big arrow
+       - 更加清晰的哈希表达形式
+         : format hash
+         : hash key shortcut
 **** 正则表达式 regular expressions
 ***** 使用简单模式 sequences                                                    :ATTACH:
       :PROPERTIES:
@@ -9731,11 +10407,7 @@
       the \b anchor matches at the start or end of a group of \w character
 **** 用正则表达式进行匹配 matching with regular expressions
      how the world of regular expressions fits into the world of perl
-***** 用m//进行匹配 matches with m//                                            :ATTACH:
-      :PROPERTIES:
-      :Attachments: pattern_match_operator.pl
-      :ID:       A2CA00B9-71B6-4AA7-97FC-400F0D4EAE93
-      :END:
+***** 用m//进行匹配 matches with m//
       - 模式匹配擦作符 pattern match operator
 ***** 模式匹配修饰符 match modifiers
       there are several modifier letters (模式匹配符), sometimes called flags
@@ -9868,18 +10540,10 @@
        the name start with ^ and around the braces is used for special names
          that user might not create (the ^ is illegal character in a user-defined variable)
          Precedence
-***** 通用量词                                                                  :ATTACH:
-      :PROPERTIES:
-      :Attachments: quantifier.pl
-      :ID:       9D19D737-CA88-4AFA-B825-27D55C9DBD16
-      :END:
+***** 通用量词
       : {}
       使用{}的形式指定具体的重复次数范围
-***** 优先级 precedence                                                         :ATTACH:
-      :PROPERTIES:
-      :Attachments: precedence.pl
-      :ID:       6E241934-25BB-4D99-9874-59BFCB994929
-      :END:
+***** 优先级 precedence
       : regular expression precedence
       regular expression                     example                        precedence
       Parentheses (grouping or capturing)    (…), (?:…), (?<LABEL>…)        highest
@@ -9895,25 +10559,19 @@
         and see just what it matches, and where
 **** 用正则表达式处理文本 processing text with regular expressions
      use regular expressions to change text
-***** 用s///进行替换 substitutions with s///                                    :ATTACH:
-      :PROPERTIES:
-      :Attachments: substitutions_s.pl
-      :ID:       E715DB31-6B49-4846-8CA5-7602A8D2170E
-      :END:
+***** 用s///进行替换 substitutions with s///
       - 查找并替换
         If you think of the m// pattern match as being like your word processor’s “search” feature
         the “search and replace” feature would be Perl’s s/// substitution operator
-***** 用/g进行全局替换 global replacements with /g
-      : global replacements
-      /g modifier tells s/// to make all possible nonoverlapping replacements
-***** 不同的定界符号 different delimiters
+****** 用/g进行全局替换 global replacements with /g
+       : global replacements
+       /g modifier tells s/// to make all possible nonoverlapping replacements
+****** 不同的定界符号 different delimiters
+       : nonpaired delimiters
+       : paired delimiters
 **** 其他控制结构 more control structures
      alternative ways to write perl code
-***** unless控制结构 the unless control structure                               :ATTACH:
-      :PROPERTIES:
-      :Attachments: unless.pl
-      :ID:       0EFFC6A2-4956-4A2D-A082-2480A3B4DBA4
-      :END:
+***** unless控制结构 the unless control structure
       unless = if no
 **** perl模块 perl modules
      if there is a problem to solve, somebody has probably already solved it and made their solution available on the comprehensive perl archive network (CPAN)
@@ -10088,6 +10746,119 @@
 **** 高级perl技巧 some advanced perl techniques
      some other techniques while not obligatory, are still valuable tools to have in your toolbox
 ***** 切片 slices
+*** READING perl编程语言 programming perl
+**** 前言 preface
+     - 命令行 command line
+       日常管理 manage     (T  En 35 | Cn 20)
+       常见问题 question   (T  En 36 | Cn 21)
+       平台移植 platform   (T  En 36 | Cn 22)
+       搜索文档            (C  Cn 22)
+**** perl概述 an overview of perl
+***** 自然语言和人工语言 natural and artificial languages
+****** 变量语法 variable syntax                                                 :code:
+       variable types (T  En 50 | Cn 32)
+       $    scalar
+       @    array
+
+       : make reference
+       scalar value can be reference to other data structure (like a pointer in C)
+       : auto convert
+       perl will automatically convert the data
+         into the form required by the current context
+
+       : array and hash
+       use an array when you want to look something up by number
+       user a hash when yo uwant to look something by name
+       : pop and push
+       since arrays are ordered
+         you can do various useful operations on them
+         such as the stack operations pop and push
+         perl regards the end of your array as the top of a stack
+       you can't push or pop a hash
+         because a hash is unordered
+       : hash performance
+       we pick the name "hash" is implemented internally using a hash-table lookup
+         which is why hash are so fast and stay so fast no matter
+           how many values you put into them
+       : the % sigil
+       hashes use the % sigil to mark hash names
+         if you look carefully at the % character
+         you can see the key and the value with a slash between them
+       : syntactic sugar =>
+       perl provides syntactic sugar => to see which are keys or values
+       : access hash element
+       because hashes are a fancy kind of array
+         select an individual hash element is to dealing with a scalar value
+         use $ on front of hash name
+       : complexities
+       sometimes you need to build not-so-lovely
+                                   not-so-simple
+                                   not-so-flat data structures
+       : topicalizing
+       perl also has serveral ways of topicalizing
+         one important topicalizer is the package declaration
+       : verbs
+       as is typical of your typical impreative computer language
+         many of the verbs in perl are commands
+         they tell perl interpereter to do something
+****** 一个平均值例子 an average example
+******* how to run a perl program
+        : call perl explicitly from the command line
+        % perl –e 'print "Hello, world!\n";'
+        : for longer script, put all your commands into a file and then
+        % perl the_file_name
+
+        : on Unix systems that support the #! "shebang" notation
+        :   you can make the first line of your script be magical
+        :   so the operating system will know which program to run
+        #!/usr/bin/perl
+        : if perl isn't in /usr/bin, you'll have to change the line accordingly
+        : then all you have to say is
+        % gradation
+        : if this didn't work because you forgot to
+        :   make sure the script was executable in your PATH
+        : you have to provide a complete filename
+        :   so that the operating system knows how to find your script
+        % /home/sharon/bin/gradation
+
+        : it will provide an useful warming message
+        #!/usr/bin/perl -w
+****** 文件句柄 filehandles                                                     :code:
+       filehandles make it easier for you to get input from
+         and send output to many different places
+       part of what makes perl a good glue languages is that
+         it can talk to many files and processes at once
+       : open
+       you can use open function
+         to create filehandles for various purposes (input, output, piping)
+****** 操作符 operators                                                         :code:
+******* some binary arithmetic operators
+        : mathematical operators
+        +    addition
+        *    multiplication
+        %    modulus
+        **   exponentiation
+******* string operators
+        : string addition
+        a sepatate operator .
+        : string multiply
+        a separate operator x
+        : three ways to concatenation string
+        : interpolation
+        string concatenation is also implied by the interpolation
+          that happens in double-quoted string
+        : list
+        and when you print out a list of values
+          you're also effectively concatenating strings
+******* assignment operators
+        : get set to
+        try to remember that = assignment operator means
+          "gets set to" rather than "equals"
+        the left operand must be
+          a valid _lvalue_ (a valid storage location like a variable, or an array)
+        : assignment returns variable as an lvalue
+        you can assign a vairable to many other vairables
+            or assign a assignmen to another assignment
 ** python
 *** READING python document
 **** set up and install
@@ -12509,11 +13280,7 @@
 **** Async & Performance
 ***** Asynchrony: Now & Later
       we're going to have to understand much more deeply what asynchrony is and how it operates in JS
-****** A Program in Chunks                                                      :ATTACH:
-       :PROPERTIES:
-       :Attachments: asynchrony_ajax.js
-       :ID:       F1940D61-5020-476F-9272-74CC626ABA80
-       :END:
+****** A Program in Chunks
        your program is almost certainly comprised of several chunks, only one of which is going to execute now, and the rest of which will execute later
 
        later doesn't happen strictly and immediately after now
@@ -12524,17 +13291,9 @@
        : NOTE
        it's possible to make synchronous Ajax requests, but it locks the browser UI and prevents any user interaction.
        so you should never, ever do it
-****** Async Console                                                            :ATTACH:
-       :PROPERTIES:
-       :Attachments: async_console.js
-       :ID:       74FDD386-A31D-48DE-B116-B158BBDE6FDD
-       :END:
+****** Async Console
        sometimes the js console environment work in a strange asynchronous scenario
-****** Event Loop                                                               :ATTACH:
-       :PROPERTIES:
-       :Attachments: event_loop.js
-       :ID:       CAD5A551-4A59-43F7-9E56-5AA3D43A2119
-       :END:
+****** Event Loop
        - serialize
          breaks its work into tasks and executes them in serial
          disallowing parallel access and changes to shared memory
@@ -12549,11 +13308,7 @@
 
        the JS engine has a mechanism that *handles executing multiple chunks* of your program over time, at each moment invoking the JS engine, called the "event loop."
        the "event" has had no innate sense of time, but has instead been an *on-demand execution environment* for any arbitrary snippet of JS.
-****** Parallel Threading                                                       :ATTACH:
-       :PROPERTIES:
-       :Attachments: parallel_threading.js
-       :ID:       7EE6DA7A-DE6C-47DF-BD3A-229574A880CE
-       :END:
+****** Parallel Threading
        - parallel and async
          async is about the gap between now and later
          parallel is about things being able to occur simultaneously
@@ -12565,37 +13320,21 @@
          parallel threading      allowing parallel access and change to shared memory
          event loop              by contrast, is execute tasks in serial
          Parallelism and "serialism" can coexist in the form of cooperating event loops in separate threads
-****** Run-to-Completion                                                        :ATTACH:
-       :PROPERTIES:
-       :Attachments: run_to_completion.js
-       :ID:       919FC2A1-471A-4FE8-8C7D-E6A19A494651
-       :END:
+****** Run-to-Completion
        - JavaScript's single-threading is atomic
          which means that once foo() starts running, the entirety of its code will finish before any of the code in bar() can run
          this is called "run-to-completion"
        an example for two single-threading foo() and bar() interleaved [C]
        : TODO
        a function in JS that did not have run-to-completion behavior, see chapter 4 "Generators"
-****** Concurrency                                                              :ATTACH:
-       :PROPERTIES:
-       :Attachments: concurrency.js
-       :ID:       332DF81A-E82B-4DCB-A4C9-AE5D18B7ED11
-       :END:
+****** Concurrency
        - two concurrency processes of onscroll events [C]
          Process 1:  onscroll, request N   scrolled the page down        (ajax requests for new content)
          Process 2:  response N            render context onto the page  (receive ajax responses back)
-****** Noninteracting                                                           :ATTACH:
-       :PROPERTIES:
-       :Attachments: .#noninteracting.js
-       :ID:       6622DA64-060E-4501-A78A-06DDCB36FFDB
-       :END:
+****** noninteracting
        two concurrent "processes" act independently as such don't need to interact [C]
        the code will always work correctly, regardless of the ordering
-****** Interaction                                                              :ATTACH:
-       :PROPERTIES:
-       :ID:       63FD4712-D455-4A3D-AE27-A5EBCCC0D78D
-       :Attachments: interaction.js
-       :END:
+****** Interaction
        two concurrent ajax responses with "race condition" nondeterminism [interaction1]     --broken code
        two concurrent ajax responses without "race condition" nondeterminism [interaction2]
 
@@ -12610,18 +13349,10 @@
        in fact global variables as in these examples, is one obvious downside to these forms of concurrency coordination
        : TODO
        As we go through the next few chapters, we'll see other ways of coordination that are much cleaner in that respect
-****** Cooperation                                                              :ATTACH:
-       :PROPERTIES:
-       :Attachments: cooperation.js
-       :ID:       FF6965A0-2BB9-43F1-9E49-809B8B6089C0
-       :END:
+****** Cooperation
        process data in a chunk [chunk]
        process data in a async schedule [schedule]
-****** Jobs                                                                     :ATTACH:
-       :PROPERTIES:
-       :Attachments: jobs.js
-       :ID:       23E33ECF-FDEB-4B4D-8E11-ED2E8A386DCB
-       :END:
+****** Jobs
        run later, but as soon as possible [C]
 ****** Statement Ordering
        JS engine, after compiling the code might find opportunities to run your code
@@ -12630,11 +13361,7 @@
       sophisticated async patterns -- callback
       two categories of deficiencies with using callbacks
         lack of sequentiality and lack of trustability
-****** Continuations                                                            :ATTACH:
-       :PROPERTIES:
-       :Attachments: continuations.js
-       :ID:       4A34E4A3-1D91-448A-8E3C-D4826157CDC2
-       :END:
+****** Continuations
        introduce a single continuation (or dozen), in the form of a callback function [C]
        : NOTE
        the disconnect is at the very heart of understanding
@@ -12646,37 +13373,21 @@
 
        we switch back and forth between two or more tasks in rapid succession
          simultaneously progressing on each task in tiny, fast little chunks
-****** Doing Versus Planning                                                    :ATTACH:
-       :PROPERTIES:
-       :Attachments: doing_versus_planning.js
-       :ID:       8A46CAC9-C276-4FEE-BDB9-780170A45092
-       :END:
+****** Doing Versus Planning
        when a developer plan synchronous code out, it works like errands to-do list [syn]
        it turns out that how we express asynchrony (with callback) in our code
          doesn't map very well at all to that synchronous brain planning behavior [asyn]
-****** Nested/Chained Callbacks                                                 :ATTACH:
-       :PROPERTIES:
-       :Attachments: nested_chained_callbacks.js
-       :ID:       F9F95709-B5BD-473B-9F04-26EEAD1F9FEA
-       :END:
+****** nested/chained callbacks
        a chain of three functions nested together [callback hell]
          click event
          timer to fire
          ajax response to come back
 
        there's several problems with nested code execute in a order [trace nested flow]
-****** Trust Issues                                                             :ATTACH:
-       :PROPERTIES:
-       :Attachments: trust_issues.js
-       :ID:       5882D16D-8B81-4087-9618-1767FD1FDFA2
-       :END:
+****** Trust Issues
        somethimes ajax(..) is not a function that you directly control
          give over control of its execution to anothor third party [inverstion of control]
-****** Tale of Five Callbacks                                                   :ATTACH:
-       :PROPERTIES:
-       :Attachments: tale_of_five_callbacks.js
-       :ID:       318EF445-F0F5-46D7-98C4-0D8737A9D2AB
-       :END:
+****** Tale of Five Callbacks
        [use third party callback]
        imagine you building out an ecommerce checkout system for a site that sell TV
          all pages are build just fine except the last "confirm" page
@@ -12688,11 +13399,7 @@
          you have to think of all the possible things
            that could go wrong with them calling your callbacks
          and come up with of ways the analytics utility could misbehave
-****** not just other's code                                                    :ATTACH:
-       :PROPERTIES:
-       :Attachments: not_just_other_code.js
-       :ID:       748C2FE5-2867-44B8-B5F3-91CDED4BB556
-       :END:
+****** not just other's code
        : overly trusting of input
        interact with truly third-party utilities without yourself-control
        : defensive against untrusted input
@@ -12766,11 +13473,7 @@
         treat x and y as future values
         do not care whether x or y or both are available right away or not
         we rely on a predictable out come of the add() operation
-****** Promise Value                                                            :ATTACH:
-       :PROPERTIES:
-       :Attachments: promise_value.js
-       :ID:       980103C2-56B1-4DBC-9960-76DB7E13D453
-       :END:
+****** Promise Value
        : two layers of promises
        1. fetchX() and fetchY() return a value =(promise)= into add()
           if the return value of fetchX() and fetchY() is resolves
@@ -12792,11 +13495,7 @@
        it is not possible for one party to affect another party's resolution
        so it is safe to pass that value around
        but shouldn't be casually passed over
-****** Completion Event                                                         :ATTACH:
-       :PROPERTIES:
-       :Attachments: completion_event.js
-       :ID:       BB8BDC83-A8BF-401E-B730-A4B9715770B6
-       :END:
+****** Completion Event
        : the comcept of notification listener
        With callbacks, the "notification" would be our callback
          invoked by the task (foo (..))
@@ -13561,6 +14260,7 @@
        :    |- params method
 ****** creating the model
        : creating the Article model
+*** READING ruby style guide
 *** READING programming ruby
 **** running ruby
 ***** interactive ruby
@@ -13577,11 +14277,7 @@
       puts "Hello, World!"
       % ./myprog.rb
       Hello, World!
-***** ruby.new                                                                  :ATTACH:
-      :PROPERTIES:
-      :Attachments: ruby.new.rb
-      :ID:       68AEE4D2-6EE8-40B9-9268-2239B3C6461B
-      :END:
+***** ruby.new                                                                  :ruby.new.rb:
       genuine object-oriented method
       function syntax
       precedence rule
@@ -13593,11 +14289,7 @@
       regular expressions
       block and iterators
       Reading and 'Riting
-***** Classes, Objects, and Variables                                           :ATTACH:
-      :PROPERTIES:
-      :Attachments: classes_obkects_variables.rb
-      :ID:       9C9D4E64-2808-4C22-9A1F-24E42CD5BFF6
-      :END:
+***** Classes, Objects, and Variables                                           :class_objects_variable.rb:
       implementing part of the Internet Enabled Jazz and Blue Grass jukebox ruby product
         creat a basic class Song with initialize method [initialize class]
         instance a new object [instance]
@@ -13620,230 +14312,265 @@
         specify access levels to accounting system [specifying access control]
 
         use variables to keep track of objects [variables]
+***** Containers, Blocks, and Iterators
+      : containers
+      how to store the list of songs include a SongList object [Arrays]
+      how to store the list of songs include a SongList object [Hashes]
+      implement a SongList Container [SongList Container]
+
+      : block and iterator
+      implement [] method with a block of iterator search code    [blocks and iterators]
+      invoke a block of code by using many kinds of iterators      [implement iterators]
+      ruby's iterator is simple a block of code
+        associated with any kind of method              [Ruby compare with C++ and Java]
+      method called with a block                               [blocks for transactions]
+      function as a variable, block as a object                 [blocks can be closures]
 ** php
 *** READING php document
-**** what is php
-     超文本预处理 Hypertext Preprocessor
-     <?php
-         ...
-     ?>
-**** what php can do                                                             :[[http://php.net/manual/en/intro:whatcando.php][PHP: What can PHP do? : Manual]]:
-     procedural programming
-     object oriented programming (OOP)
-     or a mixture of them both
-     HTML image PDF Flash(libwf Ming)
-     XHTML XML
+**** getting started
+***** what is php
+      超文本预处理 Hypertext Preprocessor
+      <?php
+          ...
+      ?>
+***** what php can do                                                             :[[http://php.net/manual/en/intro:whatcando.php][PHP: What can PHP do? : Manual]]:
+      procedural programming
+      object oriented programming (OOP)
+      or a mixture of them both
+      HTML image PDF Flash(libwf Ming)
+      XHTML XML
 
-     mysql PDD ODBC cURL socket
+      mysql PDD ODBC cURL socket
 
-     LDAP IMAP SNMP NNTP POP3 HTTP COM
-     Java
+      LDAP IMAP SNMP NNTP POP3 HTTP COM
+      Java
 
-     Perl regular expression
-     XML documents
-     libxml2 SimpleXML XMLReader XMLWriter
+      Perl regular expression
+      XML documents
+      libxml2 SimpleXML XMLReader XMLWriter
 
-     XDebug
-**** install
-***** homebrew
-****** version control
-       $ brew install php56
-       $ brew options php56
-       $ export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
-**** useful example
-     show all reserver variables
-     - <?php phpinfo(); ?>
+      XDebug
+***** install
+****** homebrew
+******* version control
+        $ brew install php56
+        $ brew options php56
+        $ export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
+***** useful example
+      show all reserver variables
+      - <?php phpinfo(); ?>
 
-     show the value in one of reserver variables
-     - <?php
-       echo $_SERVER['HTTP_USER_AGENT'];
-       ?>
-       // $_SERVER                       contain all web server information
-       // $_SERVER['HTTP_USER_AGENT']    the sort of visitor's browser
+      show the value in one of reserver variables
+      - <?php
+        echo $_SERVER['HTTP_USER_AGENT'];
+        ?>
+        // $_SERVER                       contain all web server information
+        // $_SERVER['HTTP_USER_AGENT']    the sort of visitor's browser
 
-     control structures
-     - <?php
-       if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE) {
-           echo 'You are using Internet Explorer.<br />';
-       }
-       ?>
+      control structures
+      - <?php
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE) {
+            echo 'You are using Internet Explorer.<br />';
+        }
+        ?>
 
-     strpos()    search a string for another string
-     - <?php
-       if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE) {
-       ?>
-       <h3>strpos() 肯定没有返回假 (FALSE)</h3>
-       <p>正在使用 Internet Explorer</p>
-       <?php
-       } else {
-       ?>
-       <h3>strpos() 肯定返回假 (FALSE)</h3>
-       <center><b>没有使用 Internet Explorer</b></center>
-       <?php
-       }
-       ?>
+      strpos()    search a string for another string
+      - <?php
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE) {
+        ?>
+        <h3>strpos() 肯定没有返回假 (FALSE)</h3>
+        <p>正在使用 Internet Explorer</p>
+        <?php
+        } else {
+        ?>
+        <h3>strpos() 肯定返回假 (FALSE)</h3>
+        <center><b>没有使用 Internet Explorer</b></center>
+        <?php
+        }
+        ?>
+***** 处理表单 dealing with forms                                               :form:
+      : htmlspecialchars()
+      make sure any characters that are special in html are properly encoded
+        so people can't inject HTML tags or Javascript into your page
+      : $_POST
+      which contains all POST data
+      notice how the method of our form is POST
+        if we used the method GET method, our form information would live in $_GET
+        you can also use the $_REQUEST
+          if you do not care about the source of your retuest data
+**** 语言参考 language reference
+***** 基本语法 basic syntax
+****** php标记 php tags
+       - php起始和结束标记
+         <?php and ?>
+         <? and ?>
+****** 从html中分离 escaping from html
+       : php parser
+       outside of a pair of opening and closing tags is ignored by the php parser
+       when the php interpreter hits the ?> closing tags
+         it simply start outputting whatever it finds
+       : using condition
+       php will skip the block where the condition is not met
+         even though they are outside of the php open/close tags
+       : echo print
+       for outputting large blocks of text
+         dropping out of php parsing mode (跳出php解析模式)
+           is generally more efficient than using echo or print
 ** swift
-*** READING swift官方文档 swift document
-**** 3.0.1
-***** 关于Swift about Swift
-      - 特性介绍
-        Swift is a new programming language for iOS, macOS, watchOS, and tvOS apps that builds on the best of C and Objective-C, without the constraints of C compatibility
-        Swift’s clean slate, backed by the mature and much-loved Cocoa and Cocoa Touch frameworks
-        It is the first industrial-quality systems programming language that is as expressive and enjoyable as a scripting language
-        It supports playgrounds(代码预览)
-           an innovative feature that allows programmers to experiment with Swift code and see the results immediately
-           without the overhead of building and running an app
-***** Swift初见 a Swift tour
-****** 简单值 simple values
-       - 常量 变量 constants and variables
-         : Use var to make a variable
-         var myVariable = 42
-         myVariable = 50
-         : Use let to make a constant
-         : use constants to name a value that you determine once but use in many places.
-         let myConstant = 42
+*** READING swift document
+**** about Swift
+     - 特性介绍
+       Swift is a new programming language for iOS, macOS, watchOS, and tvOS apps that builds on the best of C and Objective-C, without the constraints of C compatibility
+       Swift’s clean slate, backed by the mature and much-loved Cocoa and Cocoa Touch frameworks
+       It is the first industrial-quality systems programming language that is as expressive and enjoyable as a scripting language
+       It supports playgrounds(代码预览)
+          an innovative feature that allows programmers to experiment with Swift code and see the results immediately
+          without the overhead of building and running an app
+**** a Swift tour
+***** simple values
+      - 常量 变量 constants and variables
 
-         : write the type explicitly
-         let implicitInteger = 70
-         let implicitDouble = 70.0
-         : Providing a value when you create a constant or variable lets the compiler infer its type
-         let explicitDouble: Double = 70
+        : write the type explicitly
+        let implicitInteger = 70
+        let implicitDouble = 70.0
+        : Providing a value when you create a constant or variable lets the compiler infer its type
+        let explicitDouble: Double = 70
 
-         : an simpler way to include values in strings
-         : Write the value in parentheses, and write a backslash (\) before the parentheses
-         let apples = 3
-         let oranges = 5
-         let appleSummary = "I have \(apples) apples."
-         let fruitSummary = "I have \(apples + oranges) pieces of fruit."
-       - 数组 字典 arrays and dictionaries
-         : Create arrays and dictionaries using brackets ([]), and access their elements by writing the index or key in brackets. A comma is allowed after the last element
-         1. var shoppingList = ["catfish", "water", "tulips", "blue paint"]
-         2. shoppingList[1] = "bottle of water"
-         3.
-         4. var occupations = [
-         5. "Malcolm": "Captain",
-         6. "Kaylee": "Mechanic",
-         7. ]
-         8. occupations["Jayne"] = "Public Relations"
-         : To create an empty array or dictionary
-         : use the initializer syntax
-         1. let emptyArray = [String]()
-         2. let emptyDictionary = [String: Float]()
-         : write an empty array as [] and an empty dictionary as [:]
-         1. shoppingList = []
-         2. occupations = [:]
-****** 控制流 control flow
-       - if
-         : Use if and switch to make conditionals
-         let individualScores = [75, 43, 103, 87, 12]
-         var teamScore = 0
-         for score in individualScores {
-             if score > 50 {
-                 teamScore += 3
-             } else {
-                 teamScore += 1
-             }
-         }
-         : NOTE: In an if statement, the conditional must be a Boolean expressio
-         :       this means that code such as if score { ... } is an error, not an implicit comparison to zero
-       - optional value and default value
-         : use if and let together to work with values that might be missing
-         var optionalString: String? = "Hello"    =// Write a question mark (?) after the type of a value to mark the value as optional=
-                                                  =// An optional value either contains a value or contains nil to indicate that a value is missing=
-         print(optionalString == nil)
-         var optionalName: String? = "John Appleseed"
-         var greeting = "Hello!"
-         if let name = optionalName {
-             greeting = "Hello, \(name)"
-         }
-         : Another way to handle optional values
-         let nickName: String? = nil
-         let fullName: String = "John Appleseed"
-         let informalGreeting = "Hi \(nickName ?? fullName)"  =// provide a default value using the ?? operator. If the optional value is missing, the default value is used instead=
-       - switch
-         : support any kind of data and a wide variety of comparison operations
-         let vegetable = "red pepper"
-         switch vegetable {
-         case "celery":
-             print("Add some raisins and make ants on a log.")
-         case "cucumber", "watercress":
-             print("That would make a good tea sandwich.")
-         case let x where x.hasSuffix("pepper"):
-             print("Is it a spicy \(x)?")
-         default:    =// NOTE=
-             print("Everything tastes good in soup.")
-         }
-       - for-in
-         : iterate over items in a dictionary
-         let interestingNumbers = [
-             "Prime": [2, 3, 5, 7, 11, 13],
-             "Fibonacci": [1, 1, 2, 3, 5, 8],
-             "Square": [1, 4, 9, 16, 25],
-         ]
-         var largest = 0
-         for (kind, numbers) in interestingNumbers {  =// providing a pair of names to use for each key-value pair=
-             for number in numbers {
-                 if number > largest {
-                     largest = number
-                 }
-             }
-         }
-         print(largest)
+        : an simpler way to include values in strings
+        : Write the value in parentheses, and write a backslash (\) before the parentheses
+        let apples = 3
+        let oranges = 5
+        let appleSummary = "I have \(apples) apples."
+        let fruitSummary = "I have \(apples + oranges) pieces of fruit."
+      - 数组 字典 arrays and dictionaries
+        : Create arrays and dictionaries using brackets ([]), and access their elements by writing the index or key in brackets. A comma is allowed after the last element
+        1. var shoppingList = ["catfish", "water", "tulips", "blue paint"]
+        2. shoppingList[1] = "bottle of water"
+        3.
+        4. var occupations = [
+        5. "Malcolm": "Captain",
+        6. "Kaylee": "Mechanic",
+        7. ]
+        8. occupations["Jayne"] = "Public Relations"
+        : To create an empty array or dictionary
+        : use the initializer syntax
+        1. let emptyArray = [String]()
+        2. let emptyDictionary = [String: Float]()
+        : write an empty array as [] and an empty dictionary as [:]
+        1. shoppingList = []
+        2. occupations = [:]
+***** 控制流 control flow
+      - if
+        : Use if and switch to make conditionals
+        let individualScores = [75, 43, 103, 87, 12]
+        var teamScore = 0
+        for score in individualScores {
+            if score > 50 {
+                teamScore += 3
+            } else {
+                teamScore += 1
+            }
+        }
+        : NOTE: In an if statement, the conditional must be a Boolean expressio
+        :       this means that code such as if score { ... } is an error, not an implicit comparison to zero
+      - optional value and default value
+        : use if and let together to work with values that might be missing
+        var optionalString: String? = "Hello"    =// Write a question mark (?) after the type of a value to mark the value as optional=
+                                                 =// An optional value either contains a value or contains nil to indicate that a value is missing=
+        print(optionalString == nil)
+        var optionalName: String? = "John Appleseed"
+        var greeting = "Hello!"
+        if let name = optionalName {
+            greeting = "Hello, \(name)"
+        }
+        : Another way to handle optional values
+        let nickName: String? = nil
+        let fullName: String = "John Appleseed"
+        let informalGreeting = "Hi \(nickName ?? fullName)"  =// provide a default value using the ?? operator. If the optional value is missing, the default value is used instead=
+      - switch
+        : support any kind of data and a wide variety of comparison operations
+        let vegetable = "red pepper"
+        switch vegetable {
+        case "celery":
+            print("Add some raisins and make ants on a log.")
+        case "cucumber", "watercress":
+            print("That would make a good tea sandwich.")
+        case let x where x.hasSuffix("pepper"):
+            print("Is it a spicy \(x)?")
+        default:    =// NOTE=
+            print("Everything tastes good in soup.")
+        }
+      - for-in
+        : iterate over items in a dictionary
+        let interestingNumbers = [
+            "Prime": [2, 3, 5, 7, 11, 13],
+            "Fibonacci": [1, 1, 2, 3, 5, 8],
+            "Square": [1, 4, 9, 16, 25],
+        ]
+        var largest = 0
+        for (kind, numbers) in interestingNumbers {  =// providing a pair of names to use for each key-value pair=
+            for number in numbers {
+                if number > largest {
+                    largest = number
+                }
+            }
+        }
+        print(largest)
 
-         : range
-         var total = 0
-         for i in 0..<4 {  =// Use ..< to make a range that omits its upper value, and use ... to make a range that includes both values=
-                 total += i
-         }
-         print(total)
-       - while
-         var n = 2
-         while n < 100 {  =// repeat a block of code until a condition changes=
-             n = n * 2
-         }
-         print(n)
+        : range
+        var total = 0
+        for i in 0..<4 {  =// Use ..< to make a range that omits its upper value, and use ... to make a range that includes both values=
+                total += i
+        }
+        print(total)
+      - while
+        var n = 2
+        while n < 100 {  =// repeat a block of code until a condition changes=
+            n = n * 2
+        }
+        print(n)
 
-         var m = 2
-         repeat {
-             m = m * 2
-         } while m < 100  =// The condition of a loop can be at the end instead, ensuring that the loop is run at least once=
-         print(m)
-****** 函数和闭包 functin and closures
-       - function
-         : Use func to declare a function
-         : Call a function by following its name with a list of arguments in parentheses
-         : Use -> to separate the parameter names and types from the function’s return type.
-         func greet(person: String, day: String) -> String {
-             return "Hello \(person), today is \(day)."
-         }
-         greet(person:"Bob", day: "Tuesday")  =// By default, functions use their parameter names as labels for their arguments=
+        var m = 2
+        repeat {
+            m = m * 2
+        } while m < 100  =// The condition of a loop can be at the end instead, ensuring that the loop is run at least once=
+        print(m)
+***** 函数和闭包 functin and closures
+      - function
+        : Use func to declare a function
+        : Call a function by following its name with a list of arguments in parentheses
+        : Use -> to separate the parameter names and types from the function’s return type.
+        func greet(person: String, day: String) -> String {
+            return "Hello \(person), today is \(day)."
+        }
+        greet(person:"Bob", day: "Tuesday")  =// By default, functions use their parameter names as labels for their arguments=
 
-         : custom arguments
-         func greet(_ person: String, on day: String) -> String {  =// Write a custom argument label before the parameter name, or write _ to use no argument label=
-             return "Hello \(person), today is \(day)."
-         }
-         greet("John", on: "Wednesday")
+        : custom arguments
+        func greet(_ person: String, on day: String) -> String {  =// Write a custom argument label before the parameter name, or write _ to use no argument label=
+            return "Hello \(person), today is \(day)."
+        }
+        greet("John", on: "Wednesday")
 
-         : tuple
-         : Use a tuple to make a compound value
-         func calculateStatistics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
-             var min = scores[0]
-             var max = scores[0]
-             var sum = 0
+        : tuple
+        : Use a tuple to make a compound value
+        func calculateStatistics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
+            var min = scores[0]
+            var max = scores[0]
+            var sum = 0
 
-             for score in scores {
-                 if score > max {
-                     max = score
-                 } else if score < min {
-                     min = score
-                 }
-                 sum += score
-             }
-             return (min, max, sum)
-         }
-         let statistics = calculateStatistics(scores:[5, 3, 100, 3, 9])
-         print(statistics.sum)
-         print(statistics.2)
+            for score in scores {
+                if score > max {
+                    max = score
+                } else if score < min {
+                    min = score
+                }
+                sum += score
+            }
+            return (min, max, sum)
+        }
+        let statistics = calculateStatistics(scores:[5, 3, 100, 3, 9])
+        print(statistics.sum)
+        print(statistics.2)
 ** rust
 *** READING Rust程序设计语言 the rust programming language
 **** 第一版 first version
@@ -14361,6 +15088,9 @@
     alt + F1          view | project structure or other
     alt + cmd + t     code | surround with
 ** emacs
+*** ivy
+    C-x C-f
+        C-k
 *** ibuffer
     t  mark all
 *** ansi-term
@@ -14389,6 +15119,8 @@
      :g/^[ |\t]*$/d   删除带tab或空白字符的空行
 **** operator
      r {word}    replace
+     C-f C-b
+     M-f M-b
 *** org
 **** attach
      y  symbolic-link
@@ -14403,6 +15135,8 @@
     pdf-view-kill-ring-save    copy/paste
 *** projectile
     C-c pf    find file in current project
+*** bookmark
+    bookmark-load    bookmark.el
 *** dired
     + 创建目录
     D 立刻删除某个文件
@@ -14424,3 +15158,5 @@
     # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 *** help
     C-h b    keybinding
+    C-h r    emacs bible
+    C-h ?    what you are looking for

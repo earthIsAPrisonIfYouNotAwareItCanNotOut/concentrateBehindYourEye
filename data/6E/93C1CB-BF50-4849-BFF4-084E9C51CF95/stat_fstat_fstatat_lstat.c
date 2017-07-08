@@ -1,1 +1,0 @@
-/Users/sb/Github/keepAwakeWhenSleeping/c/advanced programming in the unix environment/files and directories/stat_fstat_fstatat_lstat.c
