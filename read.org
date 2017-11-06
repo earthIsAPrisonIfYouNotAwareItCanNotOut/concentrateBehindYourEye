@@ -1,6 +1,5 @@
-#+TODO: READING | READED ABANDON WAITING
 * version control
-** READED github入门与实践
+** PROJECT github入门与实践
    :PROPERTIES:
    :COLUMNS:   %25ITEM %55CLOCK %30INTRODUCE %50TOPIC
    :END:
@@ -512,7 +511,7 @@
     :INTRODUCE:  分享代码片段
     :TOPIC:      275
     :END:
-** READING pro git
+** PROJECT pro git
 *** 起步 get start
 **** 基础要点 git basics
 ***** 直接快照 而非比较差异 snapshotss not differences
@@ -824,442 +823,9 @@
        分叉了的分支历史
 **** 基本的分支与合并 basic branching and merging
 * computer science
-** READING 计算机程序的构造和解释 sicp
-*** 目录 17
-*** 构造过程抽象 19
-    - lisp
-      - scheme
-**** 程序设计的基本要素 The Elements of Programming 3 6
-     - 语言
-       - 三种机制  three mechanisms
-         基本表达形式  primitive expression
-         组合的方法    means of combination
-         抽象的方法    means of abstraction
-       - 处理要素  elements
-         过程       procedures
-         数据       data
-***** 表达式 expressions
-      - 基本表达式  number
-        486
-      - 组合表达式  combinations
-            (+         22        44)
-           运算符          运算元
-          operator       operands
-      - 嵌套表达式  nested
-        (+ (- 22 11) (* 2
-                        (+ 2 2)))
-***** 命名和环境 naming and environment
-          environment     memory
-             环境     -     存储
-                            |
-                     name-object pairs
-                          键值对
-          (define     size      2)
-            定义       变量     对象
-          naming    variable  object
-***** 结合式的求值 Evaluating Combinations
-      Evaluating Combinations           leftmost subexpression(the operator)                     Subexpressions of the combination(the operands)
-               求值                =             最左子表达式(运算符)                   ＋                        其他子表达式的值(运算对象)
-                                                                                                                         |
-                                                                                                  nested operator                         nested operands
-                                                                                                  最左子表达式(运算符)          +            其他子表达式的值(运算对象)
-                                                                                                                                                    |
-                                                                                                                                                   ...
-***** 复合过程 Compound Procedures
-      procedure definitions
-      (define                  (<name>    <formal parameters>)   <body> )
-                               关联符号           形式参数          表达式
-      (define                  (square              x        )   (* x x))
-      (square 3)
-       => 9
-***** 过程应用的代换模型 substitution model
-      - 代换模型 substitution mode
-        (f 5)                                   combination f 组合式
-        (sum-of-squares (+ a 1) (* a 2))        retrieving the body f
-        (sum-of-squares (+ 5 1) (* 5 2))        replace argument 5
-        (+ (square 6) (square 10))              reduce to the evaluation of a combination with two operands 运算对象
-        (+ (* 6 6) (* 10 10))                   definition of square
-        (+ 36 100)
-        136
-      - 应用序 application order 与 正则序 normal order
-                                      (sum-of-squares (+ 5 1) (* 5 2))
-                                    /                                 \
-                   正则序求值(完全展开)                                   应用序求值(避免重复求值)
-        (+ (square (+ 5 1))   (square (* 5 2))  )                   (+ (square 6) (square 10))
-        (+ (* (+ 5 1)(+ 5 1)) (* (* 5 1)(* 5 1)))                   (+ (* 6 6) (* 10 10))
-***** 条件表达式和谓词 conditional expressions and predicates
-      - case analysis
-            /  x    if x > 0
-        |x|    0    if x = 0
-            \  -x   if x < 0
-      - conditional expressions and predicates
-        - (cond <p> <e>)
-            cond - conditional expression
-            p - predicates
-
-            (define (abs x)
-              (cond ((> x 0) x)
-                    ((= x 0) 0)
-                    ((< x 0) (-x))))
-      - absolute-value procedure
-        - else
-          (define (abs x)
-             (cond ((> x 0) x)
-                   (else (-x))))
-        - (if <predicate> <consequent> <alternative>)
-            predicate -- true    consequent
-                      \  false   alternative
-
-            (define (abs x)
-              (if (< x 0)
-                  (-x)
-                  x))
-        - (and <e1> ... <en>)
-                    | \
-                    |   = false    if <ef> = false     (1 <= f <= n)
-                  = true    if all <e> = true
-
-          (and (> x 5) (< x 10))
-        - (or <e1> ... <en>)
-                    | \
-                    |   = true    if <ef> = true     (1 <= f <= n)
-                  = false    if all <e> = false
-
-          (define (>= x y)
-            (or (> x y) (= x y)))
-        - (not <e>)
-                | \
-                |   = true    if <e> = false
-              = false    if <e> = true
-
-          (define (>= x y)
-            (not (< x y)))
-***** 实例: 采用牛顿法求平方根 example: square roots by newton's method
-      - 牛顿法特例求平方根
-        求2的平方根
-        | Guess | Quotient        | Average                   |
-        |-------+-----------------+---------------------------|
-        |     1 | (2/1) = 2       | ((2 + 1)/2) = 1.5         |
-        |   1.5 | (2/1.5) = 1.333 | ((1.333 + 1.5)/2) = 1.416 |
-        | 1.416 | ...             | ...                       |
-
-        - lisp 实现
-
-          (define (sqrt-iter guess x)                     (define (sqrt-iter guess x)          [[new-if]]
-            (if (good-enough? guess x)                      (new-if (good-enough? guess x)
-                guess                                               guess
-                (sqrt-iter (improve guess x) x)))                   (sqrt-iter (improve guess x) x)))
-
-          (define (improve guess x)
-            (average guess (/ x guess)))
-
-          (define (average x y)
-            (/ (+ x y) 2))
-
-          (define (good-enough? guess x)                  (define (good-enough? old-guess new-guess)   [[good-enough?]]
-            (< (abs (- (square guess) x)) 0.001))             (> 0.01
-                                                                  (/ (abs (- new-guess old-guess))
-                                                                                      old-guess)))
-          - <<new-if>>
-            对于重新定义的 if 函数 new-if     [fn:new-if]
-            他没有 if 所具有的 特殊形式       [fn:特殊形式]
-            sqrt-iter 函数将被无限递归调用
-          - <<good-enough?>>
-            书本给出的 sqrt 函数 (平方根之差0.001)
-            对于特别小的数 0.00009 无法给出正确的数
-            对于特别大的数 由于小数精度精度不足 会出现死循环
-
-[fn:new-if] (define (new-if predicate then-clause else-clause)
-              (cond (predicate then-clause)
-                    (else else-clause)))
-[fn:特殊形式] 根据编译器所使用的 应用序求序规则
-             每个函数的实际参数在传入时都会被求值
-
-             示例:
-             (if #t (display "good") (display "bad"))
-             -> good
-             (new-if #t (display "good") (display "bad"))
-             -> badgood
-***** 过程作为黑箱抽象 Procedures as Black-Box Abstractions
-      - sprt 过程分解
-        一个过程应该隐藏起一些细节 So a procedure definition should be able to suppress detail.
-        用户在使用一个过程时 应该不需要去弄清楚如何实现的 A user should not need to know how the procedure is implemented in order to use it
-        |--------+-------------+-----------+---------+---------|
-        |        |             | sprt      |         |         |
-        |        |             | sqrt-iter |         |         |
-        |        | good-enough |           | improve |         |
-        | square | abs         |           |         | average |
-      - 局部名 local names
-        过程的意义不应该依赖于作者为形式参数所选用的名称 a procedure should be independent of the parameter names used by its author
-
-        ;;  the x in good-enough? must be a different x than the one in square
-        (define (good-enough? guess x)
-          (< (abs (- (square guess) x))
-                                0.001))
-      - 内部定义 块结构 Internal definitions and block structure
-
-        将 x 作为参数在过程之间 显示传递
-        (define (sqrt x)
-          (define (good-enough? guess x)
-            (< (abs (- (square guess) x)) 0.001))
-          (define (improve guess x) (average guess (/ x guess)))
-          (define (sqrt-iter guess x)
-            (if (good-enough? guess x)
-                guess
-                (sqrt-iter (improve guess x) x)))
-          (sqrt-iter 1.0 x))
-
-        由于过程都定义在sqrt里 x在sqrt里受约束
-        可以让x作为内部定义的自由变量
-        词法作用域 lexical scoping
-        (define (sqrt x)
-          (define (good-enough? guess)
-            (< (abs (- (square guess) x)) 0.001))
-          (define (improve guess)
-            (average guess (/ x guess)))
-          (define (sqrt-iter guess)
-            (if (good-enough? guess)
-                guess
-                (sqrt-iter (improve guess))))
-        (sqrt-iter 1.0))
-
-**** 过程与它们所产生的计算 Procedures and the Processes They Generate 20 40
-     考察一些简单过程产生的计算过程的 ‘形状’ 研究其消耗资源的速率
-     learn to visualize the processes generated by various types of procedures
-     learn to reliably construct programs that exhibit the desired behavior
-***** 线性递归和迭代 Linear Recursion and Iteration
-      - 计算阶乘
-        - 线性 递归计算过程 linear recursive process
-          (factorial 3)
-          (* 3 (factorial 2))
-          (* 3 ())
-          (* 3 (* 2 (factorial 1)))
-          
-          (define factorial n
-              if(= n 1)
-                 1
-          (* n (factorial (- n 1))))
-        - 线性 迭代计算过程 linear iterative process <<迭代相关>>
-          (factorial 6)
-          (fact-iter 1 1 6)
-          (fact-iter 1 2 6)
-          (fact-iter 2 3 6)
-          (fact-iter 6 4 6)
-          (fact-iter 24 5 6)
-          (fact-iter 120 6 6)
-          (fact-iter 720 7 6)
-
-          (define (factorial n)
-          (define j(iter product counter)
-            (if (> counter n)
-                product
-                (iter (* counter product)
-                        (+ counter 1))))
-          (iter 1 1))
-      - Ackermann’s function
-        (define (A x y)
-            (cond ((= y 0) 0)
-                ((= x 0) (* 2 y))
-                ((= y 1) 2)
-                (else (A (- x 1) (A x (- y 1))))))
-
-        (A 0 n)      2n
-        (A 1 n)      2^n
-        (A 2 n)      2^2^(n-1)
-***** 树形递归 Tree Recursion
-      - 斐波那契数列 Fibonacci numbers
-        0, 1, 1, 2, 3, 5, 8, 13, 21, ....
-        - 树形递归 prototypical tree recursion
-          (define (fib n)
-            (cond ((= n 0) 0)
-                  ((= n 1) 1)
-                  (else (+ (fib (- n 1))
-                       (fib (- n 2))))))
-          - 黄金分割 golden ratio
-            φ = (1+√5)/2 ≈ 1.6180
-            φ^2 = φ + 1
-        - 线性递归 linear iteration
-          (define (fib n) (fib-iter 1 0 n))
-            (define (fib-iter a b count)
-              (if (= count 0)
-                  b
-                  (fib-iter (+ a b) a (- count 1))))
-      - 换零钱 Counting change
-        - 采用状态变量的迭代 iteration with state variables [[Θ]]
-
-          (define (count-change amount) (cc amount 5))
-
-          (define (cc amount kinds-of-coins)
-              (cond ((= amount 0) 1)
-                    ((or (< amount 0) (= kinds-of-coins 0)) 0)
-                    (else (+ (cc amount
-                                  (- kinds-of-coins 1))
-                             (cc (- amount
-                                  (first-denomination
-                                     kinds-of-coins))
-                                  kinds-of-coins)))))
-
-          (define (first-denomination kinds-of-coins)
-            (cond ((= kinds-of-coins 1) 1)
-                  ((= kinds-of-coins 2) 5)
-                  ((= kinds-of-coins 3) 10)
-                  ((= kinds-of-coins 4) 25)
-                  ((= kinds-of-coins 5) 50)))
-      - 帕斯卡三角 Pascal’s triangle
-                    1
-                   1 1
-                  1 2 1
-                 1 3 3 1
-                1 4 6 4 1
-                   ...
-        - 迭代
-          相比较递归方式 没有最大递归深度限制 效率高 [[迭代相关]]
-          - 计算方法
-            (row col) = row! / col!(row - col)!
-
-          (define (factorial n)
-            (fact-iter 1 1 n))
-
-          (define (fact-iter product counter max-count)
-              (if (> counter max-count)
-                  product
-                  (fact-iter (* counter product)
-                             (+ counter 1)
-                             max-count)))
-
-          (define (pascal row col)
-              (/ (factorial row)
-                 (* (factorial col)
-                    (factorial (- row col)))))
-***** 增长的阶 Orders of Growth
-      - 换零钱 Counting change <<Θ>>
-        - 流程图 graph
-          (count-change 11)
-          |----------+-----------+----------+----------|
-          | cc(11 5) | cc(-39 5) |          |          |
-          | cc(11 4) | cc(-14 4) |          |          |
-          | cc(11 3) | cc(1 3)   | cc(-9 2) |          |
-          |          | cc(1 2)   | cc(-4 2) |          |
-          |          | cc(1 1)   | *cc(0 1)*  |          |
-          | cc(11 2) | cc(6 2)   | cc(1 2)  | cc(-4 2) |
-          |          |           | cc(1 1)  | *cc(0 1)*  |
-          |          |           | cc(1 0)  |          |
-          |          | cc(6 1)   | cc(6 0)  |          |
-          |          | cc(5 1)   | cc(5 0)  |          |
-          |          | ...       |          |          |
-          |          | cc(1 1)   | *cc(0 1)*  |          |
-          |          | cc(1 0)   |          |          |
-          | cc(11 1) | cc(10 1)  | cc(10 0) |          |
-          |          | cc(9 1)   | cc(9 0)  |          |
-          |          | ...       |          |          |
-          |          | cc(1 1)   | *cc(0 1)*  |          |
-          |          | cc(1 0)   |          |          |
-          | cc(11 0) |           |          |          |
-
-        - 空间增长阶 the orders of growth of the space
-
-          | Θ(n)    | Θ(n^2)              | Θ(n^k)  |
-          |---------+---------------------+---------|
-          | cc(n 1) | cc(n 2)             | cc(n k) |
-          |         | cc(n 1) + cc(n-5 2) |         |
-          |         | Θ(n) * n/5          |         |
-***** 求幂 exponentiation
-      b^n
-      b^n = b * b^(n-1)
-      b^0 = 1
-      - linear recusive process (less code)
-        (define (expt b n)
-          (if (= n 0)
-              1
-              (* b (expt b (- n 1)))))
-      - linear iteration (less space)
-        (define (expt b n)
-          (expt-iter b n 1))
-        (define (expt-iter b counter product)
-          (if (= counter 0)
-              product
-              (expt-iter b
-                         (- counter 1)
-                         (* b product))))
-
-      b^2 = b * b
-      b^4 = b^2 * b^2
-      b^8 = b^4 * b^4
-      b^n = (b^(n/2))^2  ; n is even
-      b^n = b * b^(n-1)
-      - linear iterator (less step)
-        (define (fast-expt b n)
-          (define (iter a b n)
-            (cond ((= n 0) a)
-                  ((even? n) (iter a (square b) (/ n 2))) ;  predicate n is even
-                  (else (iter (* a b) b (- n 1)))))
-          (iter 1 b n))
-
-        (define (square x) (* x x))
-***** 最大公约数 greatest common divisors (GCD)
-      a % b = r
-      GCD(a,b) = GCD(b,r)
-      - Euclid's Algrithm
-        (define (gcd a b)
-          (if (= b 0)
-              a
-              (gcd (remainder a b))))
-      b >= Fib(k) ~ Φ^k / √5
-      - lame's Thearem
-        if Euclid's Algorithm requires k steps
-        the smaller one must be greater than or equal to the k^th fibonacci number
-***** 实例 素数检测 example testing for primality
-      - 寻找因子 searching for divisors (have order of growth Θ(sqrt(n))
-        : The following program finds the smallest integral divisor (greater than 1) of a given number n
-        =;; It does this in a straightforward way, by testing n for divisibility by successive integers starting with 2=
-        (define (smallest-divisor n)
-          (find-divisor n 2))
-        =;; The end test for find-divisor is based on the fact that if n is not prime it must have a divisor less than or equal to sqrt(n)=
-        (define (find-divisor n test-divisor)
-          (cond ((> (square test-divisor) n) n)
-                ((divides? test-divisor n) test-divisor)
-                (else (find-divisor n (+ test-divisor 1)))))
-
-        (define (divides? a b)
-          (= (remainder b a) 0))
-
-        =;; We can test whether a number is prime as follows:
-        ;;    n is prime if and only if n is its own smallest divisor=
-        (define (prime? n)
-          (= n (smallest-divisor n)))
-      - 费马检查 the fermat test
-        based on a result from number theory known as *Fermat’s Little Theorem*
-        - 费马小定理 Fermat's Little Theorem
-          If n is a prime number and a is any posi- tive integer less than n, then a raised to the nth power is congruent to a modulo n
-          (Two numbers are said to be congruent modulo n if they both have the same remainder when divided by n)
-          a^n % n = a % n
-        - 实现费马检查
-          (define (expmod base exp m)
-             (cond ((= exp 0) 1)
-                   ((even? exp)
-                    (remainder (square (expmod base (/ exp 2) m))
-                                m))
-                   (else
-                    (remainder (* base (expmod base (- exp 1) m))
-                                m))))
-        - 验证
-          =;; The Fermat test is performed by choosing at random a number a be- tween 1 and n − 1 inclusive and checking whether the remainder modulo n of the nth power of a is equal to a=
-          (define (fermat-test n)
-            (define (try-it a)
-              (= (expmod a n n) a))
-            (try-it (+ 1 (random (- n 1)))))
-      - 费马检查的概率性 Probabilistic methods
-        if n ever fails the Fermat test, we can be certain that n is not prime
-        - But the fact that n passes the test, while an extremely strong indication, is still not a guarantee that n is prime
-          There do exist numbers that fool the Fermat test:
-            numbers n that are not prime and yet have the property that an is congruent to a modulo n for all integers a < n
-        - the Probabilistic methods for Fermat test
-          If n passes the test for two random choices of a, the chances are better than 3 out of 4 that n is prime
-          The existence of tests for which one can prove that the chance of error becomes arbitrarily small has sparked interest in algorithms of this type
-            which have come to be known as probabilistic algorithms
-        - the apply of Probabilistic methods
-          cryptography, electronic funds transfer, and information retrieval
-** READING 代码大全
+** PROJECT sicp
+*** short contents 3
+** PROJECT 代码大全
 *** 打好基础 laying the foundation
 **** 软件构建的世界
 ***** 什么是软件构建 40
@@ -1553,8 +1119,7 @@
 ******* 隐藏秘密(信息隐藏) Hide Secrets (Information Hiding)
         隐藏复杂度 好的类接口大部分内容都不会暴露出来
         隐藏变化源 减少改动所影响的代码量
-** READED 程序员的修炼之道 the pragmatic programmer, from journeyman to master
-   CLOSED: [2017-02-19 日 17:48]
+** DONE 程序员的修炼之道 the pragmatic programmer, from journeyman to master
 *** 注重实效的哲学 21 pragmatic philosophy 18
 **** 我的源码给猫吃了 the cat ate my source code
      提供各种选择 不要找蹩脚的借口 *provide options  don't make lame excuses*
@@ -1995,55 +1560,26 @@
      - 尊重他人的代码
        黄金法则 do unto others as you would have them do unto you
      - 在大型项目中匿名
-** READING 编译原理 compilers principles, techniques & tools
-*** 第一章 引论  chapter 1 introduction  17 24
-    介绍设计和实现编译器的方法  the book is about how to design and implement compilers
-**** 语言处理器  language processors  17 24
-    ------------- 编译器 -------------    ------------------- 解释器 ---------------
-                  源程序                       源程序     >
-              source program              source program      [[解释器]]     >     输出
-                    V                                      interpreter       output
-                  [[编译器]]                        输入      >
-                 Compiler                     input
-                    V
-     输入    >    [[目标程序]]    >    输出
-    input     target program    output
-
-    ----------------------------------------------------------------------------- [[java混合编译器]] -------------------------------------------------------------------------------
-                                                                                hybird compiler
-           源程序
-       source program            (1) 源程序     >  (1) [[预处理器]]   >     (1) 经过预处理的源程序
-       (1)   v                 source program     preprocessor      modified source program
-           [[翻译器]]                                                              v
-         translator                                                     (2) 编译器    >      (2) 目标汇编程序       >  (2) [[汇编器]]   >      (2) 可重定位机器码
-             v            (2)                                              compiler     target assembly program      assembler      relocatable machine code
-          [[中间程序]]          >                    (3)                                                                                             v
-    intermediate program            虚拟机        >    输出                          (3) 库文件        (3) 其他可重定位机器码文件     >    (3) [[链接器]]   [[加载器]]   >     (3) 目标机器代码
-                               virtual machine       output                       library files     relocalable object files             linker  loader       taget machine code
-            输入            >
-           input
-
+** PROJECT 编译原理 (龙书)
+*** chapter 1 introduction
+    the book is about how to design and implement compilers
+**** language processors
+     : a compiler *
+     : target program *
+     : an interpreter *
+     : a hybrid compiler *
     - <<编译器>>
       阅读某一种语言(源程序)编写的程序 并翻译成一个等价的 另一种语言(目标程序)编写的程序
-      a compiler is a program that can read a program in one language - source program -
-      and translate into an equivalent program in another language - the target language -
       - <<目标程序>>
         如果是一个可执行的机器语言程序 那么它可以被用户调用 处理 并产生输出
-        If the target program is an executable machine-language program, it can
-        then be called by the user to process inputs and produce outputs
     - <<解释器>>
       从用户的角度来看 解释器直接利用用户提供的输入执行源程序中指定的操作
-      an interpreter appears to directly execute the operations specifled
-      in the source program on inputs supplied by the user
     - <<混合编译器>>
       结合了编译和解释的过程
-      combine compilation and interpretation
       - <<翻译器>>
         源程序首先被翻译成被称为 字节码 的中间表示形式
-        source program may first be compiled into an intermediate form called /bytecodes/
         - <<中间程序>>
           可以在任何虚拟机上运行的字节码
-          bytecodes compiled on one machine can
         - <<预处理器>>
           一个源程序可能被分割成多个模块存放于独立的文件中 预处理器将这些程序聚合在一起 还负责解读宏的缩写形式
           A source program may be divided into modules stored in separate files.
@@ -2404,10 +1940,15 @@
          and we know that it is impossible for this binding
            to change when the program executes
 ****** static cope and block structure
-** READING 跟我一起写 Makefile
+** PROJECT 跟我一起写 Makefile
 *** 
 * algorithm
-** ABANDON 算法导论 introduction to algorithmns
+** CANCELLED 算法导论 introduction to algorithmns
+   CLOSED: [2017-09-17 日 10:19]
+   :LOGBOOK:  
+   - State "CANCELLED"  from ""           [2017-09-17 日 10:19] \\
+     far more complex for me, may be reopen sometimes
+   :END:      
 *** 基础知识 foundations
     第一章 综述
     第二章 排序
@@ -2509,8 +2050,8 @@
                                                                      L []               R []                          (8)
 *** 数学基础知识 appendix mathematical background
 **** 求和 summations
-** READING 计算机程序设计艺术 the art of computer program
-*** READING 第一卷
+** CANCELLED 计算机程序设计艺术 the art of computer program
+*** PROJECT 第一卷
     :PROPERTIES:
     :COLUMNS:  %20ITEM %50DISCRIBE %50OVERVIEW %30MATHEMATIC
     :END:
@@ -2783,96 +2324,8 @@
           eʳ (the interest for 1 dollar)
 ***** 和与积 sums and products
      
-** ABANDON 算法的乐趣
-   CLOSED: [2017-02-10 五 16:09]
-*** READING 
-    :LOGBOOK:  
-    CLOCK: [2016-08-27 六 16:42]--[2016-08-27 六 16:46] =>  0:04
-    :END:      
-    :PROPERTIES:
-    :COLUMNS:    %25ITEM %55CLOCK %1LEVEL %USED
-    :LEVEL_ALL:  "A" "B" "C"
-    :END:
-**** 循环
-***** 单循环
-****** 小九宫格遍历
-       :LOGBOOK:  
-       CLOCK: [2016-08-27 六 17:34]--[2016-08-27 六 17:39] =>  0:05
-       CLOCK: [2016-08-27 六 16:50]--[2016-08-27 六 17:03] =>  0:13
-       :END:      
-       :PROPERTIES:
-       :CLOCK:
-       :LEVEL:   C
-       :USED:    0
-       :END:
-       #+Name: <标记小九宫格>
-       #+BEGIN_SRC <c++>
-          for(int i = 0; i < 9; i++)
-          {
-             int row = i / 3;
-             int col = i % 3;
-             game -> cells[row][col].fixed = false;
-          }
-       #+END_SRC
-****** 出现相同的数的次数
-       :LOGBOOK:  
-       CLOCK: [2016-08-27 六 20:34]--[2016-08-27 六 20:40] =>  0:06
-       :END:      
-       :PROPERTIES:
-       :CLOCK:
-       :LEVEL:   C
-       :USED:    0
-       :END:
-       #+Name: <计算存储在value数组中取值范围1-100之间的相同的数的次数>
-       #+BEGIN_SRC <c++>
-          for(int i = 0; i < count; i++)
-             numCount[value[i] - 1]++;
-       #+END_SRC
-**** 递归
-***** 二叉树查找
-      :LOGBOOK:  
-      CLOCK: [2016-08-27 六 17:41]--[2016-08-27 六 17:50] =>  0:09
-      :END:      
-       :PROPERTIES:
-       :CLOCK:
-       :LEVEL:   C
-       :USED:    0
-       :END:
-       #+Name: <二叉树查找>
-       #+BEGIN_SRC <c++>
-          bool findNode(*tr , key)
-          {
-             if(tr == null)
-                return false;
-             if(tr -> key == key)
-                return true;
-
-             if(key < tr -> key)
-                return findNode(tr -> left, key)
-             else
-                return findNode(tr -> right, key)
-          }
-       #+END_SRC
-
-**** 判断
-***** 闰年
-      :LOGBOOK:  
-      CLOCK: [2016-08-27 六 20:19]--[2016-08-27 六 20:23] =>  0:04
-      :END:      
-      :PROPERTIES:
-      :CLOCK:
-      :LEVEL:   C
-      :USED:    0
-      :END:
-       #+Name: <闰年判断>
-       #+BEGIN_SRC <c++>
-          if(((year % 4 == 0) && (year % 100 !=0))|| (year % 400 == 0))
-          {
-
-          }
-       #+END_SRC
 * tools
-** READED vim实用技巧 Practical Vim
+** DONE vim实用技巧 Practical Vim
    :PROPERTIES:
    :COLUMNS:  %20ITEM %50SUMMARY %30SOURCE %OPERATE
    :END:
@@ -5684,7 +5137,12 @@
       :SUMMARY:    插入模式下 按原义插入寄存器文本 {register}是寄存器的名字
       :SOURCE:     :h i_CTRL-R_CTRL-P  <<:h i_CTRL-R_CTRL-P>>
       :END:      
-** ABANDON mastering-emacs
+** CANCELLED mastering-emacs
+   :LOGBOOK:  
+   - State "CANCELLED"  from ""           [2017-09-17 日 10:45] \\
+     emacs is so widely that one book can't override it
+     so read the doc is the better choice
+   :END:      
    :PROPERTIES:
    :COLUMNS:  %20ITEM %MEAN %SHOTCUTS
    :END:
@@ -7040,7 +6498,7 @@
 *** SQL
 *** Javascript
 ** shell
-*** READING TLCL (bash & zsh)
+*** PROJECT TLCL (bash & zsh)
 **** bash
 ***** shell
 ****** navigate                                                                 :code:
@@ -7536,7 +6994,7 @@
        :    |- make install
        install the final product in a system directory for use
 ** c
-*** READING unix环境高级编程 advanced programming in the unix environment
+*** PROJECT unix环境高级编程 advanced programming in the unix environment
 **** question record
 ***** include apue.h header
       cp ./apue.3e/include/apue.h /usr/local/include =# NOTE: not directory copy to /usr/include=
@@ -8323,7 +7781,7 @@
         an alternative to #define with the advantage that *the values can be generated* for you
         enumeration variables *offer the chance of checking* and so are often better than #defines
 ** c++
-*** READING C++ Primer
+*** PROJECT C++ Primer
 **** contents (En 4)
 **** getting started
 ***** writing a simple c++ program                                              :code:
@@ -8979,138 +8437,168 @@
           the constexpr specifier applies to the pointer
             not the type to which the pointer points
 ****** dealing with types
-******* type aliases
+******* type aliases                                                            :code:
+        type aliases let us simplify complicated type definitions
+          making those type easier to use
+          type aliases also let us emphasize the purpose for which a type is used
+        : typedef
+        declarations that include typedef define type aliases rather than variables
+        : using
+        an alias declaration starts with
+          the keyword using followed by the alias name and an =
+        : type name
+        a type alias is a type name and can appear wherever a type name can appear
+        : compound type
+        declarations that use type aliases that represent compound types
+        and const can yield surprising results
+        : alias error
+        it will make a interpret error
+          when declaration uses a type alias by conceptually replacing
+            the alias with its corresponding type
+******* the auto type specifier                                                 :code:
+        : auto
+        auto tells the compiler to deduce the type from the initializer
+        : a single base type
+        a declaration can involve only a single base type
+          the initializers for all the vairables in the declaration must
+            have types that are consistent with each other
+        : use a reference as an initializer
+        the reference's object type is auto's type deduction
+        : drop top-level
+        auto ordinarily ignores top-level consts
+        : reference to auto
+        when we ask for a reference to an auto-deduced type
+          top-level consts in the initializer are not ignored
+        : & and * in auto
+        when we define several variables in the same statement
+          it is important to remember that a reference or pointer is part of
+            a particular declarator
+          and not part of the base type for auto declaration
+******* the decltype specifier                                                  :code:
+        : decltype
+        sometimes we want to define a variable with
+          a type that the compiler deduces from an expression but
+            do not want to use that expression to initialize the variable
+        : return type
+        decltype returns the type of that variable
+          including top-level const and reference
+        : reference and decltype
+        decltype returns a reference type for expressions that
+          yield objects that can stand on the left-hand side of the assignment
+        : the expression in decltype
+        when we apply decltype to a variable without any parentheses
+          we get the type of that variable
+        if we wrap the variable's name in one or more sets of parentheses
+          the compiler will evaluate the operand as an expression
+****** defining our own data structures
+       in c++, we define our own data types by defining a class
+******* defining the Sales_data type                                            :fragment:
+        : Sales_data.h
+        : struct
+        our class begins with the keyword struct
+          followed by the name of the class and a class body
+        the keyword class that can be used to define our own data structures
+          we'll explain in that section why we use struct here in chapter 7
+        : semicolon at the end of a class
+        it is a common mistake among new programmers to forget
+          he semicolon at the end of a class definiton
+        : data member
+        our class has three data members
+          a member of type string named bookNo
+          an unsigned member named units_sold
+          and a member of type double named revenue
+        : in-class initializer
+        we can supply an in-class initializer for a data member
+          when we create objects
+            the in-class initializers will be used to initialize the data members
+        so we can define units_sold, revenue to be initialized to 0
+          bookNo will be initialized to the empty string
+******* using the Sales_data class                                              :fragment:
+        : Sales_data.cpp
+        : this program structure
+        : adding two Sales_data objects
+        because Sales_data provides no operations
+          we will have to write our own code to do
+            the input, output, and addition operations
+        : reading data into a Sales_data object
+        : printing the sum of two Sales_data objects
+        check the transactions are for the same ISBN
+          if so, we'll print their sum
+          otherwise, we'll print an error message
+******* writing our own header files                                            :fragment:
+        : Sales_data.h
+        : define class
+        classes are usually defined in header files
+          ensure that the class definition is the same in each header file
+        : header name
+        typically, classes are stored in headers whose name
+          derives from the name of the class
+          our Sales_data class in a header file named Sales_data.h
+        : the entities contain in header file
+        headers (usually) contain entities
+          such as class definitions and const and constexpr variables
+            that can be defined only once in any given file
+        headers often need to use facilities from other headers
+          like Sales_data.h include string header
+        NOTE
+        whenever a header is updated
+          the source files that use that header must be recompiled to
+            get the new or changed declarations
+
+        : preprocessor
+        the preprocessor is a program that runs before the compiler and
+          changes the source text of our programs
+          when preprocessor see #include
+            it replaces _#inlcude_ with the contents of the specified header
+        WARMMING
+        preprocessor variable names do not respect c++ scoping rules
+        : header guards
+        header guards rely on preprocessor variables
+        _#define_ take a name and defines that name as a preprocessor vairable
+        _#ifdef_ is true if the variable had been defined
+        _#ifndef_ is true if the variable has not been defined
+        if test is true, everything end up to _#endif_
+        TIP
+        header should have guards, even if they are not included by another header
+        : preprocessor variable
+        preprocessor variables have one of two possible state
+          defined or not defined
+        TIP
+        to avoid name clashes with other entities
+          preprocessor variables usually are written in all uppercase (like SALES_DATA_H)
+***** strings, vectors, and arrays
+****** namespace using declarations
+       : std namespace
+       up to now, our program use the library is in the std namespace
+       std::cin says that we want to use the name cin from the namespace std
+                and indicate to read from the standard input
+       : using declaration *
+       a using declaration lets us use a name from a namespace without
+         qualifying the name with a namespace_name::prefix
+         using namespace::name;
+       : headers should not include using declarations
+       the reason is that the contents of a header are copied
+         into the including program's text
+       if a header has a using declaration
+         then every program that includes that header gets that same using declaration
+         it might encounter unexpected name conflicts
+       NOTE
+       from this point on
+         to keep the code example short, we won't show the using declarations
+         nor will we show the necessary #include directives
+       Table [En 866] in appendix
+         include a lists of namespace which we use in this primer
+       WARNING
+       readers should be aware that they must add appropriate #include and
+         using declarations to our examples before compiling them
 ** lisp
-*** READING An Introduction to Programming in Emacs Lisp
-**** what is lisp                                                               :code:
-***** what is lists
-      : four different flowers *
-      a simple example of list
-      : numbers list *
-      list can also have numbers in them
-      : lists inside of lists *
-      since a program looks like data
-        one program may easily serve as data for another
-
-      : lisp atoms
-      a list in lisp consists of parentheses surrounding atoms separated by whitespace
-        or surrounding other lists
-        or surrounding both atoms and other lists
-      there are many kinds of atom in nature but only a few in lisp
-        "number", such as 37, 511, or 1729
-        and "symbols", such as '+', 'foo', or 'forward-line'
-        the meaning of the component letters of a lisp atom
-          are different from the meaning the letters make as a word
-          like the word for South American sloth, the 'ai'
-            is completely different from the two words, 'a' and 'i'
-      : empty list *
-      a list with nothing in it
-      : quoted text *
-      in lisp, all of the quoted text including
-        the punctuation mark and the blank space is a single atom
-
-      : format lists
-      the <TAB> key automatically indents the line the cursor is on
-      the command 'M-C-\' to properly indent the code in a region
-***** any list in lisp is a program ready to run
-      : evaluate
-      a list in lisp-any list-is a program ready to run
-        if you run it (for which the lisp jargon is "evaluate")
-        the computer will do one of three things
-          do nothing except return to you the list itself
-          send you a error message
-          treat the first symbol in the list as a command to do something
-      : '
-      the single apostrophe, ‘'’
-        that I put in front of some of the example lists
-        in preceding sections is called a "quote"
-        when it precedes a list
-          it tells lisp to do nothing with the list
-          other than take it as it is written
-        but if there is no quote preceding a list
-          the first item of the list is special
-            it is a command for the computer to obey
-      : C-x C-e *
-      how to evaluate a list
-***** generate an error message
-      : error and help
-      once you understand the jargon
-        error messages can be informative
-        instead of being called "error" messages
-          they should be called "help" messages
-      : debugger *
-      the error message is generated by a build-in GNU Emacs debugger
-        we will enter the debugger
-***** symbol names and fucntion definitions
-**** buffer ralated function
-**** How To Write Function Definitions                                          :[[info:eintr#Writing%20Defuns][info:eintr#Writing Defuns]]:
-***** defun                                                                     :ATTACH:
-      :PROPERTIES:
-      :Attachments: defun.el
-      :ID:       9CDC1234-24C2-4230-88EF-35F5E1AAE048
-      :END:
-      (defun FUNCTION-NAME (ARGUMENTS...)
-        "OPTIONAL-DOCUMENTATION..."
-        (interactive ARGUMENT-PASSING-INFO)     ; optional
-        BODY...)
-
-      example [C]
-***** set setq                                                                  :ATTACH:
-      :PROPERTIES:
-      :Attachments: set_setq.el
-      :ID:       1E6E4979-1CDB-46D1-A185-ECFB6F6CB21B
-      :END:
-      setq => set quote
-***** interactive "p\ncZap to char: "
-      interactive    can use M-x function-name
-      "p"            can pass the prefix argument C-u to the function
-      c              tell the function the name of the character to which to delete
-***** let                                                                       :ATTACH:
-      :PROPERTIES:
-      :Attachments: let.el
-      :ID:       37C5D2A6-1FED-4B3E-8B3C-0A02019B7ED1
-      :END:
-      like ‘setq’ that is temporary and local
-
-      (let ((VARIABLE VALUE)
-            (VARIABLE VALUE)
-            ...)
-        BODY...)
-***** if                                                                        :ATTACH:
-      :PROPERTIES:
-      :Attachments: if.el
-      :ID:       351E3532-A16C-4D53-B703-017DD6E862A3
-      :END:
-      (if TRUE-OR-FALSE-TEST
-          ACTION-TO-CARRY-OUT-IF-TEST-IS-TRUE)
-
-      - equal & eq
-        ‘equal’ returns true if the two objects have a similar structure and contents, such as two copies of the same book
-        ‘eq’, returns true if both arguments are actually the same object
-      - string< | string-lessp & string= | string-equal
-        The ‘string-lessp’ function tests whether its first argument is smaller than the second argument.
-          shortcut is string<
-        ‘string-equal’ provides the corresponding test for equality
-          shortcut is string=
-***** if else                                                                   :ATTACH:
-      :PROPERTIES:
-      :Attachments: if_else.el
-      :ID:       27C55C74-0307-466B-AE1C-8A183854C3E7
-      :END:
-      (if TRUE-OR-FALSE-TEST
-          ACTION-TO-CARRY-OUT-IF-THE-TEST-RETURNS-TRUE
-        ACTION-TO-CARRY-OUT-IF-THE-TEST-RETURNS-FALSE)
-***** nil                                                                       :ATTACH:
-      :PROPERTIES:
-      :Attachments: nil.el
-      :ID:       FB33DE4F-8B8B-488B-A259-FC139D618CB7
-      :END:
-      nil -> false
-**** even more complex function
-     
 ** java
-*** ABANDON java编程思想 thinking in java
-    CLOSED: [2017-08-26 六 10:14]
+*** CANCELLED java编程思想 thinking in java
+    CLOSED: [2017-09-17 日 11:40]
+    :LOGBOOK:  
+    - State "CANCELLED"  from ""           [2017-09-17 日 11:40] \\
+      some idea of this book is out of date
+    :END:      
 **** 对象入门 introduction to object
 ***** 抽象的进步 the progress of abstraction
       一切皆为对象
@@ -9446,7 +8934,7 @@
 **** annotations
 **** 多线程 concurrency
 **** 创建窗口和程序片 graphical userInterfaces
-*** READING core java volume I
+*** PROJECT core java volume I
 **** an introduction to java                                                    :code:
      : robust
      java provide many measures to protect the programming environment
@@ -9478,8 +8966,6 @@
      : java jargon
      : pick the right JDK
      : using the command-line tools
-**** fundamental programming structures in java
-***** a simple java program
 ** go
 *** WAITING go语言圣经 the go programming language
     CLOSED: [2017-04-16 日 14:10]
@@ -9654,7 +9140,7 @@
         %T              type of any value
         %%              literal percent sign (no operand)
 ** perl
-*** READING perl语言入门 learning perl
+*** PROJECT perl语言入门 learning perl
 **** 介绍 introduction
 ***** 编译 compile
       $ perl my_program
@@ -11238,7 +10724,7 @@
 **** 高级perl技巧 some advanced perl techniques
      some other techniques while not obligatory, are still valuable tools to have in your toolbox
 ***** 切片 slices
-*** READING perl编程语言 programming perl
+*** PROJECT perl编程语言 programming perl
 **** 前言 preface
      - 命令行 command line
        日常管理 manage     (T  En 35 | Cn 20)
@@ -11487,7 +10973,7 @@
             that a foreach wants to iterate over
         : breaking out - next and last
 ** python
-*** READING python document
+*** PROJECT python document
 **** python setup and usage
 ***** command line and environment                                                :[[https://docs.python.org/3/using/cmdline.html]]:
 ****** comand line
@@ -11518,221 +11004,13 @@
        $ pyenv global <version>  # 全局设置python版本为指定版本
        $ pyenv local <version>   # 设置当前路径下python版本为指定版本
        $ pyenv shell <version>   # 设置当前shell窗口使用的python版本为指定版本
-**** tutorial
-***** conventions
-      >>>             input
-      ...             output
-      _               the last printed expression is assigned to the variable
-      \               escape quotes
-      print()         format output things
-      r               raw string
-      """..."""
-      '''...'''       string span multiple lines
-      String          index slicing immutable
-      lists           index slicing concatenation mutable
-      end             avoid the newline after output
-***** using the python interpreter                                              :code:
-      : interactive mode
-      when commands are read from a tty
-        the interpreter is said to be in interactive mode
-      in this mode it prompts for the next command with primary prompt
-        usually three greater signs (>>>)
-      for continuation lines it prompts with the secondary prompt
-        by default three dots (...)
-      : source code encoding
-      by default, python source files are treated as encoded in UTF-8
-      to declare an encoding other than the default one
-        a special comment line should be added as the first line of the file
-***** an informal introduction to python                                        :code:
-      : number
-      : act as a simple calculator
-      start the interpreter
-        the interpreter acts as a simple caculator
-        you can type an expression at it and it will write the value
-      : the variable _
-      in interactive mode, the last printed expression is assigned to the variable _
-
-      : string
-      : double quote && single quote && escape
-      python string can be enclosed ('...') or double quotes ("...")
-        \ can be used to escape quotes
-      : raw strings
-      if you don't want characters prefaced by / to be interpreted as special characters
-        you can use raw strings by adding an r before the first quote
-      : multiple lines strings
-      string literals can span multiple lines
-      : string can be concatenated and repeated
-      : string can be indexed
-      : slice is also supported
-      : string cannot be changed
-
-      : lists
-      : group data type
-      list is used to group together a number of compound data types
-      : indexed and sliced
-      like string lists can be indexed an d sliced
-      : muttable
-      unlike string, which are immutable, lists are a mutable type
-      : nest list
-
-      : first programming
-      : Fibonacci series
-      the sum of two elements defines the next
-***** control flow                                                              :code:
-      : if
-      well-known statement type is the if
-
-      : for
-      python's for statement iterates over
-        the items of any sequence (a list or a string)
-      : for loop string
-      : modify the sequence
-      modify the sequence you are iterating over while inside the loop
-
-      : range
-      iterate over a sequence of numbers
-      : different step
-      it is possible to let the range start at another number
-        or to specify a different increment erent step
-      : iterate over the length of a sequence
-      in such case, it is convenient to use the enumerate() function
-
-      : break
-      terminate loop not by condition
-      : continue
-      jump to the next iteration of the loop
-      : pass
-      the pass statement does nothing
-        it can be used when a statement is required syntactically
-          but the program requires no action
-
-      : function
-      create a function
-      : rename function
-      : the return value of function
-      : default argument values
-      The most useful form is to specify a default value for one or more arguments
-      : keyword arguments
-      function can also be called using the form of key=value
-      : formal parameter
-      when function's argument in a format as
-        *name which can receives many 'value' like formal parameters
-        **name which can receives many 'key=value' like formal parameter
-      : arbitrary argument lists
-      to specify that a function can be called with an arbitrary number of arguments
-      : unpacking argument lists
-      you can unpack a list (or a tuple) arguments by using the formal parameter
-      : lambda expression
-      Lambda functions can be used wherever function objects are required
-        Like nested function definitions
-      : documentation strings
-      Here are some conventions
-        about the content and formatting of documentation strings
-        1. The first line should always be a concise summary of the object’s purpose
-        2. The following lines should be one or more paragraphs
-           describing the object’s calling conventions, its side effects, etc
-     : function annotations
-     Parameter annotations are defined by a colon after the parameter name
-       followed by an expression evaluating to the value of the annotation
-     Return annotations are defined by a literal ->
-       followed by an expression
-       between the parameter list and the colon denoting the end of the def statement
-
-     : intermezzo: coding style
-     For Python, *PEP 8* has emerged as the style guide that most projects adhere to
-       it promotes a very readable and eye-pleasing coding style
-       every python devleloper should read it at some point
-***** data structures
-**** the python language reference
-*** READING python cookbook
-**** 数据结构和算法 data structures and algorithms
-***** 解压序列赋值给多个变量 unpacking a sequence into separate variables
-      N个元素的元组或序列 解压后怎样同时赋值给N个变量 15
-      you have an N-element tuple or sequence that
-        you would like to unpack into a collection of N variables 19
-***** 解压可迭代对象赋值给多个变量 unpacking elements from iterables of arbitrary length
-      如果对象有N个元素 如何迭代解压到指定变量 17
-      you need to unpack N elements from an iterable
-        but the iterable may be longer than N elements 21
-***** 保留最后N个元素 keeping the last N items
-      在迭代或其他操作的时候 怎样保留最后有限个元素记录 19
-      you want to keep a limit history of the last few items seen
-        during iteration or during some other kind of processing 23
-***** 查找最大或最小的N个元素 finding the largest or smallest N items
-      怎样从一个集合中获得最大或者最小的N个元素列表 21
-      you want to make a list of the largest or smallest N items in a collection 25
-***** 实现一个优先级队列 implementing a priority queue
-      怎样实现一个按优先级排列的队列 这个队列上每次pop操作总是返回优先级最高的那个元素 22
-      you want to implement a queue that sorts items by a given priority
-        and always returns the item with the highest priority on each pop operation 26
-***** 字典中的键映射多个值 mapping keys to multiple values in a dictionary
-      怎样实现一个键对应多个值的字典 (multidict) 24
-      you want to make a dictionary that maps keys to more than one value (multidict) 29
-***** 字典排序 keeping dictionaries in order
-      创建一个字典 并且在迭代或序列化这个字典的时候能够控制元素的顺序 26
-      you want to create a dictionary
-        and you also want to control the order of items when iterating or serializing 30
-***** 字典的运算 calculating with dictionaries
-      怎样在字典中执行一些计算操作 (如最小值 最大值 排序) 27
-      you want to perform various calculations (e.g., minimum maximum value, sorting, etc.)
-        on a dictionary of data 31
-***** 查找两字典的相同点 finding commonalities in two dictionaries
-      怎样在两个字典中寻寻找相同点 (比如相同的键、相同的值等等) 29
-      You have two dictionaries and want to find out
-        what they might have in common (same keys, same values, etc.) 33
-***** 删除序列相同元素并保持顺序 removing duplicates from a sequence while maintaining order
-      怎样在一个序列上面保持元素顺序的同时消除重复的值 30
-      You want to eliminate the duplicate values in a sequence
-        but preserve the order of the remaining items 35
-***** 命名切片 naming a slice
-      你的程序已经出现一大堆已无法直视的硬编码切片下标，然后你想清理下代码 31
-      Your program has become an unreadable mess of hardcoded slice indices
-        and you want to clean it up 36
-***** 序列中出现次数最多的元素 determining the most frequently occurring items in a sequence
-      怎样找出一个序列中出现次数最多的元素呢 33
-      You have a sequence of items
-        and you’d like to determine the most frequently occurring items in the sequence 38
-***** 通过某个关键字排列一个字典列表 sorting a list of dictionaries by a common key
-      你有一个字典列表，你想根据某个或某几个字典字段来排序这个列表 34
-      You have a list of dictionaries
-        and you would like to sort the entries
-          according to one or more of the dictionary values 39
-***** 排列不支持原生比较的对象 sorting object without native comparison support
-      你想排序类型相同的对象，但是他们不支持原生的比较操作 36
-      You want to sort objects of the same class
-        but they don’t natively support comparison operations 41
-***** 通过某个字段将记录分组 group recoreds together based on a field
-      你有一个字典或者实例的序列，然后你想根据某个特定的字段比如 date 来分组迭代访问 37
-      You have a sequence of dictionaries or instances
-        and you want to iterate over the data in groups
-          based on the value of a particular field, such as date 42
-***** 过滤序列元素 filtering sequence elements
-      你有一个数据序列，想利用一些规则从中提取出需要的值或者是缩短序列 39
-      You have data inside of a sequence
-        and need to extract values or reduce the sequence using some criteria 44
-***** 从字典中提取子集 extracting a subset of a dictionary
-      你想构造一个字典，它是另外一个字典的子集 41
-      You want to make a dictionary that is a subset of another dictionary 46
-***** 映射名称到序列元素 mapping names to sequence elements
-      你有一段通过下标访问列表或者元组中元素的代码
-        但是这样有时候会使得你的代码难以阅读，于是你想通过名称来访问元素 42
-      You have code that accesses list or tuple elements by position
-        but this makes the code somewhat difficult to read at times
-        You’d also like to be less dependent on position in the structure by accessing the elements by name
-***** 转换并同时计算数据 transforming and reducing data at the same time
-      你需要在数据序列上执行聚集函数 (比如 sum() , min() , max() )
-        但是首先你需 要先转换或者过滤数据 44
-      You need to execute a reduction function (e.g., sum(), min(), max())
-        but first need to transform or filter the data 50
-***** 合并多个字典或映射 combining multiple mappings into a single mapping
-      现在有多个字典或者映射，你想将它们从逻辑上合并为一个单一的映射后执行某些操作
-        比如查找值或者检查某些键是否存在 46
-      You have multiple dictionaries or mappings that you want to logically
-        combine into a single mapping to perform certain operations
-        such as looking up values or checking for the existence of keys 51
 ** js
-*** WAITING javascript高级程序设计 javascript for web developers
-    CLOSED: [2017-04-11 二 20:49]
+*** CANCELLED javascript高级程序设计 javascript for web developers
+    CLOSED: [2017-09-17 日 10:54]
+    :LOGBOOK:  
+    - State "CANCELLED"  from "WAITING"    [2017-09-17 日 10:54] \\
+      the freeCodeCamp instead of it
+    :END:      
 **** javascript简介 20 what is javascript 44
 ***** javasctipt简史 a short history
 ***** javascript实现 javascript implementations
@@ -11917,7 +11195,7 @@
          }
 ****** 关键字和保留字 keywords and presrved words
        [En 70]
-*** READING You Don't Know JS
+*** PROJECT You Don't Know JS
 **** Up & Going
 ***** forward
       Up & Going is the start of our path to understanding programming. Enjoy the lightbulb moments!
@@ -13289,8 +12567,13 @@
 **** ES6 & Beyond
 ***** ES? Now & Future
 ** ruby
-*** WAITING ruby编程语言 ruby programming language
-    CLOSED: [2017-03-30 四 17:22]
+*** CANCELLED ruby编程语言 ruby programming language
+    CLOSED: [2017-09-17 日 10:55]
+    :LOGBOOK:  
+    - State "CANCELLED"  from "WAITING"    [2017-09-17 日 10:55] \\
+      I think this is good, but not the best of my first choice
+      I'd like to try _programming ruby_
+    :END:      
 **** 导言 introduction
 ***** 漫游ruby a tour of ruby
 ****** ruby是完全的面向对象的 ruby is completely object-oriented
@@ -13975,7 +13258,7 @@
           ISO-8859-1 to ISO-8859-15    =# the European encodings=
           UTF-16                       =# big-endian UTF-8=
           UTF-32                       =# little-endian UFT-8=
-*** READING ruby on rails
+*** PROJECT ruby on rails
 **** getting started with rails
 ***** creating a new rails project
 ****** creating the blog application
@@ -14036,8 +13319,8 @@
        :    |- params method
 ****** creating the model
        : creating the Article model
-*** READING ruby style guide
-*** READING programming ruby
+*** PROJECT ruby style guide
+*** PROJECT programming ruby
 **** running ruby
 ***** interactive ruby
       % ruby
@@ -14222,7 +13505,7 @@
         but in ruby, there is on the method - a chunk of expressions that return a value
       : defining a method
 ** php
-*** READING php document
+*** PROJECT php document
 **** getting started
 ***** what is php
       超文本预处理 Hypertext Preprocessor
@@ -14363,7 +13646,7 @@
          NaN should not be compared to other values, include itself
            and instead should be checked for using is_nan()
 ** swift
-*** READING swift document
+*** PROJECT swift document
 **** about Swift
      Swift is a new programming language for iOS, macOS, watchOS, and tvOS apps that builds on the best of C and Objective-C, without the constraints of C compatibility
      Swift’s clean slate, backed by the mature and much-loved Cocoa and Cocoa Touch frameworks
@@ -14371,66 +13654,8 @@
      It supports playgrounds(代码预览)
         an innovative feature that allows programmers to experiment with Swift code and see the results immediately
         without the overhead of building and running an app
-**** the swift programming language
-***** about swift
-      : common programming errors
-      swift define large classes of common programming errors
-
-      : version compatibility
-      Xcode contains the version support of swift
-
-      : simple values
-      : hello world
-      the simplest way to print "hello, world"
-      : variable and constant
-      use let to make a constant and var to make a variable
-      : initial value
-      you don't always have to write the type explicitly
-      you can also provide the type information after the variable, separate by a colon
-      : a simple way to include variables in strings
-      "\(variable name is here)"
-      : the strings that take up multiple lines
-      use three double quotes (""")
-      : create arrays and dictionaries
-      : to create an empty array or dictionary
-
-      : control flow
-      : if and for-in
-      use if and for-in to make conditional statement
-      : optinal value
-      use if and let together to work with values that might be missing
-      : default value
-      if the optional value is missing, the default value is used instead
-      : switch structure
-      switch support any kind of data and a wide variety of comparison operations
-      : for-in iterate over items in a dictionary
-      : while structure
-
-      : functin and closures
-      : declare a funtion
-      : no argument label
-      function use their parameter names as labels for their arguments
-      : return a tuple
-      use a tuple to make a compound value
-        the elements of a tuple can be referred to either by name or by number
-      : functions can be nested
-      nested functions have accessed to variables
-        that were declared in the outer function
-      : a function can return another function as its value
-      : take function as arguments
-      a function can take another function as one of its arguments
-      : functions are actually a special case of closures
-      you can write a closure without a name
-        by surrounding code with braces ({})
-      use "in" to separate the arguments and return type from the body
-      : omit the type of patameters and its return type
-      when a closure's type is already known (such as the callback)
-        you can omit its parameters, its return type, or both
-      : you can refer to parameters by number instead of by name
-
-      : objects and classes
 ** rust
-*** READING Rust程序设计语言 the rust programming language
+*** PROJECT Rust程序设计语言 the rust programming language
 **** 第一版 first version
 **** 第二版 second version
 ***** 介绍 introduction
@@ -14717,8 +13942,7 @@
            You guessed: 76
            Too big!
 ** english
-*** READED english grammer in use
-    CLOSED: [2017-02-18 六 16:02]
+*** PROJECT english grammer in use
 **** contents 3
 **** tenses
 ***** 1) present continuous(I am doing) 10
@@ -14862,7 +14086,7 @@
 ***** 3) spelling 264
 ***** 4) short forms(I'm/didn't, etc.) 266
 **** Index) the number in index refer to units, not page 267
-*** READING word power made essy
+*** PROJECT word power made essy
 **** *[basic]* how to use this book for maximum benefit 16
 ***** this is not a reading book
       Instead, work with it. Write in it, talk aloud to it, talk back to it
@@ -14902,7 +14126,7 @@
 **** *[sessions 4-6]* how to talk about doctors 86 92 98
 **** *[sessions 7-10]* how to talk about various practitioners 114
 * misc
-** READED 如何高效使用搜索引擎
+** DONE 如何高效使用搜索引擎
 *** google 资料查找
 **** site  某个特定网站下的所有信息
      例: site:http://www.nanzao.com/sc 棱X计划
@@ -14920,34 +14144,71 @@
 *** 天眼查 查公司相关信息                                                          :http://www.tianyancha.com:
 *** Innojoy 专利查询                                                             :http://www.innojoy.com/search/index.html:
 * experience
+** vi
+   nG    move to line n
+   H     move cursor to the top of screen
+   M     move cursor to the middle of screen
+   L     move cursor to the end of screen
+** git
+   when try to edit the git files
+     checkout the dev branch
 ** zsh
 *** mv
     mkdir nonexist_file  =# if move to nonexist directory, first use mkdir to create it=
 
     mv dir1 dir2      =# if dir2 is not exist, you should mkdir dir2=
     mv dir1/* dir2    =# move all file in dir1 to dir2=
+*** python
+**** pip
+     $ brew reinstall python3
+     $ pip3 install --upgrade pip setuptools wheel
+**** elpy
+     : install relate python package
+     pip install jedi flake8 importmagic autopep8
+     : ide features
+     https://elpy.readthedocs.io/en/latest/ide.html
+**** interpreter
+     $ python    # python 2
+     $ python3   # python 3
+*** upgrade
+    upgrade_oh_my_zsh
 ** idea
 *** keybinding
-    shift + shift     navigate | all files
-    shift + F6        file | rename
+                      navigation bar
 
-    cmd + N           navigate | class
-    cmd + B           navigate | declaration
-    cmd + J           insert | live template
+    shift + shift     search everywhere
+    shift + F6        rename
 
+    cmd + N           find file or class by name
+    cmd + E           recent files popup
+    cmd + J           insert a live template
+    cmd + .           code folding
+    cmd + ,           preference
+
+    ctrl + F          find / replace text string in current file
+    ctrl + R
+
+    ctrl + tab        switch windows tool (like ctrl + tab in windows)
+    ctrl + enter      generate code
     ctrl + click      navigate | source code
-    ctrl + E          view | recent file
-    ctrl + J          View | Document
-    ctrl + N          code | generate
 
-    ctrl + shift + F  format | code
-    ctrl + shift + U  uppercase | lowercase
+    alt + enter       show intention actions and quick-fixes
+    alt + F1          switch between views (project, structure, etc.)
 
-    alt + /           completion
-    alt + F7          find usage | particular class
-    alt + F1          view | project structure or other
-    alt + cmd + t     code | surround with
+    cmd + shift + A       find action by name
+    cmd + shift + enter   smart code completion
+
+    cmd + alt + L     reformat code
+
+    cmd + alt + shift + T    refactor
+
 ** emacs
+*** lang
+**** scheme
+     mit-scheme
+     .scm
+     scheme-send-region (C-c C-r)
+     scheme buffer
 *** ivy
     C-x C-f
         C-k
@@ -14961,6 +14222,11 @@
     M-f        move forward
     M-b        move backword
     C-d        delete word
+**** delete
+     C-u    delete to the begin of the line
+     C-k    delete to the end of the line
+     C-w    delete to the begin of the word
+     M-b    delete to the end of the word
 *** evil
 **** positiion
      C-o  evil-jump-backward
@@ -14979,7 +14245,9 @@
      :%s/^\n//g         删除空行
      :'<,'>s/foo/bar/g  line mode substitude
 
-     :g/^[ |\t]*$/d   删除带tab或空白字符的空行
+     :g/^[ |\t]*$/d     删除带tab或空白字符的空行
+
+     :v/E/d             保留带E字符的行 删除所有其他行
 **** operator
      r {word}    replace
 
@@ -14989,16 +14257,41 @@
 
      delete characters from right to left
        dvfs
+**** moving
+     w  e  <->  b  ge
+     W  E
+     }    moving next void line
+**** regexp
+     one two  ->  (one) (two)
+     three        (three)
+
+     :%s/\w+/\(&\)/g
+**** macro
+     : append command to the end of macro
+     use capital letter
+       qAxq     append x to the macro stored in a
+     inherit old macro
+       qb@axp   keep a stored and use b instead
 *** org
-**** attach
-     y  symbolic-link
-**** open link
-     C-c C-o    open a link at point
-**** headline
-     S-TAB
-     C-c C-j    org-goto
-**** font
-     _underline_
+    C-c c    capture
+    C-c C-w  refile
+    C-c s    schedule
+    C-c d    deadline
+    C-c a    agenda
+      C-c [    org-agenda-file-to-front
+      C-c ]    org-remove-file
+      inbox    a moment of ideas
+    C-c C-t  todo
+      !      timestamp
+      @      timestamp with note
+      /!     leave current todo state, a timestamp should be recorded
+    S-up     the level of todo state
+    S-down
+    C-c C-c  tag
+      C-k      kill line
+    C-c C-x C-i    clock in
+    C-c C-x C-o    clock out
+    C-c C-x C-c    column view
 *** pdf-tools
     pdf-view-kill-ring-save    copy/paste
 *** projectile
@@ -15007,6 +14300,9 @@
     bookmark-load    bookmark.el
     bookmark-list    d    mark delete label
                      x    execute the mark label
+*** position register
+    point-to-register
+    jump-to-register
 *** dired
     + 创建目录
     D 立刻删除某个文件
@@ -15014,21 +14310,85 @@
     C 拷贝文件
     Z 文件压缩 / 解压缩
 *** magit
-**** manipulate history
-     Logging (l)  ->  Reflog current (r)  ->   hash code
-                                                   v
-                                              Resetting (X)
+**** version rollback
+     Logging (l)  ->  Reflog current (r)  ->  Resetting (X)  ->  hard code (h)
 **** merge from another package
-     remoting add -> pulling from remote url -> push to orign master
+     get remote url    ->    merge into origin/master
+     Remoting (add) (1)      Branching (create and check out -> dev)
+     Fetching                Pulling (-i rebase -> elsewhere -> remote url)
+                             Merging  |  Rebasing  |  Reverting
+                               (2)         (3)           (4)
+(1) remote name
+      you can use author's name to represent the remote url name (like purcell)
+                         but do not use purcell/origin, it may cause some conflict
+(2) Merging (check out -> feature -> merge -> master)
+      create a 'merge commit' after master
+      and all commits in feature branch are combined in 'merge commit'
+      NOTE
+      this commit may confused the people of your team
+           feature
+         * -> * -> (*)
+         ^          ^  Merge
+    * -> * -> * ->  *
+           master
+(3) Rebasing (check out -> feature -> rebase -> master)
+      remove all commits in feature branch to the end of master
+      NOTE
+      rebase may create each commit of your feature branch
+      WARM
+      do not rebase master to your feature branch
+        it may cut other people master to the end of your feature branch
+                     feature
+                  (*) -> * -> *
+                   ^  Rebase
+    * -> * -> * -> *
+            master
+(4) Reverting
+      with a new commit to roll back the previous commit
+      NOTE
+      this is a safe to move your feature branch to the end of master
+        +-*-+       (*)
+         ^         ^
+    * -> * -> * -> *
 *** w3m
     R  reload
     G  new tab
     s  history
+*** gnus
+    mailing list
+      B
+      nntp
+      news.gmane.org
 *** melpa
     M-x package-list-packages U x
 *** yasnippet
     # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+*** info
+    l    history back
 *** help
     C-h b    keybinding
     C-h r    emacs bible
+    C-h m    describe mode
     C-h ?    what you are looking for
+*** company
+    use the default set dabbrev
+    because any other set of company backend is slower
+*** web
+    C-j    emmet-expand-line
+           browse-url-of-file
+**** flycheck
+     use html-mode to enable flycheck
+*** google-translate
+    the `listen` button require to install the `mplayer` in homebrew
+*** recover
+    recover-this-file
+*** tex
+    M-x set-input-method TeX
+    type something like \alpha
+    switch the input method off by typing 'C-\'
+    find support Tex command with 'M-x describe-input-method'
+*** indent
+    aggressive-indent
+*** debug
+    elisp-bug-hunter
+    M-x bug-hunter-*
