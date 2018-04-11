@@ -1007,6 +1007,14 @@
      : exploiting the stream paradigm *
      : streams and delayed evaluation *
      : modularity of functional programs and modularity of objects *
+*** metalinguistic abstraction
+    : establishing new languages
+**** the metacircular evaluator
+     : metacircular & evaluator *
+     : the core of the evaluator *
+     : representing expressions *
+     : evaluator data structures *
+     : running the evaluator as a program *
 ** 程序员的修炼之道 the pragmatic programmer, from journeyman to master
 *** 注重实效的哲学 21 pragmatic philosophy 18
 **** 我的源码给猫吃了 the cat ate my source code
@@ -6002,6 +6010,17 @@
       :MEAN:       
       :SHOTCUTS:   .. 146
       :END:      
+** vim wiki
+*** tips
+**** modes
+     : search and move *
+**** regex
+     : match group *
+     : backtracking *
+     : possessive quantifiers *
+     : atomic groups *
+**** php
+     : move to next variable on current line *
 * lang
 ** shell
 *** PROJECT TLCL (bash & zsh)
@@ -8097,7 +8116,249 @@
        WARNING
        readers should be aware that they must add appropriate #include and
          using declarations to our examples before compiling them
+**** library string type
+     : using string type
+     to use the string type
+       we must include the string header
+         #include <string>
+       because it is part of the library, string is defined in the std namespace
+         using std::string;
+       our examples assume the above two line code
+     NOTE
+     library types are efficient enough for general use
+
+     : ways to initialize a string *
+     : direct and copy forms of initialization *
+
+     : string operations *
+     : reading and writing strings *
+     : reading an unknown number of strings *
+     : using getline to read an entire line *
+     : the string empty and size operations *
+     : the string::size_type type *
+     it's the return value of size() function
+     : comparing strings *
+     : assignment for strings *
+     : adding two strings *
+     : adding literals and strings *
+
+     : dealing with the characters in a string
+     : cctype library *
+     the header file contain part of processing characters function
+     cctype functions [En 135]
+     : processing every character use range-based for *
+     : using a range for to change the characters in a string *
+     : processing only some characters *
+     : using a subscript for iteration *
+     : using a subscript for random access *
 ** lisp
+*** An Introduction to Programming in Emacs Lisp
+**** what is lisp                                                               :code:
+***** what is lists
+      : four different flowers *
+      a simple example of list
+      : numbers list *
+      list can also have numbers in them
+      : lists inside of lists *
+      since a program looks like data
+        one program may easily serve as data for another
+
+      : lisp atoms
+      a list in lisp consists of parentheses surrounding atoms separated by whitespace
+        or surrounding other lists
+        or surrounding both atoms and other lists
+      there are many kinds of atom in nature but only a few in lisp
+        "number", such as 37, 511, or 1729
+        and "symbols", such as '+', 'foo', or 'forward-line'
+        the meaning of the component letters of a lisp atom
+          are different from the meaning the letters make as a word
+          like the word for South American sloth, the 'ai'
+            is completely different from the two words, 'a' and 'i'
+      : empty list *
+      a list with nothing in it
+      : quoted text *
+      in lisp, all of the quoted text including
+        the punctuation mark and the blank space is a single atom
+
+      : format lists
+      the <TAB> key automatically indents the line the cursor is on
+      the command 'M-C-\' to properly indent the code in a region
+***** any list in lisp is a program ready to run
+      : evaluate
+      a list in lisp-any list-is a program ready to run
+        if you run it (for which the lisp jargon is "evaluate")
+        the computer will do one of three things
+          do nothing except return to you the list itself
+          send you a error message
+          treat the first symbol in the list as a command to do something
+      : '
+      the single apostrophe, ‘'’
+        that I put in front of some of the example lists
+        in preceding sections is called a "quote"
+        when it precedes a list
+          it tells lisp to do nothing with the list
+          other than take it as it is written
+        but if there is no quote preceding a list
+          the first item of the list is special
+            it is a command for the computer to obey
+      : C-x C-e *
+      how to evaluate a list
+***** generate an error message
+      : error and help
+      once you understand the jargon
+        error messages can be informative
+        instead of being called "error" messages
+          they should be called "help" messages
+      : debugger *
+      the error message is generated by a build-in GNU Emacs debugger
+        we will enter the debugger
+***** symbol names and fucntion definitions
+      in lisp, one set of instructions can be attacked to several names
+      on the other hand
+        a symbol can have only one function definition attached to it at a time
+***** the lisp interpreter
+      : how lisp interpreter works *
+      : special forms, macros, ordinary function *
+      : byte compiled code and humanly readable code *
+***** running a program
+      : evaluation
+      when the lisp interpreter works on an expression
+        the term for the activity is called "evaluation"
+      : side effect
+      at the same time the interpreter returns a value
+        it may do something else as well
+          such as move a cursor or copy a files
+        this other kind of action is called a "side effect"
+      : eval-last-sexp (C-x C-e)
+      the letters 'sexp' are an abbreviation for "symbolic expression"
+      and 'eval' is an abbreviation for "evaluate"
+      the command evaluates the last symbolic expression
+      : evaluating inner lists *
+      as a experiment, you can try evaluating the expression
+        by putting the cursor at the beginning of the next line
+          immediately following the expression
+        or inside the expression
+***** returnning a value from a variable
+      : variable
+      a symbol that has a value is often called a "variable"
+      : the symbol drawers
+      a symbol can have a value attached to it
+        just as it can have a function definition attached to it
+        or both of them at the sane time
+      imagine a symbol as being a chest of drawers
+        the function definition is put in one drawer
+        the value in another, and so on
+        the value can be changed without affecting the content of the drawer
+
+      : a value attached to a symbol *
+      : 1. error message for a symbol without a function *
+      : 2. error message for a symbol without a value *
+      : more detail for 1 and 2
+***** passing information to a function
+      : types of data passed to a function *
+      the type of data that should be passed to
+        a function depends on what kind of information it uses
+      : an argument as the value of a variable or list *
+***** some functions may take any number of arguments
+      : take any number of arguments *
+***** passing an argument of the wrong type to a function
+      when a function is passed an argument of the wrong type
+        the lisp interpreter produces an error message
+      : add string to number *
+***** a useful function for sending messages
+      : print message in the echo area *
+      : quoted string *
+***** setting the value of a variable
+      there are several ways by which a variable can be given a value
+      : set *
+      set the value of symbol
+
+      : setq *
+      like 'set' except that the first argument is quoted automatically
+      : multiple assignments *
+      : using setq to count *
+**** practicing evaluation                                                      :code:
+***** how to evaluate
+      : typing editing commands or 'C-c C-e' cause evaluation
+***** buffers and files are different
+      : file *
+      : buffer *
+      : evaluate the result after the expression *
+***** getting a buffer itself, not merely its name
+      : get current buffer *
+      : get other buffer you recently selected *
+***** how to change to another buffer
+      : switch to buffer you specific *
+      : call
+      when you evaluate a list in which the first symbol is a funtion
+        you are calling that function
+***** buffer size and location of point
+      : buffer size *
+      : point *
+**** how to write function definitions                                          :code:
+     : function definition *
+     : primitive functions *
+
+     : defun *
+     : make a function interactive
+     : message function *
+     : interactive options *
+
+     : let *
+
+     : if *
+     : equal *
+     : else *
+     : nil *
+
+     : point *
+     : mark *
+     : region *
+     : save-execursion *
+**** buffer related functions                                                   :code:
+     : find more information *
+
+     : what the function definition has to contain *
+     : beginning-of-buffer definition *
+     : mark-whole-buffer *
+     : append-to-buffer *
+**** a few more complex buffer related functions                                :code:
+     : copy-to-buffer *
+
+     : insert-buffer *
+     : old version *
+     : "or" expression *
+     : two "save-excursion" *
+     : new version *
+
+     : beginning-of-buffer *
+     : optional arguments *
+     : interactive "P" *
+     : the reference of documentation string *
+**** Narrowing and widening                                                     :code:
+     : narrowing and widen a buffer *
+     : get rid of the narrowing in effect *
+     : use both 'save-excursion and 'save-restriction *
+**** car, cdr, cons: fundamental functions                                      :code:
+     : report the first item from the list *
+     : report the list besides the first item *
+
+     : build a list *
+
+     : find the length of a list *
+
+     : report a copy of list without nth element *
+     : report a single element of list *
+
+     : make a list and then set the value of a variable to the list *
+**** storing text in a list                                                     :code:
+     : zap-to-char *
+     : kill-region *
+     : lisp macro *
+     : copy-region-as-kill *
+     : delete-and-extract-region *
+     : initializing a variable with defvar *
+**** how lists are implemented
 ** java
 *** CANCELLED java编程思想 thinking in java
     CLOSED: [2017-09-17 日 11:40]
@@ -8472,6 +8733,342 @@
      : java jargon
      : pick the right JDK
      : using the command-line tools
+*** fundamental programming structures in java
+**** first sample                                                               :code:
+     : FirstSample.java
+     print a message to console
+     : case sensitive
+     typing such as Main instead of main, the program will not run
+     : access modifier
+     the keyword public is called an access modifier
+       these modifiers control the level of access
+         other parts of a program have to this code
+     : the building blocks of class
+     everything in a java program must be inside a class
+     : the rules for class names
+     names must begin with a letter
+       and after that, they can combination of letters and digits
+     : many words in class name
+     if a class name is called "camel case"
+       you should write "CamelCase"
+     : source code
+     you need to make the file name for
+       the source code the same as the name of the public class
+       with the extension .java appended
+     : main method
+     according to the java language specification
+       the main method must be declared public
+     : braces
+     the braces {} delineate the parts (usually called block) in your program
+     C++
+     there are a few differences between c++ and java classes
+     unlike c/c++, the main method does not return an "exit code" to the operating system
+     : object and method
+     using the System.out object and calling its println method
+     notice the general syntax:
+       object.method(parameters)
+**** data types                                                                 :code:
+     : strongly language
+     this means that every variable must have a declared type
+     : primitive types *
+     there are eight primitive types in java
+
+     : integer types
+     the integer types are for numbers without fractional parts
+     negative values are allowed
+     : java integer types *
+     : not depend on the machine
+     the ranges for the various types are fixed
+     C++
+     the sizes of types such as int and long depend on the target platform
+     : long integer
+     have a suffix L or l      (for example, 40000000000L)
+     : hexadecimal numbers
+     have a prefix 0x or 0X    (for example, 0xCAFE)
+     : octal numbers
+     have a prefix 0           (for example, 010 is 8)
+     : human readable
+     you can add underscores to number literals, such as 1_000_000
+     the java compiler simply removes them
+
+     : floating-point types
+     the floating-point typs denote numbers with fractional parts
+     : floating-point types *
+     : the float type limit
+     : the suffix F or f
+     : three special floating-point errors *
+     : roundoff errors *
+
+     : the char type *
+     : literal values of char *
+     : unicode sequences *
+     values of type char can be expressed as
+       hexadecimal values that run from \u0000 to \uFFFF
+     NOTE
+     unicode escape sequences are processed before the code is parsed
+     : escape sequence and unicode value
+
+     : unicode and the char type
+     unicode was designed to contain the char type all over the world
+     in java, the char type describes a code unit in the utf-16 encoding
+     : the unicode history *
+
+     : the boolean type
+     the boolean type has two values, false and true
+       it is used for evaluating logical conditions
+     you cannot convert between integers and boolean values
+     C++
+     in c++, numbers and even pointers can be used in place of boolean values
+       the value 0 is equivalent to the bool value false
+       and a nonzero value is equivalent to true
+       this is not the case in java:
+         if (x = 0) // oops... meant x == 0
+**** variables                                                                  :fragment:
+     : a variable name begin with
+     a letter is defined as A-Z , a-z, _, $ or any Unicode character
+     TIP
+     if you are really curious as to
+       what unicode characters are "letters"
+         as far as java is concerned
+     even though $ is a valid java letter
+       you should not use it in your own code
+       it is intended for names that are generated by
+         the java compiler and other tools
+     : reserved word
+     you also cannot use a java reserved word as a variable name
+     : case sensitive
+     names are case sensitive
+       hireday and hireDay are two separate names
+
+     : InitializingVariables.java
+     : uninitialized variable *
+     you can never use the value of an uninitialized variable
+     : declare and initialize a variable *
+     C++
+     in c and c++
+       int i = 10;   // is a definition
+       extern int i; // is a declaration
+     in java, no declaretions are separate from definition
+     : good style
+     in java, it is considered good style to
+       declare variables as closely as possible to the point where they are first used
+
+     : Constants.java
+     : constant variables *
+     : final
+     the keyword final indicates that you can assign to the variable once
+       and then its value is set once and for all
+     : static final
+     define outside the main method
+       also be used in other methods of the same class
+       furthermore, if the constant is declared, public
+         method of other classes can also use it
+     : class constants *
+     it is probably more common in java to create a constant
+       so it's available to multiple methods inside a single class
+       these are usually called class constants
+     set up a class constant with the keywords static final
+**** operators                                                                  :fragment:
+     : integer and floating-point division
+     15 / 2 is 7, 15.0 / 2 is 7.5
+     NOTE
+     integer division by 0 raises an exception
+       whereas floating-point division by 0 yields an infinite or NaN result
+     : strictfp
+     method tagged with the strictfp keyword must use strict floating-point operations
+       public static strictfp void main (String[] args)
+     : strict floating-point operations
+     many intel processors compute floating-point and
+       leave the result in an 80-bit register
+       then finally truncate the result back to 64 bits
+     the numeric community hated it
+       not only can the truncated computations cause overflow
+       they are actually slower than the more precise computations
+         because the truncation operations take time
+     all of this called strict floating-point operation
+     : java floating-point operation
+     java is portability
+       a floating-point computation should yield the same results (64-bit)
+         no matter which virtual machine executes it
+     and it is also the default floating-point operation
+
+     : MathematicalFunctions.java
+     : static method
+     the method in the Math class does not operate on any object
+       such a method is called a static method
+     : trigonometric function
+     Math.(sin | cos | tan | atan | atan2)
+     : function with its inverse
+     Math.(exp | log | log10)
+     : mathematical constants π and e
+     Math.(PI | E)
+     : source file *
+     you can avoid the Math prefix by adding the Math source file
+     : StrictMath class
+     it implements the algorithms from "freely distributable math library" fdlibm
+       guaranteeing identical results on all platforms
+
+     : ConvertNumericType.java
+     legal conversions between numeric types [En 86]
+     : information loss *
+     the three dotted arrows in [En 86] denote conversions that may lose precision
+     : combined binary operator
+     when two values are combined with a binary operator
+       such as integer + floating-point
+       both operands are converted to a common type before the operation is carried out
+
+     : Cast.java
+     numeric conversions are possible in java
+     : syntax
+     the syntax for casting is to give the target type in parentheses
+       followed by the variable name
+     C++
+     you cannot cast between boolean values and any numeric type
+       except a conditional expression such as    b ? 1 : 0
+     : information may be lost *
+     : round a floating-point number *
+     if you want to round a floating-point number to the nearest integer
+
+     : CombiningAssignmentWithOperators.java
+     a convenient shortcut for using binary operators in an assignment
+
+     : RelationalAndBooleanOperators.java
+     : relational operators *
+
+     : BitwiseOperators.java
+     the operators that can work directly with the bits that make up the integers
+     : bitwise operators *
+
+     : OperatorHierarchy.java
+     : parentheses and operator hierarchy
+     C++
+     unlike c or c++
+       java does not have a comma operator
+     : operator precedence [En 91]
+     : associativity *
+     the operator's running order
+
+     : EnumeratedTypes.java
+     a variable only hold a restricted set of values
+**** strings                                                                    :code:
+     : the standard java library
+     java does not have a build-in string type
+       instead, the standard java library contains
+         a predefined class called, naturally enough, String
+       each quoted string is an instance of the String class
+     : Unicode characters *
+
+     : substrings *
+     : computing the length of the substring *
+
+     : use + join two strings *
+     : the join value is automatically convert to a string *
+     : output statements *
+     : .join method
+     if you need to put multiple strings together
+       sepatated by a delimiter
+       use the static join method
+
+     : strings are immutable *
+     the string class gives no methods that
+       let you change a character in an existing string
+     : how to change string value and not create new one *
+     C++
+     if you use pointer to change string value
+       it may cause a memory leak
+     fortunately, java does automatic garbage collection
+
+     : testing string for equality *
+     : ignore upper/lower case distinction *
+     : do not use the == operator to test whether two string are equal *
+     it only determines whether or not the string are stored in the same location
+
+     : empty and null strings
+     : empty strings
+     the empty string "" is a string of length 0
+     : test whether a string is empty *
+     : null strings
+     a string variable can also hold a special value, called null
+       that indicates that no object is currently associated with the variable
+     : test whether a string is null *
+     : test a string is neither null nor empty *
+
+     : code points and code units
+     : UTF-16 encoding
+     each code point represent one character
+       the range of code point is 0~0x10FFFF
+     the character is inside of range use one char to store
+       the character is out of range use two chars to store
+       char is also called code unit
+     : return the code units at position n *
+     where n is between 0 and s.length() -1
+     : to get ith code point *
+     : to get the character with two code units *
+
+     : the String api [En 99~100]
+     the following api note summarizes the ones we found most useful
+     : reading the online api document
+     https://docs.oracle.com/javase/8/docs/api/ (already bookmark in safari)
+     consult all method of String class
+
+     : building strings
+     : StringBuilder class
+     occasionally, you need to build up string from shorter strings
+       every time you concatenate strings, a new String object is constructed
+       this is time consuming and wastes memory
+       using the StringBuilder class avoid this problem
+     : construct an empty string builder *
+     : add another part *
+     : get all String sequences contained in builder *
+     : the most important methods for StringBuilder class [En 105]
+**** input and output                                                           :fragment:
+     : InputTest.java
+     : reading input
+     : System.in *
+     standard input stream
+     : Scanner *
+     to read console input, you first construct a Scanner that is attached to System.in
+     : nextLine *
+     read a line of input
+     : next *
+     read a single word
+     : nextInt *
+     read a integer
+     : java.util package *
+     the Scanner class is defined in the java.util package
+       whenever you use a class that is not defined in the basic java.lang package
+       you need to use an import directive
+     : Console *
+     : java.util.Scanner [En 108]
+     all important method of Scanner class
+     : java.lang.System [En 108]
+     returns a Console object for interacting with the user through a console window
+     : java.io.Console [En 108]
+     displays the prompt and reads the user input until the end of the input line
+
+     : FormattingOutput.java
+     : System.out.print *
+     print to the console
+     : System.out.printf *
+     format output using printf method from the C library
+     conversions for printf [En 109]
+     flags for printf [En 111]
+     data and time conversion characters [En 112]
+     a syntax for format specifiers [En 113]
+     NOTE
+     argument index values start with 1, not with 0
+       avoid confusion with the 0 flag
+
+     : FileInputAndOutput.java
+     : Scanner
+     to read from a file
+     : PrintWriter
+     to write to a file
+**** control flow
+***** block scope
+      : nested block *
+      : not declare identically named variables in two nested blocks *
+***** NEXT conditional statements
 ** go
 *** WAITING go语言圣经 the go programming language
     CLOSED: [2017-04-16 日 14:10]
@@ -8646,6 +9243,1736 @@
         %T              type of any value
         %%              literal percent sign (no operand)
 ** perl
+*** perl doc
+**** what's important in perl
+     : the capability to manage complicate data structures *
+     : the syntax for managing references *
+     : reformatting a file of city and country names *
+**** complex data structure
+**** perl regular expression
+     : rules for regular expression *
+     : the sequences pattern *
+     : the interactive pattern *
+     : the wildcard *
+     : the quantifiers *
+     : grouping in patterns *
+     : alternatives *
+     : character classes *
+     : character class shortcuts *
+     : Unicode properties *
+     : anchor *
+*** learning perl
+**** introduction
+***** compile
+      $ perl my_program
+***** bin path
+      #!/usr/bin/env perl
+      #!/usr/bin/perl || #!/use/local/bin/perl
+***** a whirlwind tour of perl
+      #!/usr/bin/perl                  =# perl bin path, you should change it for your system=
+      =# an array variable called @lines get message about the function atan2=
+      @lines = `perldoc -u -f atan2`;  =# runs a external command, named within backquotes (``)=
+                                       =# the perldoc command is to read and display the docmentation for perl=
+      foreach (@lines) {
+        s/\w<([^>]+)>/\U$1/g;
+        print;
+      }
+**** scalar data
+***** scalar
+      - 对于大部分标量来说 要么是数字 要么是有字符组成的序列
+        a scalar is the simplest kind of data that perl manipulates
+        most scalars atr either a number or astring of characters
+      - 不区分变量类型
+        not like C has char, int, and so on. perl doesn't make distinctions among single things
+***** numbers
+      : NOTE
+      - 内部不存在整数值 总是按双精度浮点数进行运算
+        Perl relies on the underlying C libraries for its numbers and uses a double-precision floating-point value to store the numbers.
+        it does mean Perl has some limitations in precision and magnitude of the numbers that are related to how you compiled and installed the perl interpreter instead of a limitation of the language itself.
+      - 没有专门的整型运算
+        you can specify both integers and floating-point numbers.
+        but internally, perl computers with double-precision floating-point values
+****** 整数直接量 integer literals
+       - 直接量 literals
+         a literal is how you represent a value in your source code.(like int datatype)
+       - 插入下划线 将若干位数分开
+         61298040283
+         61_298_040_283
+****** 非十进制整数直接量 nondecimal interger literals
+       - 八进制 octal
+         start with a leading 0 and use the digits from 0 to 7
+         0377 # same as 255 decimal
+       - 十六进制 hexadecimal
+         start with a leading 0x and use the digits 0 to 9 and the letters A through F (or a through f) to represent the values from 0 to 15:
+         0xff # FF hex, also 255 decimal
+       - 二进制 binary
+         start with a leading 0b and use only the digits 0 and 1.
+         0b11111111 # also 255 decimal
+       - 下划线分隔符
+         When a nondecimal literal is more than about four characters long, it may be hard to read, so underscores are handy
+         0x1377_0B77
+         0x50_65_72_7C
+       : NOTE
+       - 前置0只对直接量有效
+         The “leading zero” indicator works only for literals
+         not for automatic string-to-number conversions
+****** 浮点数直接量 floating-point literals
+       - hexadecimal floating-point literals
+         Instead of an e to mark the exponent, you use a p for the power of 2 exponent
+         0x1f.0p3
+****** 数字操作符 numeric operators
+       - 乘幂操作符号 exponentiation
+         So, 2**3, is two to the third power, or eight
+       : Note
+       - 模操作符 modulus operator (%)
+         Both values are first reduced to their integer values, so 10.5 % 3.2 is computed as 10 % 3.
+         For -10 % 3, is the remainder 2 because it’s two places above -12 or -1 because it’s one place from -9? It’s best to avoid finding out accidentally.
+***** strings
+      - 创建 扫描 操控 二进制数据
+        For example, you could update a graphical image or compiled program by reading it into a Perl string, making the change, and writing the result back out.
+      - 需要手动设置unicode编码文本文件读入
+        If you want to use Unicode literally in your program, you need to add the utf8 pragma.
+        use utf8;
+      : NOTE
+      - 无内置限制 no build-in limits
+        The longest string fills all of your available memory
+****** 单引号内的字符串直接量 signle-quoted string literals
+       - 转义
+         If you want a literal single quote or backslash inside your string, you need to escape it with a backslash:
+         'Don\'t let an apostrophe end this string prematurely!'
+         'the last character is a backslash: \\'
+         '\'\\'    # single quote followed by backslash
+       - 换行符
+         You can spread your string out over two (or more) lines.
+         'hello
+         there'    # hello, newline, there (11 characters total)
+       : NOTE
+       - 无法转义控制字符
+         Note that Perl does not interpret the \n within a single-quoted string as a newline
+         'hello\nthere'    # hellonthere
+****** 双引号内的字符串直接量 double-quoted string literals
+       - 控制字符转义
+         "hello world\n" # hello world, and a newline
+         "coke\tsprite"  # coke, a tab, and sprite
+         : Table doubel-quoted string backslash escapes (En 47)
+       - 进制表示法
+         "\x{2668}"      # Unicode HOT SPRINGS character code point
+         "\N{SNOWMAN}"   # Unicode Snowman by name
+****** 字符串操作符 string operators
+       - 字符串连接
+         You can concatenate, or join, string values with the . operator
+         "hello" . "world"       # same as "helloworld"
+         "hello" . ' ' . "world" # same as 'hello world'
+         'hello world' . "\n"    # same as "hello world\n"
+       - 重复操作符
+         This operator takes its left operand (a string) and makes as many concatenated copies of that string as indicated by its right operand (a number)
+         "fred" x 3       # is "fredfredfred"
+         "barney" x (4+1) # is "barney" x 5, or "barneybarneybarneybarneybarney"
+         5 x 4.8          # is really "5" x 4, which is "5555"
+         : NOTE: The copy count (the right operand) is first truncated to an integer value (4.8 becomes 4) before being used.
+***** automatic conversion between numbers and strings
+      - 操作符类型转换
+        Perl automatically converts between numbers and strings as needed.
+        It all depends upon the operator that you apply to the scalar value.
+        If an operator expects a number (like + does), Perl will see the value as a number.
+        If an operator expects a string (like . does), Perl will see the value as a string.
+      - 字符串十进制浮点数进行运算
+        Perl automatically converts the string to its equivalent numeric value, as if you had entered it as a decimal floating-point value
+        So "12" * "3" gives the value 36.
+        : Trailing nonnumber stuff and leading whitespace are discarded
+        so "12fred34" * " 3" will also give 36 without any complaints
+        : something that isn’t a number at all converts to zero.
+        so "fjdi12" * "fjdks" will give 0
+      - 数字运算字符串连接
+        "Z" . 5 * 7 # same as "Z" . 35, or "Z35"
+      : NOTE
+      - 前置0按十进制数字处理
+        0377    # that's octal for 255 decimal
+        '0377'  # that's 377 decimal
+***** perl's build-in warnings
+      - 发现程序不对劲时 让perl发出警告
+        - turn on warnings with a pragma
+          : only With Perl 5.6 and later
+          : for the file
+          #!/usr/bin/perl
+          use warnings;
+        - use the -w option on the command line
+          : for the file
+          $ perl -w my_program
+        - specify the command-line switches on the shebang line
+          : for the entire program
+          #!/usr/bin/perl -w
+        - to load the pragma only when needed instead of editing the source code each time to enable and disable diagnostics
+          $ perl -Mdiagnostics ./my_program
+***** perl's build-in warnings
+****** interpreting nondecimal numerals
+       : if you have a string that represents a number as another base
+       hex('DEADBEEF')    # 3_735_928_559 decimal
+       hex('OxDEADBEEF')  # 3_735_928_559 decimal
+       oct('0377')        # 255 decimal
+       oct('377')         # 255 decimal
+       oct('0xDEADBEEF')  # 3_735_928_559 decimal, saw leading 0x
+       oct('0b1101')      # 13 decimal, saw leading 0b
+       oct("0b$bits")     # convert $bits from binary
+       hex( 10 );         # decimal 10, converted to "10", then decimal 16
+       hex( 0x10 );       # hex 10,     converted to "16", then decimal 22
+***** scalar variables
+      - 标量定义
+        : not like a variable is a name for a container that holds one or more values
+        a scalar variable holds exactly *one value*
+        : Uppercase and lowercase letters are distinct
+        Scalar variable names begin with a dollar sign, called the sigil
+        - these are different
+          $name
+          $Name
+          $NAME
+****** 给变量娶个好名字 choosing good variable names
+       - 增加可读性
+         : properly placed underscores can make a name easier to read and understand
+         $super_bowl is a better name than $superbowl
+       - 特殊含义的变量
+         Using all uppercase (like $ARGV) generally indicates that there’s something special about that variable
+       - perlvar documentation
+         lists all of the Perl’s special variable names, and perlstyle has general programming style advice
+****** 标量的赋值 scalar assignment
+       - 如何赋值
+         a variable name on the left side, and gives it the value of the expression on the right
+         $fred   = 17;
+         $barney = 'hello';
+         $barney = $fred + 3;
+         $barney = $barney * 2;
+****** 双目赋值操作符 compound assignment operators
+       - 双目赋值操作符
+         - the compound assignment operator
+           $fred  = $fred + 5; # without the binary assignment operator
+           $fred += 5;         # with the binary assignment operator
+           $str  = $str . " "; # append a space to $str
+           $str .= " ";        # same thing with assignment operator
+***** output with print
+      - print操作符
+        it takes a scalar argument
+          and puts it out without any embellishment onto standard output
+        : NOTE
+        - You can give print a series of values separated by commas
+          print "The answer is ", 6 * 7, ".\n";
+****** 字符串中的标量变量内插 interpolation of scalar variables into strings
+       - 变量内插 variable interpolation
+         - a scalar variable name in the string is replaced with its current value
+           $meal   = "brontosaurus steak";
+           $barney = "fred ate a $meal";    # $barney is now "fred ate a brontosaurus steak"
+           $barney = 'fred ate a ' . $meal; # another way to write that
+         : NOTE
+         - If the scalar variable has never been given a value, the *empty string* is used instead
+           $barney = "fred ate a $meat"; # $barney is now "fred ate a "
+         - Don’t bother with interpolating if you have just the *one lone variable*
+           print "$fred"; # unneeded quote marks
+           print $fred;   # better style
+         - To put *a literal dollar sign* into a double-quoted string
+           $fred = 'hello';
+           print "The name is \$fred.\n";    # prints a dollar sign
+         - *delimiter or separated* the variable
+           $what = "brontosaurus steak";
+           $n = 3;
+           print "fred ate $n $whats.\n";        # use the value of $whats
+           print "fred ate $n ${what}s.\n";      # now use the value of $what
+           print "fred ate $n $what" . "s.\n";   # another way to do it
+****** 借助代码点创建字符 creating characters by code point
+       - 通过代码点(code point)输入键盘上没有的那些字符
+         - it’s easier to create them by their code point with the chr() function
+           $alef  = chr( 0x05D0 );
+           $alpha = chr( hex('03B1') );
+           $omega = chr( 0x03C9 );
+         : NOTE
+         - You can *interpolate* these into double-quoted strings just like any other variable
+           "$alpha$omega"
+           "\x{03B1}\x{03C9}"
+       - 通过特殊字符查找相应代码点
+         - with the ord() function, which turns a character into its code point
+           $code_point = ord( 'α' );
+****** 操作符优先级与结合性 operator precedence and associativity
+       - 优先级
+         : the same as C
+         Associativity and precedence of operators [T En 57]
+       - 结合性
+         - Just like precedence, associativity resolves the order of operations when *two operators of the same precedence*
+           4 ** 3 ** 2      # 4 ** (3 ** 2), or 4 ** 9 (right associative)
+           72 / 12 / 3      # (72 / 12) / 3, or 6/3, or 2 (left associative)
+           36 / 6 * 3       # (36/6)*3, or 18
+       : TIP
+       : 直接括号明确顺序
+****** 比较操作符 comparison operators
+       数值与字符串的比较操作符 [T En 58]
+       - example
+         35 != 30 + 5        # false
+         35 == 35.0          # true
+         '35' eq '35.0'      # false (comparing as strings)
+         'fred' lt 'barney'  # false
+         'fred' lt 'free'    # true
+         'fred' eq 'fred'    # true
+         'fred' eq 'Fred'    # false
+         ' ' gt ''           # true
+***** the if control structure
+      - example
+        if ($name gt 'fred') {
+          print "'$name' comes after 'fred' in sorted order.\n";
+        } else {
+          print "'$name' does not come after 'fred'.\n";
+          print "Maybe it's the same string, in fact.\n";
+        }
+      : NOTE
+      : You must have those block curly braces around the conditional code, unlike C
+****** 布尔值 boolean values
+       - perl没有专用的布尔数据类型 它靠一些简单的规则进行判断
+         If the value is a *number*, 0 means false; all other numbers mean true
+         Otherwise, if the value is a *string*, the empty string ('') and the string '0' means false; all other strings mean true
+         If the variable doesn’t have a value yet, it’s false
+       - 布尔if判断
+         if (! $is_bigger) {
+           # Do something when $is_bigger is not true
+         }
+       - !反转操作
+         - use ! return some scalar to represent true and false(1 and 0)
+           $still_true  = !! 'Fred';
+           $still_false = !! '0';
+***** getting use input
+      - 操作符 <STDIN> 获取键盘输入
+        Each time you use <STDIN> in a place where Perl expects a scalar value
+        Perl reads the next complete text line from *standard input* (up to the first newline), and uses that string as the value of <STDIN>
+        - example
+          $line = <STDIN>;
+          if ($line eq "\n") {                        =# But in practice, you don’t often want to keep the newline, so you need the chomp() operator=
+              print "That was just a blank line!\n";
+          } else {
+              print "That line of input was: $line";
+          }
+***** the chomp operator
+      - 去掉字符串变量末尾换行符
+        : It works on a variable. The variable has to hold a string
+        :   and if the string ends in a newline character, chomp() removes that newline
+        - example
+          $text = "a line of text\n";    # Or the same thing from <STDIN>
+          chomp($text);                  # Gets rid of the newline character
+        : NOTE
+        : If a string ends with two or more newlines, chomp() removes only one
+      - 连用
+        - 赋值运算表达式 代替变量参数
+          : In fact, there’s an easier way to use chomp() because of a simple rule:
+          : any time that you need a variable in Perl, you can use an assignment instead
+          - So the most common use of chomp() looks like this
+            =# First, Perl does the assignment. Then it uses the variable in whatever way you requested=
+            chomp($text = <STDIN>); =# Read the text, without the newline character=
+
+            $text = <STDIN>;        =# Do the same thing...=
+            chomp($text);           =# ...but in two steps=
+      - 返回值 省略括号
+        =# chomp() is actually a function. As a function, it has a return value, which is *the number of characters removed*.=
+        =# If there’s no newline, it does nothing, and *returns zero*. For the most part, you don’t care what chomp() returns=
+        $food = <STDIN>;
+        $betty = chomp $food; =# gets the value 1 - but you knew that!=
+        =# As you see, you may write chomp() with or *without the parenthesess*, except in cases where it changes the meaning to remove them=
+***** the while control structure
+      - while循环
+        : The while loop repeats a block of code as long as a condition is true
+        $count = 0;
+        while ($count < 10) {
+            $count += 2;
+            print "count is now $count\n"; =# Gives values 2 4 6 8 10=
+        }
+        : NOTE
+        : Eventually you’ll create an infinite loop by accident
+        : You can stop it in the same way you’d stop any other program
+        : Often, typing Control-C will stop a runaway program
+***** the undef value
+      - 空无一物
+        : Variables have the special undef value before they are first assigned
+        :   which is just Perl’s way of saying
+        :     “Nothing here to look at—move along, move along.”
+        - If you try to use this “nothing” as a “numeric something,” it acts like zero
+           =# Add up some odd numbers=
+           $n = 1;
+           while ($n < 10) {
+             $sum += $n;
+             $n += 2; =# On to the next odd number=
+           }
+           print "The total was $sum.\n";
+        - If you try to use it as a “string something,” it acts like the empty string
+          $string .= "more text\n";         =# If $string is undef, this will act as if it already held the empty string, putting "more text\n" into that variable=
+        - make your own undef values, you can use the obscurely named undef operator
+          $next_line = undef; =# As if it had never been touched=
+        : NOTE
+        : undef is neither a number nor a string
+        : it’s an entirely separate kind of scalar value
+***** the defined function
+      - 判断 undef
+        - use the defined function, which returns false for undef, and true for everything else
+          $next_line = <STDIN>;
+          if ( defined($next_line) ) {
+             print "The input was $next_line";
+          } else {
+             print "No input available!\n";
+          }
+**** lists and arrays
+     - 多个标量组成
+       : The list is the data and the array is the variable that stores that data
+       : Each element of an array or list is a separate scalar value, The elements of an array or a list are indexed by integers starting at zero and counting by ones
+       : Arrays and lists can have any number of elements. The smallest one has no elements, while the largest can fill all of available memory
+***** accessing elements of an array
+      - 下标 subscript
+        $fred[0] = "yabba";
+        $fred[1] = "dabba";
+        $fred[2] = "doo";
+      - 表达式赋值 change that value by expressions
+        $fred[1] .= "whatsis";     # $fred[1] + "whatsis"
+      - 舍去小数
+        : if the subscript may be any expression not a numeric value
+        : Perl will automatically truncate it (not round!) to the whole number portion
+        $number = 2.71828;
+        print $fred[$number - 1];  # Same as printing $fred[1]
+      - 超出下标范围
+        $blank = $fred[ 142_857 ]; # unused array element gives undef
+        $blanc = $mel;             # unused scalar $mel also gives undef
+***** special array indices
+      - 自动扩展数组长度
+        $rocks[0]  = 'bedrock';
+        $rocks[1]  = 'slate';
+        $rocks[2]  = 'lava';
+        $rocks[99] = 'schist';           =# now there are 96 undef elements=
+      - 最后一个元素的索引值
+        : Sometimes, you need to find out the last element index in an array
+        : For the array of rocks , the last element index is $#rocks
+        $end = $#rocks;                  # $end = 99, which is the last element's index
+        $number_of_rocks = $end + 1;     # OK, but you'll see a better way later
+        $rocks[ $#rocks ] = 'hard rock'; # useing the $#name value as an index
+      - 负数索引
+        : If you have three elements in the array
+        : the valid negative indices are -1 (the last element)
+        :                                -2 (the middle element)
+        :                            and -3 (the first element)
+        :                     If you try -4 and beyond, you just get undef
+        $rocks[ -1 ]   = 'hard rock';   # easier way to do that last example
+        $dead_rock     = $rocks[-100];  # gets 'bedrock'
+        $rocks[ -200 ] = 'crystal';     # fatal error!
+***** list literals
+      - 列表元素
+        (1, 2, 3)      # list of three values 1, 2, and 3
+        (1, 2, 3,)     # the same three values (the trailing comma is ignored)
+        ("fred", 4.5)  # two values, "fred" and 4.5
+        ( )            # empty list - zero elements
+      - 范围操作符
+        (1..100)          # list of 100 integers
+        (1..5)            # same as (1, 2, 3, 4, 5)
+        (1.7..5.7)        # same as above; both values are truncated
+        (0, 2..6, 10, 12) # same as (0, 2, 3, 4, 5, 6, 10, 12)
+        : NOTE
+        : The range operator only counts up, so this won’t work and you’ll get the empty list
+        (5..1)            # empty list; .. only counts "uphill"
+      - 表达式元素
+        : The elements of a list literal are not necessarily constants
+        :   they can be expressions that will be newly evaluated each time the literal is used
+        ($m, 17)       # two values: the current value of $m, and 17
+        ($m+$o, $p+$q) # two values
+        ($m..$n)       # range determined by current values of $m and $n
+        (0..$#rocks)   # the indices of the rocks array from the previous section
+****** qw简写 the qw shortcut
+       - 单引号字符串
+         : The qw shortcut makes it easy to generate them without typing a lot of extra quote marks
+         : NOTE
+         : Perl treats it like a single-quoted string (so, you can’t use \n or $fred inside a qw list as you would in a double-quoted string)
+         ("fred", "barney", "betty", "wilma", "dino")  =# A list may have any scalar values=
+         qw( fred barney betty wilma dino )            =# same as earlier, but less typing=
+         : The whitespace (characters like spaces, tabs, and newlines) disappear and whatever is left becomes the list of items
+         : Some people like to format their lists with one element per line, which makes it easy to operate as a column
+         qw(
+             fred
+             barney
+             betty
+             wilma
+             dino
+         )
+         : Perl lets you choose any punctuation character as the delimiter
+         qw! fred barney betty wilma dino !
+         qw/ fred barney betty wilma dino /
+         qw# fred barney betty wilma dino #   =# like in a comment!=
+         qw( fred barney betty wilma dino )
+         qw{ fred barney betty wilma dino }
+         qw{
+             /usr/dict/words
+             /home/rootbeer/.ispell_english
+         }
+
+         : include the closing delimiter within the string as one of the characters by using the backslash
+         qw! yahoo\! google ask msn !  =# include yahoo! as an element=
+         qw( This as a \\ real backslash )
+***** list assignment
+      - 多重变量赋值
+        : All three variables in the list on the left get new values, just as if you did three separate assignments
+        ($fred, $barney, $dino) = ("flintstone", "rubble", undef);
+        : swap two variables
+        ($fred, $barney) = ($barney, $fred); =# swap those values=
+        ($betty[0], $betty[1]) = ($betty[1], $betty[0]);
+        : In a list assignment, extra values are silently ignored
+        ($fred, $barney) = qw< flintstone rubble slate granite >; =# two ignored items=
+        : if you have too many variables, the extras get the value undef (or the empty list)
+        ($wilma, $dino)  = qw[flintstone];                        =# $dino gets undef=
+        : use with qw
+        ($rocks[0], $rocks[1], $rocks[2], $rocks[3]) = qw/talc mica feldspar quartz/;
+        : Use the at sign (@) before the name of the array (and no index brackets after it) to refer to the entire array at once
+        : TIP  This works on either side of the assignment operator
+        @rocks  = qw/ bedrock slate lava /;
+        @tiny   = ( );                       =# the empty list=
+        @giant  = 1..1e5;                    =# a list with 100,000 elements=
+        @stuff  = (@giant, undef, @giant);   =# a list with 200,001 elements=
+        $dino   = "granite";
+        @quarry = (@rocks, "crushed rock", @tiny, $dino)
+        : copy an array to another array, it’s still a list assignment
+        @copy = @quarry; =# copy a list from one array to another=
+****** pop和push操作符 the pop and push operators
+       - 数组末尾添加删除操作
+         : You could add new items to the end of an array by simply storing them as elements with new, larger indices
+         : The pop operator takes the last element off of an array and returns it
+         @array  = 5..9;
+         $fred   = pop(@array);  =# $fred gets 9, @array now has (5, 6, 7, 8)=
+         $barney = pop @array;   =# $barney gets 8, @array now has (5, 6, 7)=
+         : That last example uses pop in a void context, which is merely a fancy way of saying the return value isn’t going anywhere
+         pop @array;             =# @array now has (5, 6). (The 7 is discarded.)=
+         : NOTE
+         If the array is empty, pop leaves it alone (since there is no element to remove) and returns undef
+
+         : The converse operation is push, which adds an element (or a list of elements) to the end of an array
+         push(@array, 0);            =# @array now has (5, 6, 0)=
+         push @array, 8;             =# @array now has (5, 6, 0, 8)=
+         push @array, 1..10;         =# @array now has those 10 new elements=
+         @others = qw/ 9 0 2 1 0 /;
+         push @array, @others;       =# @array now has those five new elements (19 total)=
+
+         : NOTE
+         the first argument to push or the only argument for pop must be an array variable—pushing and popping would not make sense on a literal list
+****** shift和unshift操作符 the shift and unshift operators
+       - 数组开头添加删除操作
+         @array = qw# dino fred barney #;
+         $m = shift(@array);      =# $m gets "dino", @array now has ("fred", "barney")=
+         $n = shift @array;       =# $n gets "fred", @array now has ("barney")=
+         shift @array;            =# @array is now empty=
+         $o = shift @array;       =# $o gets undef, @array is still empty=
+         unshift(@array, 5);      =# @array now has the one-element list (5)=
+         unshift @array, 4;       =# @array now has (4, 5)=
+         @others = 1..3;
+         unshift @array, @others; =# @array now has (1, 2, 3, 4, 5)=
+         : NOTE
+         shift returns undef if you give it an empty array variable
+****** splice操作符 the splice operator
+       - 数组中间添加删除操作
+         : splice operator takes up to four arguments, two of which are optional
+         : The first argument is always the array
+         : the second argument is the position where you want to start
+         : If you only use those two arguments, Perl removes all of the elements from your starting position to the end and returns them to you
+         @array = qw( pebbles dino fred barney betty );
+         @removed = splice @array, 2; =# remove fred and everything after=
+                                      =# @removed is qw(fred barney betty)=
+                                      =# @array is qw(pebbles dino)=
+         : use a third argument to specify a length
+         @array = qw( pebbles dino fred barney betty );
+         @removed = splice @array, 1, 2; =# remove dino, fred=
+                                         =# @removed is qw(dino fred)=
+                                         =# @array is qw(pebbles barney betty)=
+         : The fourth argument is a replacement list
+         @array = qw( pebbles dino fred barney betty );
+         @removed = splice @array, 1, 2, qw(wilma); =# remove dino, fred=
+                                                    =# @removed is qw(dino fred)=
+                                                    =# @array is qw(pebbles wilma=
+                                                    #              barney betty)
+         : If you specify a length of 0, you remove no elements but still insert the “replacement” list
+         @array = qw( pebbles dino fred barney betty );
+         @removed = splice @array, 1, 0, qw(wilma); =# remove nothing  NOTE: Perl inserted the replacement list starting at index 1 and moved everything else over=
+                                                    =# @removed is qw()=
+                                                    =# @array is qw(pebbles wilma dino=
+                                                    =#              fred barney betty)=
+***** interpolating arrays into strings
+      - 双引号字符串 数组内插
+        @rocks = qw{ flintstone slate rubble };
+        print "quartz @rocks limestone\n";  =# prints five rocks separated by spaces=
+        : There are no extra spaces added before or after an interpolated array; if you want those, you’ll have to put them in yourself
+        print "There's nothing in the parens (@empty) here.\n";
+      - 规避数组内插
+        $email = "fred@bedrock.edu";  # WRONG! Tries to interpolate @bedrock
+        Possible unintended interpolation of @bedrock
+        : To get around this problem, you either escape the @ in a double-quoted string or use a single-quoted string
+        $email = "fred\@bedrock.edu"; # Correct
+        $email = 'fred@bedrock.edu';  # Another way to do that
+      - 内插数组中的某个元素
+        @fred = qw(hello dolly);
+        $y = 2;
+        $x = "This is $fred[1]'s place";    # "This is dolly's place"
+        $x = "This is $fred[$y-1]'s place"; # same thing
+      - 索引表达式
+        : Note that the index expression evaluates as an ordinary expression, as if it were outside a string. It is not variable-interpolated first
+        @fred = qw(eating rocks is wrong);
+        $fred = "right";               =# we are trying to say "this is right[3]".=
+        print "this is $fred[3]\n";    =# prints "wrong" using $fred[3]=
+        print "this is ${fred}[3]\n";  =# prints "right" (protected by braces)=
+        print "this is $fred"."[3]\n"; =# right again (different string)=
+        print "this is $fred\[3]\n";   =# right again (backslash hides it)=
+***** the foreach control structure
+      - 遍历列表中的值
+        foreach $rock (qw/ bedrock slate lava /) {
+            print "One rock is $rock.\n";  =# Prints names of three rocks=
+        }
+      - 循环中修改控制变量
+         @rocks = qw/ bedrock slate lava /;
+         foreach $rock (@rocks) {
+             $rock = "\t$rock";       # put a tab in front of each element of @rocks
+             $rock .= "\n";           # put a newline on the end of each
+         }
+         print "The rocks are:\n", @rocks; # Each one is indented, on its own line
+      - 控制变量在循环结束之后还原
+        : after the loop is done, the variable has the value it had before the loop, or undef if it hadn’t had a value
+        $rock = 'shale';
+        @rocks = qw/ bedrock slate lava /;
+        foreach $rock (@rocks) {
+          ...
+        }
+        : TODO
+        After we introduce subroutines to you in Chapter 4, we’ll show you a better way to handle that
+****** perl最喜欢的默认变量:$_  perl's favorite default:$_
+       - 缺省控制变量
+         : If you omit the control variable from the beginning of the foreach loop, Perl uses its <<favorite default variable>>, $_
+         foreach (1..10) {  # Uses $_ by default
+           print "I can count to $_!\n";
+         }
+         : one of those cases is print, which will output $_ if given no other argument
+         $_ = "Yabba dabba doo\n";
+         print;  # prints $_ by default
+****** reverse操作符 the reverse operator
+       - 逆序返回列表值
+         : The reverse operator takes a list of values (which may come from an array) and returns the list in the opposite order
+         - So if you were disappointed that the range operator only counts upward, this is the way to fix it
+           @fred   = 6..10;
+           @barney = reverse(@fred);  =# gets 10, 9, 8, 7, 6=
+           @wilma  = reverse 6..10;   =# gets the same thing, without the other array=
+           @fred   = reverse @fred;   =# puts the result back into the original array  NOTE: Perl always calculates the value being assigned (on the right) before it begins the actual assignment=
+         : Remember that reverse returns the reversed list; it doesn’t affect its arguments. If the return value isn’t assigned anywhere, it’s useless
+         reverse @fred;           =# WRONG - doesn't change @fred=
+         @fred = reverse @fred;   =# that's better=
+****** sort操作符 the sort operator
+       - 按字符编码顺序进行排序
+         : The sort operator takes a list of values (which may come from an array) and sorts them in the internal character ordering
+         - The sort operator takes an input list, sorts it, and outputs a new list
+           @rocks   = qw/ bedrock slate rubble granite /;
+           @sorted  = sort(@rocks);        # gets bedrock, granite, rubble, slate
+           @back    = reverse sort @rocks; # these go from slate to bedrock
+           @rocks   = sort @rocks;         # puts sorted result back into @rocks
+           @numbers = sort 97..102;        # gets 100, 101, 102, 97, 98, 99
+           : TODO
+           you’ll see in Chapter 14 how to sort in whatever order you’d like
+         : the arguments themselves aren’t affected. If you want to sort an array, you must store the result back into that array
+         sort @rocks;          # WRONG, doesn't modify @rocks
+         @rocks = sort @rocks; # Now the rock collection is in order
+****** each操作符 the each operator
+       - 使用each 返回下一个元素对应的两个值
+         : Every time that you call each on an array, it returns two values for the next element in the array—the index of the value and the value itself
+         require v5.12;
+         @rocks = qw/ bedrock slate rubble granite /;
+         while( ( $index, $value ) = each @rocks ) {
+             print "$index: $value\n";
+         }
+         : TODO
+         but we don’t show you those until Chapter 6
+       - 借助索引值取得元素的值
+         : If you wanted to do this without each, you have to iterate through all of the indices of the array and use the index to get the value
+         @rocks   = qw/ bedrock slate rubble granite /;
+         foreach $index ( 0 .. $#rocks ) {
+             print "$index: $rocks[$index]\n";
+         }
+***** scalar and list context *[important section]*
+      - 一个表达式出现在不同的地方会有不同的意义
+        : a given expression may mean different things depending upon where it appears and how you use it
+        - it’s the operator that decides what you are doing, not the values
+          2 * 3      =# numeric multiplication 6=
+          2 x 3      =# string replication 222=
+        : As Perl is parsing your expressions, it always expects either a scalar value or a list value (or void, which we don’t cover in this book)
+        - What Perl expects is called the context of the expression
+          42 + something =# The something must be a scalar=
+          sort something =# The something must be a list=
+        - In a list context, it gives the list of elements. But in a scalar context, it returns the number of elements in the array
+          @people = qw( fred barney betty );
+          @sorted = sort @people;  # list context: barney, betty, fred
+          $number = 42 + @people;  # scalar context: 42 + 3 gives 45
+        - Even ordinary assignment (to a scalar or a list) causes different contexts
+          @list = @people; =# a list of three people=
+          $n = @people;    =# the number 3=
+        : TIP
+        Each expression can make up its own rules
+        follow the overall rule that isn’t very helpful to you
+****** 在标量上下文中使用产生列表的表达式 using list-producing expressions in scalar context
+       - sort标量上下文
+         : sort
+         You wouldn’t need to sort a list to count its elements, so until someone implements something else, sort in a scalar context always returns undef
+       - reverse标量上下文
+         : reverse
+         - In a list context, it gives a reversed list. In a scalar context, it returns a reversed string
+           @backwards = reverse qw/ yabba dabba doo /;
+               # gives doo, dabba, yabba
+           $backwards = reverse qw/ yabba dabba doo /;
+               # gives oodabbadabbay
+       - 判断上下文
+         : At first, it’s not always obvious whether an expression is being used in a scalar or a list context. But trust us, it will become second nature for you eventually
+         - Here are some common contexts to start you off
+           $fred = something;            =# scalar context=
+           @pebbles = something;         =# list context=
+           ($wilma, $betty) = something; =# list context=
+           ($dino) = something;          =# still list context!=
+         - some that provide scalar context to something
+           $fred = something;
+           $fred[3] = something;
+           123 + something
+           something + 654
+           if (something) { ... }
+           while (something) { ... }
+           $fred[something] = something;
+         - some that provide a list context
+           @fred = something;
+           ($fred, $barney) = something;
+           ($fred) = something;
+           push @fred, something;
+           foreach $fred (something) { ... }
+           sort something
+           reverse something
+           print something
+****** 在列表上下中使用产生标量的表达式 using scalar-producting expressions in list context
+       - 产生一个仅含此标量值的列表
+         : if an expression doesn’t normally have a list value, the scalar value is automatically promoted to make a one-element list
+         @fred = 6 * 7;    =# gets the one-element list (42)=
+         @barney = "hello" . ' ' . "world";
+         : NOTE
+         : Well, there’s one possible catch. Since undef is a scalar value, assigning undef to an array doesn’t clear the array. The better way to do that is to assign an empty list
+         @wilma = undef; # OOPS! Gets the one-element list (undef)
+             # which is not the same as this:
+         @betty = ( );    =# A correct way to empty an array=
+****** 强制指定标量上下文 forcing scalar context
+       - 使用scalar强制引入标量上下文
+         : On occasion, you may need to force scalar context where Perl is expecting a list.
+         : In that case, you can use the fake function scalar. It’s not a true function because it just tells Perl to provide a scalar context
+         @rocks = qw( talc quartz jade obsidian );
+         print "How many rocks do you have?\n";
+         print "I have ", @rocks, " rocks!\n";        # WRONG, prints names of rocks
+         print "I have ", scalar @rocks, " rocks!\n"; # Correct, gives a number
+         : NOTE
+         Oddly enough, there’s no corresponding function to force list context. It turns out you almost never need it. Trust us on this
+***** <STDIN> in list context
+      - 读入标准输入
+        @lines = <STDIN>; =# read standard input in list context=
+        : you’ll normally type a Control-D to indicate to the system that there’s no more input
+
+        - it will remove the newlines from each item in the list. For example
+          @lines = <STDIN>;        =# Read all the lines=
+          chomp(@lines);           =# discard all the newline characters=
+          : the more common way to write that
+          chomp(@lines = <STDIN>); =# Read the lines, not the newlines=
+        : NOTE
+        If the input data is large, you should generally find a way to deal with it without reading it all into memory at once
+**** subroutines
+***** defining a subroutine
+      - 子程序主体
+        =// NOTE=
+        =// You may put your subroutine definitions anywhere in your program text, you don’t normally need any kind of forward declaration=
+        =// If you have two subroutine definitions with the same name, the later one overwrites the earlier one=
+        sub marine {
+              $n += 1;  # Global variable $n         <<Global variable>>
+              print "Hello, sailor number $n!\n";
+        }
+      - 全局变量
+        [[Global variable]]
+        In fact, all of the variables you’ve seen so far are global; that is, they are accessible from every part of your program
+        : TODO
+        You’ll see how to make private variables in the section “Private Variables in Subroutines” on page 66
+***** invoking a subroutines
+      - 使用子程序名
+        : calling the subroutine by using the subroutine name (with the ampersand)
+        &marine;  # says Hello, sailor number 1!
+        &marine;  # says Hello, sailor number 2!
+***** return value
+      - 处理子程序的返回值
+        : Many times, you call a subroutine and actually do something with the result
+        : NOTE: All Perl subroutines have a return value
+        sub sum_of_fred_and_barney {
+              print "Hey, you called the sum_of_fred_and_barney subroutine!\n";
+              $fred + $barney;  # That's the return value    [[return value]]
+        }
+
+        $fred   = 3;
+        $barney = 4;
+        $wilma  = &sum_of_fred_and_barney;      # $wilma gets 7
+        print "\$wilma is $wilma.\n";
+        =# ouput=
+          =Hey, you called the sum_of_fred_and_barney subroutine!=
+          =$wilma is 7.=
+
+        $betty  = 3 * &sum_of_fred_and_barney;  # $betty gets 21
+        print "\$betty is $betty.\n";
+        =# output=
+          =Hey, you called the sum_of_fred_and_barney subroutine!=
+          =$betty is 21.=
+      - 最后执行的语句被当成返回值
+        <<return value>>
+        : Whatever calculation is last performed in a subroutine is automatically also the return value
+
+        : the last expression now the print statement, whose return value is normally 1, meaning “printing was successful"
+        sub sum_of_fred_and_barney {
+              print "Hey, you called the sum_of_fred_and_barney subroutine!\n";
+              $fred + $barney;  # That's not really the return value!
+              print "Hey, I'm returning a value now!\n";      # Oops!
+        }
+
+        : “The last evaluated expression” really means the last expression that Perl evaluates, rather than the last statement in the subroutine
+        sub larger_of_fred_or_barney {
+          if ($fred > $barney) {
+            $fred;
+          } else {
+            $barney;
+          }
+        }
+***** arguments
+      - 带参数调用子程序
+        : To pass an argument list to the subroutine, simply place the list expression, in parentheses, after the subroutine invocation
+        $n = &max(10, 15);  # This sub call has two parameters
+
+        : Perl automatically stores the parameter list in the special array variable named @_, this is valid during program execution
+        sub max {
+              =# This means that the first subroutine parameter is in $_[0], the second one is stored in $_[1], and so on=
+              if ($_[0] > $_[1]) {
+                $_[0];
+              } else {
+                $_[1];
+        } }
+        : a better way:  [[private variables]]
+
+        : Perl doesn’t care about insufficient parameters either
+        $n = &max(10, 15, 27);  =# extra parameters 27 will be omit=
+        $n = &max(10);          =# the default second argument will return undef=
+***** private variables in subroutines
+      - 封闭语句块私有变量
+        : you can create private variables called lexical variables at any time with the my operator
+        sub max {
+              my($m, $n);       # new, private variables for this block
+              ($m, $n) = @_;    # give names to the parameters
+            =# my($m, $n) = @_;  # make the subroutine in the previous two lines even simpler=
+                                =# When you see that line, you’ll know that the subroutine expects two scalar parameters, which you’ll call $m and $n inside the subroutine=
+              if ($m > $n) { $m } else { $n }
+        }
+***** cariable-length patameter lists
+      - 检查参数列表
+        sub max {
+          if (@_ != 2) {  =# uses the “name” of the array in a scalar context to find out the number of array elements, as you saw in Chapter 3=
+             print "WARNING! &max should get exactly two arguments!\n";
+          }
+          # continue as before...
+        }
+        : But in real-world Perl programming, virtually no one really uses this sort of check; it’s better to make your subroutines adapt to the parameters
+****** 改进的&max子程序 a better &max routine
+       : Rewrite &max to allow for any number of arguments
+       $maximum = &max(3, 5, 10, 4, 6);
+
+       sub max {
+         my($max_so_far) = shift @_;  =# the first one is the largest yet seen    NOTE: if the &max is a <<empty list>>, shift @_ will return undef=
+         foreach (@_) {               =# look at the remaining arguments          NOTE: if @_ is undef, the loop body execute zero times=
+           if ($_ > $max_so_far) {    =# could this one be bigger yet?=
+             $max_so_far = $_;
+           }
+         }
+         $max_so_far;
+       }
+****** 空参数列表 empty parameter lists
+       : if the array @numbers might sometimes be an [[empty list]]
+       : the return value may be undef
+       $maximum = &max(@numbers);
+***** notes on lexical(my) variables
+      - 将变量圈定在指定代码内
+        - Those lexical variables can actually be used in any block, not merely in a subroutine’s block
+          =# The variable $square is private to the enclosing block; in this case, that’s the block of the foreach loop=
+          foreach (1..10) {
+                my($square) = $_ * $_;  # private variable in this loop
+                print "$_ squared is $square.\n";
+          }
+          : TIP
+          : the scope of a lexical variable’s name is limited to the smallest enclosing block or file
+        - Note also that the my operator *doesn’t change the context* of an assignment
+          my($num) = @_;  =# list context, same as ($num) = @_;=
+          my $num  = @_;  =# scalar context, same as $num = @_;=
+        - Remember that *without the parentheses*, my only declares a single lexical variable
+          my $fred, $barney;      # WRONG! Fails to declare $barney
+          my($fred, $barney);     # declares both
+        - use my to create new, private *arrays*
+          my @phone_number;
+        - in perl, you may use my to introduce a new perivate variable in your own structure
+          foreach my $rock (qw/ bedrock slate lava /) {
+              print "One rock is $rock.\n";  # Prints names of three rocks
+          }
+***** the use strict progma
+      - 遵循优良编程风格
+        : Perl tends to be a pretty permissive language.
+        : the use strict pragma tells Perl’s internal compiler that it should enforce some good programming rules for the rest of this block or source file
+
+        : without use strict progma
+        =# imagine that you’re composing your program and you type a line like this one=
+        $bamm_bamm = 3;  =# Perl creates that variable automatically=
+        =# Now, you keep typing for a while. After that line has scrolled off the top of the screen, you type this line to increment the variable=
+        $bammbamm += 1;  =# Oops! perl create a new variable=
+        : with use strict progma
+        use strict;  =# Enforce some good programming rules=
+        my $bamm_bamm = 3;  =# New lexical variable=
+        $bammbamm += 1;  =# No such variable: Compile time fatal error=
+***** the return operator
+      - 程序执行停止 返回值
+        my @names = qw/ fred barney betty dino wilma pebbles bamm-bamm /;
+        my $result = &which_element_is("dino", @names);
+        sub which_element_is {
+            my($what, @array) = @_;
+            foreach (0..$#array) {  # indices of @array's elements
+                if ($what eq $array[$_]) {  =# element not found (return is optional here)=
+                    return $_;
+                }
+            }
+            -1;  =# return early once found=
+        }
+***** omitting the ampersand
+      - 省略子程序识别符&
+        : if it is a function call, it may should not add &
+        my @cards = shuffle(@deck_of_cards); =# No & necessary on &shuffle=
+        : or if the subroutine is appeared earlier
+        sub division {
+              $_[0] / $_[1];                   # Divide first param by second
+            }
+        my $quotient = division 355, 113;  # Uses &division
+        : NOTE
+        : if the subroutines has the same name as a perl's build-in, you must use & to call your version
+        sub chomp {
+              print "Munch, munch!\n";
+            }
+        &chomp;  =# That ampersand is not optional!=
+***** nonscalar return values
+      - 子程序返回列表值
+        sub list_from_fred_to_barney {
+              if ($fred < $barney) {
+                # Count upwards from $fred to $barney
+                $fred..$barney;
+              } else {
+                # Count downwards from $fred to $barney
+                reverse $barney..$fred;
+              }
+        }
+        $fred = 11;
+        $barney = 6;
+        @c = &list_from_fred_to_barney; # @c gets (11, 10, 9, 8, 7, 6)
+***** persistent, private variables
+      - state变量
+        - 非state变量无法存续
+          =# add strict to you program and realize that your use of the global variable $n is now a compilation error=
+          =# You can’t make $n a lexical variable with my because it wouldn’t retain its value between calls=
+          use strict
+          sub marine {
+                $n += 1;    # Global variable $n (not declare error)
+                my y += 1;  # Subroutine private variable my y (can not retain)
+                print "Hello, sailor number $n!\n";
+          }
+        - 多次调用子程序期间保留state变量的值
+          =# Declaring our variable with state tells Perl to retain the variable’s value between calls to the subroutine and to make the variable private to the subroutine=
+          use v5.10;
+              sub marine {
+                state $n = 0;  # private, persistent variable $n
+                $n += 1;
+                print "Hello, sailor number $n!\n";
+          }
+
+          =# You can make any variable type a state variable, it’s not just for scalars=
+          : Here’s a subroutine that remembers its arguments and provides a running sum by using a state array
+          use v5.10;
+          running_sum( 5, 6 );
+          running_sum( 1..3 );
+          running_sum( 4 );
+          sub running_sum {
+            state $sum = 0;
+            state @numbers;
+            foreach my $number ( @_ ) {
+              push @numbers, $number;
+              $sum += $number;
+            }
+            say "The sum of (@numbers) is $sum";
+          }
+          The sum of (5 6) is 11
+          The sum of (5 6 1 2 3) is 17
+          The sum of (5 6 1 2 3 4) is 21
+          : NOTE
+          : You can’t initialize arrays and hashs as state variables in list contexts
+          state @array = qw(a b c); # Error!
+***** subroutine signatures
+      - enables ignatures feature
+        use v5.20;
+        use feature qw(signatures);
+        no warnings qw(experimental::signatures);
+      - make subroutine a functin with argument like
+        sub max ( $m, $n ) { =# The variables are still private to the subroutine but you type much less to declare and assign to them=
+            if ($m > $n) { $m } else { $n }
+            =# the same as below without signatures=
+            =# my($m, $n);=
+            =# ($m, $n) = @_;=
+        }
+      - handle too many or too few argument
+        : more argument
+        sub max ( $max_so_far, @ ) {  =# the plain @ is same as @rest=
+          foreach (@_) {              =# the argument list shows up in @_, which replace the @rest=
+            if ($_ > $max_so_far) {
+              $max_so_far = $_;
+            }
+          }
+          $max_so_far;
+        }
+
+        : less argument with default set
+        sub list_from_fred_to_barney ( $fred = 0, $barney = 7 ) { =# Signatures can also specify defaults=
+          if ($fred < $barney) { $fred..$barney }
+          else                 { reverse $barney..$fred }
+        }
+        my @defaults    = list_from_fred_to_barney();
+        my @default_end = list_from_fred_to_barney( 17 );
+        say "defaults: @defaults";
+        say "default_end: @default_end";
+
+        : less argument with default set
+        : use the $= placeholder to denote an optional argument
+        sub one_or_two_args ( $first, $= ) { ... }
+**** input and output
+***** input from standard input
+      - 读取用户输入的各种方式
+        : scalar context
+        $line = <STDIN>;         =# read the next line=
+        chomp($line);            =# and chomp it=
+        chomp($line = <STDIN>);  =# same thing, more idiomatically=
+
+        : loop
+        =# Since the line-input operator will return undef when you reach end-of-file, this is handy for dropping out of loops=
+        : output complete
+        while (defined($line = <STDIN>)) {  =# reading input into $line variable=
+              print "I saw $line";
+        }
+        while (defined($_ = <STDIN>)) {     =# reading input into default variable $_  NOTE: the line-input operator($_) is not [[favorite default variable]]=
+              print "I saw $_";
+        }
+        while (<STDIN>) {                   =# omit the default varuable $_, the same as above=
+              print "I saw $_";
+        }
+        : output one line per list element
+        foreach (<STDIN>) {
+              print "I saw $_";
+        }
+***** input from the diamond operator
+      - 读入文件内容
+        : This is useful for making programs that work like standard Unix utilities, with respect to the invocation arguments
+        =# That command means to run the command my_program (which will be found in the current directory), and process file fred followed by barney, followed by betty=
+        $ ./my_program fred barney betty
+
+        : The diamond operator is actually a special kind of line-input operator.
+        : But instead of getting the input from the keyboard, it comes from the Unix standard input
+        while (defined($line = <>)) {
+              chomp($line);
+              print "It was $line that I saw!\n";
+        }
+        =# without an argument, chomp works on $_=
+        while (<>) {
+              chomp;
+              print "It was $_ that I saw!\n";
+        }
+***** the double diamond
+      - prevent diamond operator command line having a special characher
+        : Suppose that the filename from the command line has a special character in such, such as |.
+        : This might cause perl to perform a “pipe open”, which runs an external program and reads that program’s output as if it were a file.
+        : The “double diamond” operator, <<>>, prevents this
+        use v5.22;
+            while (<<>>) {
+              chomp;
+              print "It was $_ that I saw!\n";
+        }
+***** the invocation arguments
+      - 预填充命令行参数数组
+        : @ARGV
+        @ARGV array is a special array
+          that is preset by the Perl interpreter as the list of the invocation arguments
+          when your program starts
+            @ARGV is already stuffed full of the list of invocation arguments
+        in this case, force these three files to be read
+          If it finds an empty list, it uses the standard input stream
+        : <>
+        The diamond operator looks in @ARGV to determine what filenames it should use
+***** output to standard output
+      - 使用数组内插打印
+        : scalar interpolation
+        if print a scalar (or a list of values)
+        it doesn't add any extra characters before the items
+        : , $name,
+        add comma delimiter to $name
+
+        : array interpolation
+        the difference between printing an array and interpolating an array
+        : if @array holds qw/ fred barney betty /
+        : 1
+        - print a list of items
+          print fredbarneybetty
+        : 2
+        - *print an interpolated array*
+          print fred barney betty
+      - 换行符数组打印
+        if @array contain newline charater (\n)
+        : 1
+        generally print them all
+        : 2
+        - but if you use /print "#array";/
+          it will print:
+          fred
+           barney    # because of the items are separated by spaces
+           betty
+
+        if @array without newline character
+        : 2
+        print the interpolation array with \n
+      - 打印<>操作符输入的列表
+        : work with <>
+        Since print is looking for a list of strings to print
+        Since the diamond operator returns a list of lines in a list context
+        so they can work well together
+        : TIP
+        the standard Unix commands cat and sort do have some additional
+          functionality that these replacements lack
+        but you can implement it by perl
+      - 省略括号
+        : optianl parentheses
+        Remember the rule that parentheses in Perl may always be omitted
+          except when doing so would change the meaning of a statement
+      - print的函数调用
+        : function call
+        This is the problem with the optional parentheses
+        : without parentheses around
+        When there are no parentheses, that’s generally what you’d expect
+        : with parentheses around
+        But when the first thing after print is a left parenthesis
+          print is a function call
+          and it will print only what’s found inside the parentheses
+        : NOTE
+        the return value of print is a true or false value
+          indicating the state of print
+        : return value
+        in this case, the return value is 1, indicating the success of the print
+***** formatted output with printf
+**** hashes
+***** what is hash
+      - 键值对
+        A hash is a data structure
+        the indices, called keys are always unique
+        each keys has a tag attached, called values may be all numbers, all strings, undef values, or a mixture, and you may use same value more than once
+        the keys and values are both arbitrary scalars, but the keys are always converted to string
+        : TIP
+        the large size of hash will not slow down the speed
+***** hash element access
+      - 访问的各种形式
+        : key access
+****** 访问整个哈希 the hash as a whole
+       - 展开哈希
+         : unwinding the hash
+****** 哈希赋值 hash assignment
+       - 整个哈希赋值
+         : copy
+         : reverse
+****** 胖箭头 the big arrow
+       - 更加清晰的哈希表达形式
+         : format hash
+         : hash key shortcut
+**** 用正则表达式进行匹配 matching with regular expressions
+     how the world of regular expressions fits into the world of perl
+***** 用m//进行匹配 matches with m//
+      - 模式匹配擦作符 pattern match operator
+***** 模式匹配修饰符 match modifiers
+      there are several modifier letters (模式匹配符), sometimes called flags
+        which you can append as a group right after the ending delimiter
+****** 用/i进行大小写无关的匹配 case-insensitive matching with /i
+       : /i
+       to make case-insensitive pattern match
+       so you can match FRED as easily as fred or Fred, use /i modifier
+****** 用／s匹配任意字符 matching any character with /s
+       : /s
+       by default, the dot (.) doesn't match newline,
+       if you have newlines in your string, and you want the dot to be able to match them
+       the /s modifier will do the job, which change every dot like [\d\D] does
+       : TIP 1
+       if you want to match any character except a newline in /s modifier
+       use the character class [^\n]
+       also can use shortcut \N (v5.12)
+       : TIP 2
+       if you don't like /s modifier
+       you can make your own character to match any character like [\D\d] or [\S\s]
+****** 用／x加入空白符 adding whitespace with /x
+       : /x
+       the /x modifier makes whitespace inside the pattern insignificant
+       : TIP
+       since the /x allows whitespace inside the pattern
+       you could use a backslash space or \t to match these
+       it's more common to use \s (or \s* or \s+)
+       also can escape a literal space \x{20} \040
+****** 组合选项修饰符 combining option modifiers
+       : combining modifiers
+       if you want to use more than one modifier on the smae match
+         put them both at the end (their order isn't significant) [combining modifiers]
+****** 选择一种字符解释方式 choosing a character interpretation
+       : choose interpretation
+       perl v5.14 add modifiers let to interpret in a match
+         /a    use ASCII
+         /u    use Unicode
+         /l    use locale
+       : case-folding 大小写处理
+       which lowercase letter you should get from an uppercase letter
+         k     in ASCII K -> k
+               in Unicode it can be K (Kelvin sign) -> k
+       : locale or Unicode
+       you can't know how to lowercase it until you know what the locale value represents
+       make sure 0xBC is a locale or Unicode character
+
+       : TIP
+       [[http://unicode.org/Public/UNIDATA/CaseFolding.txt][Unicode's case folding rules]]
+****** 错位 beginning and end-of-line anchors
+       : match string at the end or begin of line
+       match fred at the end of any line [end of line]
+       match fred at the begin of any line [begin of line]
+
+       : /m
+       /m    does the same for ^ anchor
+             which then matches either at the absolute beginning of the string
+               or anywhere after a newline (匹配绝对开头位置和换行符之后的位置)
+       : TIP
+       the /m ^ and $ just like \A and \Z
+****** 其他选项 other option
+       : TIP
+       read about [[http://perldoc.perl.org/perlop.html][perlop documentation]] to get other modifiers available
+***** 绑定操作符=~ the binding operator=~
+      : bind the default pattern
+      match the pattern on the right against the string on left (not the default $_)
+
+      use \brub pattern in $some_other string [right pattern left string]
+      set $likes_perl to a boolean value
+        according to type input pattern's result [set a boolean]
+      the binding operator has high precedence
+        the parentheses around the pattern aren't required [high precedence]
+***** 捕获变量 the match variables
+      : parentheses capture
+      the capture groups hold the part of the string matched
+        by the part of the pattern inside parentheses 反向引用括号组内容
+****** 捕获变量的存续期 the persistence of capures
+       : persistence captures
+       if pattern not match, the $1 will not be overwritten [not match]
+       if pattern match, the $1 will be overwritten [match]
+
+       : TIP
+       so it is often take pattern into if while statement
+       : TODO
+       in chapter 9, we will see capture value directly into the variables
+         without having to use $1
+****** 不捕获模式 noncapturing parentheses
+       : noncapture
+       use ?: after the parenthesis to not trigger the capture groups
+       the /n flag turns all parentheses into noncapturing groups (v5.22) [/n]
+
+       : TODO
+       regular expression have have serveral other special parentheses sequences
+         like look-ahead, look-behind embed comments
+         more detail in [[http://perldoc.perl.org/perlre.html][perlre documentation]]
+****** 命令捕获 named captures
+       : name capture
+       : |- label
+       use ?<label>pattern to set label
+       : |- capture label
+       use $+{label} to capture label
+       : |- back reference label
+       use \g{label} or \k{label} for back reference
+       : |- python capture
+       use the python syntax
+         use ?P<label> form a capture
+         use ?P=label refers to that capture
+       : NOTE
+       if there have two or more labeled with the same label
+       \k<label> and \g{label} always refer to the left-most group
+       but \g{N} can be a relative back reference
+****** 自动捕获变量 the automatic match variables                               :ATTACH:
+       :PROPERTIES:
+       :Attachments: automatic_match.pl
+       :ID:       15FAA599-88A6-44C4-911F-E98544C98E76
+       :END:
+       : $&, $`, $'
+       use $&, $`, $' to match the pattern automatically
+       : |- $&
+       matched entire section is in $& (not capture one like $1)
+       : |- $`, $'
+       before the matched section is in $`
+       after the matched section is in $'
+       : NOTE
+       the automatic match variables will run a little more slowly in regular expression
+       so many perl programmer use $1 instead
+
+       : ${^PREMATCH} ${^MATCH} ${^POSTMATCH}
+       use ${^PREMATCH}, ${^MATCH}, ${^POSTMATCH} instead of $`, $&, $' (v5.10)
+       : NOTE
+       the name start with ^ and around the braces is used for special names
+         that user might not create (the ^ is illegal character in a user-defined variable)
+         Precedence
+***** 通用量词
+      : {}
+      使用{}的形式指定具体的重复次数范围
+***** 优先级 precedence
+      : regular expression precedence
+      regular expression                     example                        precedence
+      Parentheses (grouping or capturing)    (…), (?:…), (?<LABEL>…)        highest
+      Quantifiers                            a* a+ a? a{n,m}
+      Anchors and sequence                   abc ^ $ \A \b \z \Z            v
+      Alternation                            a|b|c
+      Atoms                                  a [abc] \d \1 \g{2}            lowest
+
+      : examples of precedence
+***** 模式测试程序 a patern test program
+      : test pattern
+      This program is useful to test out a pattern on some strings
+        and see just what it matches, and where
+**** 用正则表达式处理文本 processing text with regular expressions
+     use regular expressions to change text
+***** 用s///进行替换 substitutions with s///
+      - 查找并替换
+        If you think of the m// pattern match as being like your word processor’s “search” feature
+        the “search and replace” feature would be Perl’s s/// substitution operator
+****** 用/g进行全局替换 global replacements with /g
+       : global replacements
+       /g modifier tells s/// to make all possible nonoverlapping replacements
+****** 不同的定界符号 different delimiters
+       : nonpaired delimiters
+       : paired delimiters
+**** 其他控制结构 more control structures
+     alternative ways to write perl code
+***** unless控制结构 the unless control structure
+      unless = if no
+**** perl模块 perl modules
+     if there is a problem to solve, somebody has probably already solved it and made their solution available on the comprehensive perl archive network (CPAN)
+***** 寻找模块 finding modules
+      to find modules that don't come with perl, start at either [[http://search.cpan.org][CPAN Search]] or [[https://metacpan.org][Meta-CPAN]]
+      - before you go lokking for a modules, you should check if it is already installed
+        one way is to try to read the documentation with *perldoc*
+        - the Digest::SHA modules comes with Perl, so you should be able to *read its document*
+          $ perldoc Digest::SHA
+        - try it with a modules that *does not exist* and you'll get an error message
+          $ perldoc Llamas
+          No documentation found for "Llamas"
+        - The cpan command that comes with Perl can give you details on a module
+          $ cpan -D Digest::SHA
+***** 安装模块 installing modules
+      - use CPAN.pm from the command line
+        $ perl -MCPAN -e shell
+****** 安装到自己的目录 using your own directories
+       - install perl module by default directories
+         - loading module environment variables
+           $ perl -Mlocal::lib
+         - use -I to enable the module environment variables
+           $ cpan -I Set::CrossProduct
+         - configure each for ExtUtils::Makemaker and Module::Build systems
+           $ cpan
+           cpan> o conf makepl_arg INSTALL_BASE=/Users/fred/perl5
+           cpan> o conf mbuild_arg "--install_base /Users/fred/perl5"
+           cpan> o conf commit
+         - Once you’ve chosen where you want to put your Perl modules, you have to tell your programs where to find them
+           # inside your Perl program
+           use local::lib;
+
+           # also inside your Perl program
+           use lib qw( /Users/fred/perl5 );
+***** 使用简易模块 using simple modules
+      - get the file basename [basename]
+        suppose that you get a long filename like /usr/local/bin/perl
+        you want to find out the basename without the directory portion
+        it's easy, since the basename is everything after the last slash (perl in case)
+      : TODO
+      understand advanced topic like reference and object in order to use some modules
+      more detail in /Intermediate Perl/
+****** the File::Basename modules
+       get the file basename by using File::Basename module [basename_module]
+       : TIP
+       there are some related functions alse provided by this module
+       one is the dirname function, which pulls the directory name form a full filename
+****** 仅选用模块中的部分函数 using only some functions from a module           :ATTACH:
+       :PROPERTIES:
+       :Attachments: import_list.pl
+       :ID:       6C9DE7D4-32DC-4DB8-ACE7-7D588187065F
+       :END:
+       - import part of module's functions [import list]
+         most of the time, you'll want to use a module's default import list
+         but you can always override that with a list of your own
+         if you want leave out (or add in) some of the default items
+       - use the full name of the function from the module [not import list]
+         suppose the module's function name is the same as your existing program
+         the solution is not import any function names from the module
+           use your own existing function
+       : NOTE
+       you can use the short of the function's name (import list)
+       you can always use the function's full name (not import list)
+****** File::Spec模块 the File::Spec module                                     :ATTACH:
+       :PROPERTIES:
+       :Attachments: get_full_filename.pl
+       :ID:       F3312F55-E1AD-4B5E-9B5D-23D16862E7B3
+       :END:
+       use File::Basename to get full filename [basename]
+       use File::Spec to get full filename [specifications]
+         File::Spec is a OO module [OO module]
+           if you want to use the catfile method of File::Spec
+           you should use
+           : File::Spec->catfile
+           the full name of a method is the name of the module (called a class)
+             a small arrow (->)
+             and the short name of the method
+****** Path::Class模块 Path::Class                                              :ATTACH:
+       :PROPERTIES:
+       :Attachments: more_pleasant_interface_get_full_filename.pl
+       :ID:       C504BECD-DC94-4978-A743-C32548509001
+       :END:
+       a more pleasant interface to work with file paths [pleasant interface]
+****** 数据库和DBI模块 databases and DBI                                        :ATTACH:
+       :PROPERTIES:
+       :Attachments: DBI.pl
+       :ID:       7434E45C-CC0C-4429-9506-786DC3158B94
+       :END:
+       the DBI (database interface) allow you to use the smae interface for any database
+       once you install DBI, you also have to install a DBD (database driver)
+         get the version of your server from CPAN search
+       to connect to a database, use the DBI module, call its connect method [connect]
+       the $dat_source contains information particular to DBD
+         for PostgreSQL the driver is DBD::pg [DBD information]
+       a cycle of preparing, executing, and reading queries [query]
+       disconnect from the database [disconnect]
+       : TIP
+       /Programming the Perl DBI/ is mostly a good introduction to the module
+****** 处理日期和时间的模块 dates and times                                     :ATTACH:
+       :PROPERTIES:
+       :Attachments: dates_and_times.pl
+       :ID:       9FFC17B1-E09B-4F6C-8E03-EEB897E5041E
+       :END:
+       covert system time to Time::Moment [system time]
+       covert current time to Time::Moment [current time]
+       access various parts of the date to get what you need [access part of date]
+       do date math with two TIme::Moment [date math]
+**** 文件测试 file tests
+     perl has a complete set of tests you can use to find out information about files
+***** 文件测试操作符 file test operators                                        :ATTACH:
+      :PROPERTIES:
+      :Attachments: test_operators.pl
+      :ID:       E791E8CA-0BD0-4D3C-B3F0-90CCA35E640C
+      :END:
+      - perl has a set of test operatorss that let you get particular information about files
+        they all take the form of -X, where the X represents the particular test
+        - to get the argument list of -X, use
+          $ perldoc -f -X  =# you'll find documentation in perlfunc=
+      - file tests and their meanings [T] (En 232-233)
+        -r -w -x -o       tell whether the given attribute is true for the effective user or group ID,
+                          which essentially refers to the person who is “in charge of ” running the program
+        -R -W -X -O       tests use the real user or group ID,
+                          which becomes important if your program may be running set-ID
+        -s                test does return true if the file is nonempty
+        -f -d -l -S -p -b -c         test seven types of items on a unix filesystem
+        -M -A -C          return the number of days since the file was last modified, accessed or had its innode changed
+        -T -B             take a try at telling whether a file is text or binary
+        -t                test returns true if the given filehandle is a TTY--if it's interactive
+**** 目录操作 directory operations
+***** the current working directory                                             :ATTACH:
+      :PROPERTIES:
+      :Attachments: show_my_cwd.pl
+      :ID:       DC5069BF-54A4-4D7A-AF0D-365B29E0FDBD
+      :END:
+      your program runs with a working directory, this is the default directory for everything your program does
+      the Cwd module (part of the standard library), you can see what that directory is [C]
+***** 在目录树中移动 changing the directory                                     :ATTACH:
+      :PROPERTIES:
+      :Attachments: chdir.pl
+      :ID:       155A613F-4783-4ECC-A0A3-051F998CC84F
+      :END:
+      the chdir operator changes the working directory [C]
+***** 文件名通配 globbing                                                       :ATTACH:
+      :PROPERTIES:
+      :Attachments: globbing.pl
+      :ID:       813833D3-B4C3-4326-9DDF-86603066C0B7
+      :END:
+      find file name by globbing (filename patterns on each command line into the matching filenames) [C]
+***** 文件名通配的另一种语法 an alternate syntax for globbing                   :ATTACH:
+      :PROPERTIES:
+      :Attachments: globbing2.pl
+      :ID:       E8E44264-40DF-460E-8A8B-49117EE26C55
+      :END:
+      glob file names in angle-bracket [C]
+**** 字符串与排序 string and sorting
+***** 用index查找子字符串 finding a substring with index                        :ATTACH:
+      :PROPERTIES:
+      :Attachments: index_rindex.pl
+      :ID:       6AB9EFD8-0D17-4B75-84D5-B8CF74E1675C
+      :END:
+      search [character|word] [first|last] appear [C]
+**** 智能匹配与given-when结构
+**** 进程管理 process management
+     one of the best parts of being a programmer is launching someone else's code so that you don't have to write it yourself
+     and like everything else in perl, there's more than one way to do it
+***** system函数 the system function                                            :ATTACH:
+      :PROPERTIES:
+      :Attachments: system.pl
+      :ID:       94B60C91-8636-41FE-9ACE-408C6E16A51C
+      :END:
+      run a child process [C]
+**** 高级perl技巧 some advanced perl techniques
+     some other techniques while not obligatory, are still valuable tools to have in your toolbox
+***** 切片 slices
+*** perl编程语言 programming perl
+**** 前言 preface
+     - 命令行 command line
+       日常管理 manage     (T  En 35 | Cn 20)
+       常见问题 question   (T  En 36 | Cn 21)
+       平台移植 platform   (T  En 36 | Cn 22)
+       搜索文档            (C  Cn 22)
+**** perl概述 an overview of perl
+***** 自然语言和人工语言 natural and artificial languages
+****** 变量语法 variable syntax                                                 :code:
+       variable types (T  En 50 | Cn 32)
+       $    scalar
+       @    array
+
+       : make reference
+       scalar value can be reference to other data structure (like a pointer in C)
+       : auto convert
+       perl will automatically convert the data
+         into the form required by the current context
+
+       : array and hash
+       use an array when you want to look something up by number
+       user a hash when yo uwant to look something by name
+       : pop and push
+       since arrays are ordered
+         you can do various useful operations on them
+         such as the stack operations pop and push
+         perl regards the end of your array as the top of a stack
+       you can't push or pop a hash
+         because a hash is unordered
+       : hash performance
+       we pick the name "hash" is implemented internally using a hash-table lookup
+         which is why hash are so fast and stay so fast no matter
+           how many values you put into them
+       : the % sigil
+       hashes use the % sigil to mark hash names
+         if you look carefully at the % character
+         you can see the key and the value with a slash between them
+       : syntactic sugar =>
+       perl provides syntactic sugar => to see which are keys or values
+       : access hash element
+       because hashes are a fancy kind of array
+         select an individual hash element is to dealing with a scalar value
+         use $ on front of hash name
+       : complexities
+       sometimes you need to build not-so-lovely
+                                   not-so-simple
+                                   not-so-flat data structures
+       : topicalizing
+       perl also has serveral ways of topicalizing
+         one important topicalizer is the package declaration
+       : verbs
+       as is typical of your typical impreative computer language
+         many of the verbs in perl are commands
+         they tell perl interpereter to do something
+****** 一个平均值例子 an average example
+******* how to run a perl program
+        : call perl explicitly from the command line
+        % perl –e 'print "Hello, world!\n";'
+        : for longer script, put all your commands into a file and then
+        % perl the_file_name
+
+        : on Unix systems that support the #! "shebang" notation
+        :   you can make the first line of your script be magical
+        :   so the operating system will know which program to run
+        #!/usr/bin/perl
+        : if perl isn't in /usr/bin, you'll have to change the line accordingly
+        : then all you have to say is
+        % gradation
+        : if this didn't work because you forgot to
+        :   make sure the script was executable in your PATH
+        : you have to provide a complete filename
+        :   so that the operating system knows how to find your script
+        % /home/sharon/bin/gradation
+
+        : it will provide an useful warming message
+        #!/usr/bin/perl -w
+****** 文件句柄 filehandles                                                     :code:
+       filehandles make it easier for you to get input from
+         and send output to many different places
+       part of what makes perl a good glue languages is that
+         it can talk to many files and processes at once
+       : open
+       you can use open function
+         to create filehandles for various purposes (input, output, piping)
+****** 操作符 operators                                                         :code:
+******* some binary arithmetic operators
+        : mathematical operators
+        +    addition
+        *    multiplication
+        %    modulus
+        **   exponentiation
+******* string operators
+        : string addition
+        a sepatate operator .
+        : string multiply
+        a separate operator x
+        : three ways to concatenation string
+        : interpolation
+        string concatenation is also implied by the interpolation
+          that happens in double-quoted string
+        : list
+        and when you print out a list of values
+          you're also effectively concatenating strings
+******* assignment operators
+        : get set to
+        try to remember that = assignment operator means
+          "gets set to" rather than "equals"
+        the left operand must be
+          a valid _lvalue_ (a valid storage location like a variable, or an array)
+        : assignment returns variable as an lvalue
+        you can assign a vairable to many other vairables
+            or assign a assignmen to another assignment
+******* unary arithmetic operators
+        : autoincrement and autodecrement
+        the autoincrement ++ (or autodecrement --) operator
+          can be placed on either side of the variable
+          if you place one of these "auto" operators before the variable
+            it is known as a preincremented (predecremented) variable
+            its value will be changed before it is referenced
+          if it is placed after the variable
+            it is known as a postincremented (postdecremented) variable
+            and its value is changed after it is used
+******* logical operators
+        : short-circuit operators
+        logical operators, also known as short-circuit operators
+          allow the program to make decisions
+            based on multiple criteria
+            without using nested if statements
+        perl actually has two sets of logical operators
+          a traditional set borrowed from C
+          a newer set of ultralow-precedence operators borrowed from BASIC
+******* some numeric and string comparison operators
+        : comparison operators
+******* some file test operators
+        : file test operators
+        the file test operators allow you to test
+          whether certain file attriubutes are set
+          before you go and blindly muck about with the files
+****** control structures
+       using the short-circuit operators
+         while you can write some very useful linear programs
+           (a lot of CGI scripts fall into this category)
+       you can write much more powerful programs
+         if you have conditional expressions and looping mechanisms
+         these are known as control structures
+       but to have control
+         you have to know the difference between what's true and what's false
+******* what is truth                                                           :code:
+        : the scalar truth rules (no coercion)
+        truth in perl is always evaluated in scalar context
+          no type coercion is done
+          so here are the rules for the various kinds of values a scalar can hold
+        any reference (rule 3) would point to something with an address
+          and would evaluate to a number or string containing that address
+        : the scalar truth rules (with coercion)
+
+        : NOTE
+        both arrays and hashes return scalar values
+          hat conveniently happen to be true
+          if the array or hash contains any elements
+******* the if and unless statements                                            :code:
+        : if statement
+        a slightly more complex form of the logical operators is the if statement
+          the if statement evaluates a truth condition
+            and executes a block if the condition is true
+        : NOTE
+        braces are optional in C if you have a single statement
+        but the braces are not optional in perl
+        : elsif statement
+        at time you may even have more than two possible choices
+          in this case, you'll want to add an elsif truth condition
+            for other possible choice
+        : unless statement
+        sometimes, you don't want to do anything if the condition is true
+          only if it is false
+        using an empty if with an else may be messy
+          you would use the unless statement
+        : NOTE
+        there is no elsunless through
+******* the given and when statements                                           :code:
+        : given and when statements
+        what other languages sometimes call switch and case
+          because we like to make perl work like a natural language
+          however, we call these given and when
+        the given part takes the value of its expression
+          and makes it the topic of conversation
+          so the when statement know which value to test
+        the form of each when argument determines the type of match performed
+          so strings match as strings (numbers patterns match as well)
+          lists of values match if any of them match
+******* conditional loops                                                       :code:
+        the while and until statements test an expression for truth
+          just as the if and unless statements do
+        : while statement
+        if the original condtion is never met
+          the loop will never entered at all
+        : blank lines and exit the loop
+        this assigns the next line to the variable $line
+        if $lines get blank lines
+          the while statement will not exit the loop
+          the reason is the line input operator leaves the newline on the end of the string
+            so a blank line has the value "\n"
+            and that "\n" is not one of canonical false value
+        when we finally do reach the end of the file
+          the line input operator returns the undefined value
+            which always evaluated to false
+        : an array in scalar context
+        if you mention an array in scalar context
+          the length of the array is returned
+        the shift operator removes one element from the argument list each time
+        the loop automatically exits when its length goes to 0
+          and 0 is already false in perl
+        : the three-part loop
+        it is also known as a C-style for loop
+        within the loop's parentheses
+          the three-part loop takes three expressions, separate by two semicolons
+          the first expression sets the initial state of the loop variable
+          the second is a condition to test the loop variable
+            this works just like the while condition
+          the third expression modifies the state of the loop variable
+        when the three-part loop starts
+          the initial state is set and the truth condition is checked
+          if the condition is true, the block is executed
+          the block is return with the next value
+            as long as the truth conditon remain true
+        NOTE
+        only the middle expression is evaluated for its value
+          the first and third expressions are evaluated only for their side effects
+            and the resulting values are thrown away
+        each of the three expressions may be omitted
+          if you leave out the middle expression
+          it assumes you want to loop forever
+        : the foreach loop
+        the foreach statement provides list context to the expression in parentheses
+          so the expression is evaluated to produce a list (even a single scalar)
+          then each element of the list is aliased to the loop variable in turn
+            and the block of code is executed once for each list element
+        NOTE
+        the loop vairable refers to the element itself
+          rather than a copy of the element
+          hence, modifying the loop variable also modifieds the original array
+        TIP
+        you'll find many more of these loops in the typical perl program
+          than traditional three-part for loops
+          because it's very easy in perl to generate the kinds of lists
+            that a foreach wants to iterate over
+        : breaking out - next and last
 ** python
 *** PROJECT python document
 **** python setup and usage
@@ -8678,6 +11005,211 @@
        $ pyenv global <version>  # 全局设置python版本为指定版本
        $ pyenv local <version>   # 设置当前路径下python版本为指定版本
        $ pyenv shell <version>   # 设置当前shell窗口使用的python版本为指定版本
+*** tutorial
+**** conventions
+     >>>             input
+     ...             output
+     _               the last printed expression is assigned to the variable
+     \               escape quotes
+     print()         format output things
+     r               raw string
+     """..."""
+     '''...'''       string span multiple lines
+     String          index slicing immutable
+     lists           index slicing concatenation mutable
+     end             avoid the newline after output
+**** using the python interpreter                                               :code:
+     : interactive mode
+     when commands are read from a tty
+       the interpreter is said to be in interactive mode
+     in this mode it prompts for the next command with primary prompt
+       usually three greater signs (>>>)
+     for continuation lines it prompts with the secondary prompt
+       by default three dots (...)
+     : source code encoding
+     by default, python source files are treated as encoded in UTF-8
+     to declare an encoding other than the default one
+       a special comment line should be added as the first line of the file
+**** an informal introduction to python                                         :code:
+     : number
+     : act as a simple calculator
+     start the interpreter
+       the interpreter acts as a simple caculator
+       you can type an expression at it and it will write the value
+     : the variable _
+     in interactive mode, the last printed expression is assigned to the variable _
+
+     : string
+     : double quote && single quote && escape
+     python string can be enclosed ('...') or double quotes ("...")
+       \ can be used to escape quotes
+     : raw strings
+     if you don't want characters prefaced by / to be interpreted as special characters
+       you can use raw strings by adding an r before the first quote
+     : multiple lines strings
+     string literals can span multiple lines
+     : string can be concatenated and repeated
+     : string can be indexed
+     : slice is also supported
+     : string cannot be changed
+
+     : lists
+     : group data type
+     list is used to group together a number of compound data types
+     : indexed and sliced
+     like string lists can be indexed an d sliced
+     : muttable
+     unlike string, which are immutable, lists are a mutable type
+     : nest list
+
+     : first programming
+     : Fibonacci series
+     the sum of two elements defines the next
+**** control flow                                                               :code:
+     : if *
+
+     : for
+     : for loop string *
+     : modify the sequence *
+     modify the sequence you are iterating over while inside the loop
+
+     : range *
+     iterate over a sequence of numbers
+     : different step *
+     it is possible to let the range start at another number
+       or to specify a different increment erent step
+     : iterate over the length of a sequence *
+     in such case, it is convenient to use the enumerate() function
+
+     : break *
+     terminate loop not by condition
+     : continue *
+     jump to the next iteration of the loop
+     : pass *
+     the pass statement does nothing
+       it can be used when a statement is required syntactically
+         but the program requires no action
+
+     : function *
+     : rename function *
+     : the return value of function *
+     : default argument values *
+     The most useful form is to specify a default value for one or more arguments
+     : keyword arguments *
+     function can also be called using the form of key=value
+     : formal parameter *
+     when function's argument in a format as
+       *name which can receives many 'value' like formal parameters
+       **name which can receives many 'key=value' like formal parameter
+     : arbitrary argument lists *
+     to specify that a function can be called with an arbitrary number of arguments
+     : unpacking argument lists *
+     you can unpack a list (or a tuple) arguments by using the formal parameter
+     : lambda expression *
+     Lambda functions can be used wherever function objects are required
+       Like nested function definitions
+     : documentation strings *
+     Here are some conventions
+       about the content and formatting of documentation strings
+       1. The first line should always be a concise summary of the object’s purpose
+       2. The following lines should be one or more paragraphs
+          describing the object’s calling conventions, its side effects, etc
+    : function annotations *
+    Parameter annotations are defined by a colon after the parameter name
+      followed by an expression evaluating to the value of the annotation
+    Return annotations are defined by a literal ->
+      followed by an expression
+      between the parameter list and the colon denoting the end of the def statement
+
+    : intermezzo: coding style *
+    For Python, *PEP 8* has emerged as the style guide that most projects adhere to
+      it promotes a very readable and eye-pleasing coding style
+      every python devleloper should read it at some point
+**** data structures                                                            :code:
+     : list data type *
+     here are all of the methods of list objects
+     : using lists as stacks *
+     the list methods make it very easy to use a list as a stack
+       where the last element added is the first element retrieved (last-in last-out)
+     : using lists as queues *
+     it is also possible to use a list as a queue
+       where the first element added is the first element retrueved (first-in first-out)
+     : list comprehensions *
+     use some operations applied to each member of list
+     : nested list comprehensions *
+     the initial expression in a list comprehension can be any arbitrary expression
+       including another list comprehension
+
+     : the del statement
+     there is a way to remove an item from a list given its index instead of its value
+       the del statement
+     : remove slices from a list *
+     differ from the pop()
+       the del statement can also be used to remove slices from a list
+     : delete entire variables *
+     del can also be used to delete entire variables
+
+     : tuples and sequences
+     : tuples *
+     a tuple consists of a number of values separated by commas
+     : a tuples containing 0 or 1 items *
+     : tuple packing *
+
+     : sets
+     : besic use of sets *
+
+     : dictionaries
+     : key-value pair *
+     : build dictionaries *
+
+     : looping techniques
+     : looping through dictionaries *
+     : looping through a sequence *
+
+     : condition
+     : comparisons can be chained *
+     : assign the result of comparision to a variable *
+     : comparing sequences *
+**** modules                                                                    :fragment:
+     : modules.py
+
+     : fibo.py
+     : python interpreter *
+     : symbol table *
+     : script *
+     : the module search path *
+     : compiled python file *
+
+     : standard modules *
+
+     : the dir() function *
+
+     : packages *
+     : the structure of python package *
+     : import individual modules *
+     : remove unwanted sub-module by importing * from a package *
+     : relative package reference *
+     : search modules and subpackages *
+**** input and output
+     : convert any value to a string *
+
+     : output formatting *
+     : justify a string *
+     : use .format() method to format output string *
+     : fill the zeros to the left of string *
+
+     : convert the value before it is formatted *
+
+     : an optional control for formatting string *
+
+     : open a file *
+     : close a file *
+     : read a file *
+     : write to the file *
+     : change the file object's position *
+
+     : serializing and deserializing *
+     : data exchange *
 ** js
 *** CANCELLED javascript高级程序设计 javascript for web developers
     CLOSED: [2017-09-17 日 10:54]
@@ -10240,6 +12772,48 @@
            exist or are waiting to be notified when foo(..) completes
 **** ES6 & Beyond
 ***** ES? Now & Future
+*** freeCodeCamp
+**** CatPhotoApp
+     : <h1>
+     used for main headings
+     : <h2>
+     h2 elements are generally used for subheadings
+       there are also h3, h4, h5 and h6 elements
+     : <p> or <P>
+     p elements are the preferred element for normal-sized paragraph text on websites
+       P is short for "paragraph"
+     : <!-- -->
+     delete html elements
+
+     : style color
+     add inline style color to h2 element
+     : CSS *
+     use CSS selectors to style elements
+     : CSS clas *
+     red-text    apply a css class to html element
+     class="red-text"    classes as a tag to change the style of multiple html elements
+     : font size
+     font-size     change the text font size
+     font-family   set a font family to a elemeent
+     googleleapis  import a google font
+     : font degrade
+     Lobster, Monospace    if Lobster font family isn't available
+                           the browser will "degrade" to Monospace
+
+     : images *
+     add images to your website
+     .smaller-image    size your images
+     : CSS border *
+     put a 10-pixel-wide green border with a style of solid around an HTML element
+     : add rounded corners with a border radius *
+     use border-radius
+     : make circular images with a border radius *
+     specify a border-radius using a percentage
+
+     : anchor element *
+     use <a> HTML element to link to external pages
+     : nest an anchor element within a paragraph *
+     use <p> HTML element
 ** ruby
 *** CANCELLED ruby编程语言 ruby programming language
     CLOSED: [2017-09-17 日 10:55]
@@ -11328,6 +13902,110 @@
      It supports playgrounds(代码预览)
         an innovative feature that allows programmers to experiment with Swift code and see the results immediately
         without the overhead of building and running an app
+*** the swift programming language
+**** a swift tour
+     : common programming errors
+     swift define large classes of common programming errors
+
+     : version compatibility
+     Xcode contains the version support of swift
+
+     : simple values
+     : hello world
+     the simplest way to print "hello, world"
+     : variable and constant
+     use let to make a constant and var to make a variable
+     : initial value
+     you don't always have to write the type explicitly
+     you can also provide the type information after the variable, separate by a colon
+     : a simple way to include variables in strings
+     "\(variable name is here)"
+     : the strings that take up multiple lines
+     use three double quotes (""")
+     : create arrays and dictionaries
+     : to create an empty array or dictionary
+
+     : control flow
+     : if and for-in
+     use if and for-in to make conditional statement
+     : optinal value
+     use if and let together to work with values that might be missing
+     : default value
+     if the optional value is missing, the default value is used instead
+     : switch structure
+     switch support any kind of data and a wide variety of comparison operations
+     : for-in iterate over items in a dictionary
+     : while structure
+
+     : functin and closures
+     : declare a funtion
+     : no argument label
+     function use their parameter names as labels for their arguments
+     : return a tuple
+     use a tuple to make a compound value
+       the elements of a tuple can be referred to either by name or by number
+     : functions can be nested
+     nested functions have accessed to variables
+       that were declared in the outer function
+     : a function can return another function as its value
+     : take function as arguments
+     a function can take another function as one of its arguments
+     : functions are actually a special case of closures
+     you can write a closure without a name
+       by surrounding code with braces ({})
+     use "in" to separate the arguments and return type from the body
+     : omit the type of patameters and its return type
+     when a closure's type is already known (such as the callback)
+       you can omit its parameters, its return type, or both
+     : you can refer to parameters by number instead of by name
+
+     : objects and classes
+     : create a class *
+     : use class *
+     create a instance of a class, access the properties and methods of the instance
+     : set up an initializer for class *
+     : override superclass's method *
+     : set and get *
+     : optional value *
+
+     : Enumerations and structures
+     : create a enumeration with raw value *
+     : create a enumeration without raw value *
+     : associated values of enumeration *
+     : use combine struct and enumerations
+
+     : protocols and extensions
+
+     : error handling
+
+     : generics
+**** the basics
+     : declaring constants and variables *
+     : type annotations *
+     : naming constants and variables *
+     : printing constants and variables *
+
+     : comments *
+     : semicolons *
+
+     : type safety and type inference *
+     : numeric literals *
+     : numeric conversion *
+
+     : integers *
+     : UInt *
+     : Int8 *
+     : Int16 *
+
+     : floating-point numbers *
+     : the value of truncate *
+
+     : tyoe aliases *
+
+     : booleans *
+     : condtional statement *
+
+     : tuples *
 ** rust
 *** PROJECT Rust程序设计语言 the rust programming language
 **** 第一版 first version
@@ -11799,6 +14477,92 @@
 **** *[sessions 1-3]* how to talk about personality types 59 64 71
 **** *[sessions 4-6]* how to talk about doctors 86 92 98
 **** *[sessions 7-10]* how to talk about various practitioners 114
+** compiler
+*** computer system
+    : information is bits + context *
+    : programs are translated by other programs into different forms *
+    : processors read and interpret instructions stored in memory *
+    : caches matter *
+    : storage devices form a hierarchy *
+    : the operating system manages the hardware *
+    : systems communicate with other systems using networks *
+    : concurrency and parallellism *
+    : some abstractions provided by a computer system *
+*** representing and manipulating information
+**** information storage
+     : byte arrays *
+     : hexadecimal notation *
+     : data sizes *
+     : addressing and byte ordering *
+     : representing strings *
+     : representing code *
+     : introduction to boolean algebra *
+     : bit-level operations in C *
+     : logical operations in C *
+     : conversions between signed and unsigned *
+     : signed versus unsigned in C *
+     : expanding the bit representation of a number *
+     : truncating numbers *
+     : advice on signed versus unsigned *
+**** integer representations
+     : integral data types *
+     : unsigned encodings *
+     : two's-complement encodings *
+**** integer arithmetic
+     : unsigned addition *
+     : two's-complement addition *
+     : two's-complement negation *
+     : two's-complement multiplication *
+     : multiplying by constants *
+     : dividing by powers of 2 *
+**** floating point
+     : fractional binary numbers *
+     : IEEE floating-point representation *
+     : rounding *
+     : floating-point operations *
+*** machine-level representation of programs
+**** program encodings
+     : machine-level code *
+     : code examples *
+**** data formats
+     : sizes of C data types in x86-64 *
+**** accessing information
+     : general-purpose registers *
+     : operand specifiers *
+     : data movement instructions *
+     : data movement example *
+     : pushing and popping stack data *
+**** arithmetic and logical operations
+     : integer arithmetic operations *
+     : load effective address *
+     : unary and binary operations *
+     : shift operations *
+     : discussion *
+     : special arithmetic operations *
+**** control
+     : condition codes *
+     : accessing the condition codes *
+     : jump instruction encodings *
+*** front-end design
+**** language processors
+     : a compiler *
+     : instruction set *
+     : target program *
+     : an interpreter *
+     : a hybrid compiler *
+     : a language-processing system *
+**** the structure of a compiler
+     : the design of compilation *
+     : phases of a compiler *
+     : the example of compiling a assignment statement *
+     : the science of a compiler *
+     : applications of compiler technology *
+*** scanners
+    : scanner *
+    : recognizing words *
+    : regular expressions *
+    : from regular expression to scanner *
+    : implementing scanners *
 * misc
 ** DONE 如何高效使用搜索引擎
 *** google 资料查找
@@ -12009,7 +14773,10 @@
      NOTE
      remote name
      you can use author's name to represent the remote url name (like purcell)
-     -> Fetching ( remote )
+     -> Pulling ( remote )
+     NOTE
+     git pull = bring a local branch up-to-date with its remote version
+     git fetch = update your remote-tracking
      -> Pushing ( origin )
 
      : some kind of combine operator
