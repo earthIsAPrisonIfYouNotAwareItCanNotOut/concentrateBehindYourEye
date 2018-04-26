@@ -14895,3 +14895,6 @@
 *** folding
     origami mode
     init-folding
+*** bug
+    Debugger entered--Lisp error: (invalid-read-syntax "#")
+      delete the historian file (~/.emacs.d/.historian)
